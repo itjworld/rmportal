@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rmportal.model.PortalInfo;
 import com.rmportal.service.InfoService;
+import com.rmportal.vo.PortalInformationVO;
 
 @RestController
 @RequestMapping(value = "/api/v1")
@@ -23,19 +24,17 @@ public class RequestController {
 	private InfoService infoService;
 
 	@RequestMapping(value = "/details")
-	public void getDetails(@RequestBody @RequestParam(required = false) Long[] localities,
+	public ResponseEntity<List<PortalInformationVO>> getDetails(@RequestBody @RequestParam(required = false) Long[] localities,
 			@RequestParam(required = false) Integer price, @RequestParam(required = false) Long acId,
 			@RequestParam(required = false) Long gender, @RequestParam(required = false) Long[] rooms) {
 
-		System.out.println(String.format("localities : %s :: price : %s :: id : %s : gender id : %s :: room ids : %s",
-				localities, price, acId, gender, rooms));
-		infoService.getDetails(localities, price, acId, gender, rooms);
+		return new ResponseEntity<List<PortalInformationVO>>(infoService.getDetails(localities, price, acId, gender, rooms), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/details/{type}")
-	public List<PortalInfo> getAllData(@PathVariable String type) {
+	public ResponseEntity<List<PortalInfo>> getAllData(@PathVariable String type) {
 		System.out.println("Type : " + type);
-		return infoService.getAllData(type);
+		return new ResponseEntity<List<PortalInfo>>(infoService.getAllData(type), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json")
