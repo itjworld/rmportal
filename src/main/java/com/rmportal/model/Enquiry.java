@@ -31,7 +31,7 @@ public class Enquiry implements Serializable {
 	private String mobile;
 
 	@Column(name = "active")
-	private boolean active;
+	private boolean active=true;
 
 	public Long getId() {
 		return id;

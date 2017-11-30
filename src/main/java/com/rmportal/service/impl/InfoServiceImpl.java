@@ -1,7 +1,5 @@
 package com.rmportal.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,6 +55,11 @@ public class InfoServiceImpl implements InfoService {
 		final PortalInformationVO informationVO = new PortalInformationVO();
 		informationVO.setDeposit(info.getDeposit());
 		informationVO.setRent(info.getRent());
+		informationVO.setRoomType(info.getRoomType().getValue());
+		informationVO.setOccupied(info.getOccupied());
+		if(null!=info.getGender()){
+			informationVO.setGender(info.getGender().getName());
+		}
 		if (null != info.getAddress()) {
 			informationVO.setStreet1(info.getAddress().getStreet1());
 			informationVO.setStreet2(info.getAddress().getStreet2());

@@ -16,6 +16,7 @@ import com.rmportal.model.Enquiry;
 import com.rmportal.model.PortalInfo;
 import com.rmportal.service.EnquiryService;
 import com.rmportal.service.InfoService;
+import com.rmportal.vo.EnquiryVO;
 import com.rmportal.vo.PortalInformationVO;
 
 @RestController
@@ -58,10 +59,10 @@ public class RequestController {
 	}
 	
 	@RequestMapping(value = "/enquiry/save", method = RequestMethod.POST)
-	public ResponseEntity<Enquiry> saveEnquiry(@RequestBody Enquiry enquiry) {
+	public ResponseEntity<EnquiryVO> saveEnquiry(@RequestBody Enquiry enquiry) {
 
 		System.out.println(String.format("saveEnquiry - >  query : %s", enquiry));
-		return new ResponseEntity<Enquiry>(enquiryService.save(enquiry), HttpStatus.OK);
+		return new ResponseEntity<EnquiryVO>(enquiryService.save(enquiry), HttpStatus.OK);
 	}
 
 

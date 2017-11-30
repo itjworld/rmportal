@@ -11,6 +11,9 @@ public class PortalInformationVO {
 	private String street2;
 	private String location;
 	private String content;
+	private String gender;
+	private int roomType;
+	private int occupied;
 	
 	public long getId() {
 		return id;
@@ -54,6 +57,26 @@ public class PortalInformationVO {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public int getRoomType() {
+		return roomType;
+	}
+	public void setRoomType(int roomType) {
+		this.roomType = roomType;
+	}
+	public int getOccupied() {
+		return occupied;
+	}
+	public void setOccupied(int occupied) {
+		this.occupied = occupied;
+	}
+	
+	
 	
 	
 }

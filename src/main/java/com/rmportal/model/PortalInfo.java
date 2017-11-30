@@ -76,6 +76,20 @@ public class PortalInfo implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	@Override
 	public boolean equals(Object o) {

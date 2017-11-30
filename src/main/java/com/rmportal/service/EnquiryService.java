@@ -1,7 +1,8 @@
 package com.rmportal.service;
 
 import com.rmportal.model.Enquiry;
+import com.rmportal.vo.EnquiryVO;
 
 public interface EnquiryService {
-	Enquiry save(Enquiry enquiry);
+	EnquiryVO save(Enquiry enquiry);
 }

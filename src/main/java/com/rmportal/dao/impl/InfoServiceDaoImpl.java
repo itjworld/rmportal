@@ -27,6 +27,7 @@ public class InfoServiceDaoImpl implements InfoServiceDao {
 		final StringBuilder hql= new StringBuilder();
 		final Map<String, Object> paramaters= new HashMap<String, Object>();
 		hql.append("SELECT I FROM PortalMappingInfo I ");
+		hql.append(" LEFT JOIN I.roomType RT ");
 		if(null!=localities && localities.length>0){
 			hql.append(" LEFT JOIN I.address A WHERE A.location.id IN (:location)");
 			paramaters.put("location", Arrays.asList(localities));
@@ -68,6 +69,13 @@ public class InfoServiceDaoImpl implements InfoServiceDao {
 			}
 			hql.append("I.roomType.id in (:roomType)");
 			paramaters.put("roomType", Arrays.asList(rooms));
+		}
+		if(paramaters.isEmpty()){
+			hql.append(" WHERE ");
+			hql.append("RT.value<>I.occupied");
+		}else{
+			hql.append(" AND ");
+			hql.append("RT.value<>I.occupied");
 		}
 		final Query query= entityManager.createQuery(hql.toString());
 		paramaters.forEach((key,value)->{
