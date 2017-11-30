@@ -78,6 +78,11 @@ public class InfoServiceDaoImpl implements InfoServiceDao {
 		});
 		return query.getResultList();
 	}
+	
+	public int create(String sql) {
+		final Query query= entityManager.createNativeQuery(sql);
+		return query.executeUpdate();
+	}
 
 	@Override
 	public List<PortalInfo> getDetails(String type) {

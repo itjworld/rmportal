@@ -33,6 +33,9 @@ public class PortalInfo implements Serializable {
 
 	@Column(name = "NAME", nullable = false)
 	private String name;
+	
+	@Column(name = "VALUE", nullable = false)
+	private int value = 0;
 
 	public boolean isStatus() {
 		return status;

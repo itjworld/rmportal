@@ -43,6 +43,9 @@ public class PortalMappingInfo implements Serializable{
 	@Column(name="DEPOSIT",nullable=false)
 	private int deposit=0;
 	
+	@Column(name="OCCUPIED",nullable=false)
+	private int occupied = 0;
+	
 	@OneToOne
 	@JoinColumn(name="ADDRESS_ID",nullable=false)
 	private AddressInfo address;

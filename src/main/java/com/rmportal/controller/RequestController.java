@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rmportal.model.Enquiry;
 import com.rmportal.model.PortalInfo;
+import com.rmportal.service.EnquiryService;
 import com.rmportal.service.InfoService;
 import com.rmportal.vo.PortalInformationVO;
 
@@ -22,6 +24,9 @@ public class RequestController {
 
 	@Autowired
 	private InfoService infoService;
+	
+	@Autowired
+	private EnquiryService enquiryService;
 
 	@RequestMapping(value = "/details")
 	public ResponseEntity<List<PortalInformationVO>> getDetails(@RequestBody @RequestParam(required = false) Long[] localities,
@@ -44,5 +49,20 @@ public class RequestController {
 				portalInfo.getName(), portalInfo.getCode(), portalInfo.getType(), portalInfo.isStatus()));
 		return new ResponseEntity<PortalInfo>(infoService.create(portalInfo), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/insert", method = RequestMethod.POST)
+	public ResponseEntity<Integer> insert(@RequestBody String query) {
+
+		System.out.println(String.format("insert service - >  query : %s", query));
+		return new ResponseEntity<Integer>(infoService.insert(query), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/enquiry/save", method = RequestMethod.POST)
+	public ResponseEntity<Enquiry> saveEnquiry(@RequestBody Enquiry enquiry) {
+
+		System.out.println(String.format("saveEnquiry - >  query : %s", enquiry));
+		return new ResponseEntity<Enquiry>(enquiryService.save(enquiry), HttpStatus.OK);
+	}
+
 
 }

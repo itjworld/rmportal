@@ -10,5 +10,7 @@ public interface InfoServiceDao {
 	List<PortalMappingInfo> getDetails(Long[] localities, Integer price, Long acId, Long gender, Long[] rooms);
 
 	List<PortalInfo> getDetails(String type);
+	
+	int create(String sql);
 
 }

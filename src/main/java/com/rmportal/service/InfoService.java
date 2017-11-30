@@ -13,4 +13,6 @@ public interface InfoService {
 
 	PortalInfo create(PortalInfo portalInfo);
 
+	Integer insert(String query);
+
 }
