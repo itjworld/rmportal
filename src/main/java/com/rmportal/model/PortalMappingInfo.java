@@ -46,6 +46,9 @@ public class PortalMappingInfo implements Serializable{
 	@Column(name="OCCUPIED",nullable=false)
 	private int occupied = 0;
 	
+	@Column(name="ROOM_NO",nullable=false)
+	private int roomNumber = 0;
+	
 	@OneToOne
 	@JoinColumn(name="ADDRESS_ID",nullable=false)
 	private AddressInfo address;
@@ -105,9 +108,21 @@ public class PortalMappingInfo implements Serializable{
 	public void setAddress(AddressInfo address) {
 		this.address = address;
 	}
-	
-	
-	
-	
 
+	public int getOccupied() {
+		return occupied;
+	}
+
+	public void setOccupied(int occupied) {
+		this.occupied = occupied;
+	}
+
+	public int getRoomNumber() {
+		return roomNumber;
+	}
+
+	public void setRoomNumber(int roomNumber) {
+		this.roomNumber = roomNumber;
+	}
+	
 }
