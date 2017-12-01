@@ -18,6 +18,7 @@ import com.rmportal.model.PortalInfo;
 import com.rmportal.service.AddressService;
 import com.rmportal.service.EnquiryService;
 import com.rmportal.service.InfoService;
+import com.rmportal.vo.ContactInformationVO;
 import com.rmportal.vo.EnquiryVO;
 import com.rmportal.vo.PortalInformationVO;
 
@@ -76,6 +77,12 @@ public class RequestController {
 		System.out.println(String.format("getAddress - >  cityId : %s", cityId));
 		return new ResponseEntity<List<AddressInfo>>(addressService.getAddressByCityId(cityId), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/contact-information")
+	public ResponseEntity<ContactInformationVO> getDetails(@RequestBody @RequestParam(required = true) Long id) {
+		return new ResponseEntity<ContactInformationVO>(infoService.getContactInformation(id), HttpStatus.OK);
+	}
 
+	
 
 }

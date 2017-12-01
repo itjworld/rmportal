@@ -12,7 +12,9 @@ import com.rmportal.dao.InfoServiceDao;
 import com.rmportal.model.PortalInfo;
 import com.rmportal.model.PortalMappingInfo;
 import com.rmportal.repositories.InfoRepository;
+import com.rmportal.repositories.PortalMappingRepository;
 import com.rmportal.service.InfoService;
+import com.rmportal.vo.ContactInformationVO;
 import com.rmportal.vo.PortalInformationVO;
 
 @Service
@@ -23,6 +25,10 @@ public class InfoServiceImpl implements InfoService {
 
 	@Autowired
 	private InfoRepository infoRepository;
+	
+	@Autowired
+	private PortalMappingRepository  portalMappingRepository;
+	
 
 	@Override
 	@Transactional(readOnly = true)
@@ -53,6 +59,7 @@ public class InfoServiceImpl implements InfoService {
 
 	private PortalInformationVO convertView(final PortalMappingInfo info) {
 		final PortalInformationVO informationVO = new PortalInformationVO();
+		informationVO.setId(info.getId());
 		informationVO.setDeposit(info.getDeposit());
 		informationVO.setRent(info.getRent());
 		informationVO.setRoomType(info.getRoomType().getValue());
@@ -71,6 +78,27 @@ public class InfoServiceImpl implements InfoService {
 	@Transactional(readOnly = false)
 	public Integer insert(String query) {
 		return infoServiceDao.create(query);
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public ContactInformationVO getContactInformation(long id) {
+		return convert(portalMappingRepository.getOne(id));
+	}
+	private ContactInformationVO convert(PortalMappingInfo detail) {
+		ContactInformationVO contactInformationVO=new ContactInformationVO();
+		if(null!=detail){
+			contactInformationVO.setId(detail.getId());
+			if(null!=detail.getAddress()){
+				contactInformationVO.setMobile(detail.getAddress().getContact());
+				contactInformationVO.setStreet1(detail.getAddress().getStreet1());
+				contactInformationVO.setStreet2(detail.getAddress().getStreet2());
+				contactInformationVO.setLocation(detail.getAddress().getLocation().getName());
+			}
+			
+		}
+
+		return contactInformationVO;
 	}
 
 }

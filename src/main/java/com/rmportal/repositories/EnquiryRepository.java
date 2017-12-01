@@ -11,6 +11,6 @@ import com.rmportal.model.Enquiry;
 public interface EnquiryRepository extends JpaRepository<Enquiry, Long> {
 	
 	
-	@Query("SELECT E from Enquiry E WHERE E.email = :email AND E.mobile = :mobile")
+	@Query("SELECT E from Enquiry E WHERE E.email = :email OR E.mobile = :mobile")
 	Enquiry findByForEmailAndMobile(@Param("email") String email,@Param("mobile") String mobile);
 }
