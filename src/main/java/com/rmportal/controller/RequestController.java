@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.rmportal.model.AddressInfo;
 import com.rmportal.model.Enquiry;
 import com.rmportal.model.PortalInfo;
+import com.rmportal.service.AddressService;
 import com.rmportal.service.EnquiryService;
 import com.rmportal.service.InfoService;
 import com.rmportal.vo.EnquiryVO;
@@ -28,6 +30,9 @@ public class RequestController {
 	
 	@Autowired
 	private EnquiryService enquiryService;
+	
+	@Autowired
+	private AddressService addressService;
 
 	@RequestMapping(value = "/details")
 	public ResponseEntity<List<PortalInformationVO>> getDetails(@RequestBody @RequestParam(required = false) Long[] localities,
@@ -63,6 +68,13 @@ public class RequestController {
 
 		System.out.println(String.format("saveEnquiry - >  query : %s", enquiry));
 		return new ResponseEntity<EnquiryVO>(enquiryService.save(enquiry), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/address/{cityId}", method = RequestMethod.GET)
+	public ResponseEntity<List<AddressInfo>> getAddress(@PathVariable Long cityId) {
+
+		System.out.println(String.format("getAddress - >  cityId : %s", cityId));
+		return new ResponseEntity<List<AddressInfo>>(addressService.getAddressByCityId(cityId), HttpStatus.OK);
 	}
 
 

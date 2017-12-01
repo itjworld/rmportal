@@ -19,8 +19,6 @@ import javax.persistence.Table;
 @Table(name = "RM_ADDRESS_INFO")
 public class AddressInfo implements Serializable{
 	
-	
-
 	/**
 	 * 
 	 */
@@ -46,6 +44,12 @@ public class AddressInfo implements Serializable{
 	
 	@Column(name = "CONTENT",nullable=true)
 	private String content;
+	
+	@Column(name = "NAME",nullable=true)
+	private String name;
+	
+	@Column(name = "EMAIL",nullable=true)
+	private String email;
 
 	public long getId() {
 		return id;
@@ -96,6 +100,21 @@ public class AddressInfo implements Serializable{
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	
 }
