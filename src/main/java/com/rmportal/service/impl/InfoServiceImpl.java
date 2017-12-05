@@ -11,10 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.rmportal.dao.InfoServiceDao;
 import com.rmportal.model.PortalInfo;
 import com.rmportal.model.PortalMappingInfo;
+import com.rmportal.repositories.AddressRepository;
 import com.rmportal.repositories.InfoRepository;
 import com.rmportal.repositories.PortalMappingRepository;
 import com.rmportal.service.InfoService;
 import com.rmportal.vo.ContactInformationVO;
+import com.rmportal.vo.MappingDTO;
 import com.rmportal.vo.PortalInformationVO;
 
 @Service
@@ -25,6 +27,9 @@ public class InfoServiceImpl implements InfoService {
 
 	@Autowired
 	private InfoRepository infoRepository;
+	
+	@Autowired
+	private AddressRepository addressRepository;
 	
 	@Autowired
 	private PortalMappingRepository  portalMappingRepository;
@@ -99,6 +104,23 @@ public class InfoServiceImpl implements InfoService {
 		}
 
 		return contactInformationVO;
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public PortalMappingInfo save(MappingDTO mapping) {
+		PortalMappingInfo mappingRef = new PortalMappingInfo();
+		mappingRef.setDeposit(mapping.getSecurity());
+		mappingRef.setDesc(mapping.getDesc());
+		mappingRef.setOccupied(0);
+		mappingRef.setRoomNumber(mapping.getRoomNo());
+		mappingRef.setAddress(addressRepository.findOne(mapping.getAddressId()));
+		mappingRef.setCondition(infoRepository.findOne(mapping.getAcId()));
+		mappingRef.setRoomType(infoRepository.findOne(mapping.getRoomTypeId()));
+		mappingRef.setGender(infoRepository.findOne(mapping.getGenderId()));
+		mappingRef.setRent(mapping.getRent());
+		portalMappingRepository.save(mappingRef);
+		return mappingRef;
 	}
 
 }

@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rmportal.model.AddressInfo;
 import com.rmportal.model.Enquiry;
 import com.rmportal.model.PortalInfo;
+import com.rmportal.model.PortalMappingInfo;
 import com.rmportal.service.AddressService;
 import com.rmportal.service.EnquiryService;
 import com.rmportal.service.InfoService;
 import com.rmportal.vo.ContactInformationVO;
 import com.rmportal.vo.EnquiryVO;
+import com.rmportal.vo.MappingDTO;
 import com.rmportal.vo.PortalInformationVO;
 
 @RestController
@@ -83,6 +85,11 @@ public class RequestController {
 		return new ResponseEntity<ContactInformationVO>(infoService.getContactInformation(id), HttpStatus.OK);
 	}
 
-	
+	@RequestMapping(value = "/mapping/save", method = RequestMethod.POST)
+	public ResponseEntity<String> saveMapping(@RequestBody MappingDTO mapping) {
+		infoService.save(mapping);
+		System.out.println(String.format("saveMapping - >  city id : %s", mapping.getCityId()));
+		return new ResponseEntity<String>("SAVE", HttpStatus.OK);
+	}
 
 }

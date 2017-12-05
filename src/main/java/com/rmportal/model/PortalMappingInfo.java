@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,11 +26,11 @@ public class PortalMappingInfo implements Serializable{
 	@Column(name = "ID")
 	private long id;
 	
-	@OneToOne
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="GENDER_TYPE",nullable=false)
 	private PortalInfo gender;
 	
-	@OneToOne
+	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="AIR_COND_TYPE",nullable=false)
 	private PortalInfo condition;
 	

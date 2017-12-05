@@ -3,7 +3,9 @@ package com.rmportal.service;
 import java.util.List;
 
 import com.rmportal.model.PortalInfo;
+import com.rmportal.model.PortalMappingInfo;
 import com.rmportal.vo.ContactInformationVO;
+import com.rmportal.vo.MappingDTO;
 import com.rmportal.vo.PortalInformationVO;
 
 public interface InfoService {
@@ -17,5 +19,7 @@ public interface InfoService {
 	Integer insert(String query);
 	
 	ContactInformationVO getContactInformation(long id);
+
+	PortalMappingInfo save(MappingDTO mapping);
 
 }

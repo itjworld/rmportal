@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rmportal.model.Enquiry;
+import com.rmportal.model.PortalMappingInfo;
 import com.rmportal.repositories.EnquiryRepository;
 import com.rmportal.service.EnquiryService;
 import com.rmportal.vo.EnquiryVO;
+import com.rmportal.vo.MappingDTO;
 
 @Service
 public class EnquiryServiceImpl implements EnquiryService {

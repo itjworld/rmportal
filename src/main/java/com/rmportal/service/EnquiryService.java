@@ -5,4 +5,5 @@ import com.rmportal.vo.EnquiryVO;
 
 public interface EnquiryService {
 	EnquiryVO save(Enquiry enquiry);
+
 }
