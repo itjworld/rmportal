@@ -99,6 +99,7 @@ public class InfoServiceImpl implements InfoService {
 				contactInformationVO.setStreet1(detail.getAddress().getStreet1());
 				contactInformationVO.setStreet2(detail.getAddress().getStreet2());
 				contactInformationVO.setLocation(detail.getAddress().getLocation().getName());
+				contactInformationVO.setName(detail.getAddress().getName());
 			}
 			
 		}

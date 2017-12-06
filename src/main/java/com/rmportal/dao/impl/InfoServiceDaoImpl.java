@@ -32,7 +32,7 @@ public class InfoServiceDaoImpl implements InfoServiceDao {
 			hql.append(" LEFT JOIN I.address A WHERE A.location.id IN (:location)");
 			paramaters.put("location", Arrays.asList(localities));
 		}
-		if(null!=price){
+		if(null!=price && price > 0){
 			if(paramaters.isEmpty()){
 				hql.append(" WHERE ");
 			}else{
@@ -84,6 +84,9 @@ public class InfoServiceDaoImpl implements InfoServiceDao {
 			query.setParameter(key, value);
 			
 		});
+		if(paramaters.isEmpty()){
+			query.setMaxResults(20);
+		}
 		return query.getResultList();
 	}
 	
