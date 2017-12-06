@@ -86,10 +86,9 @@ public class RequestController {
 	}
 
 	@RequestMapping(value = "/mapping/save", method = RequestMethod.POST)
-	public ResponseEntity<String> saveMapping(@RequestBody MappingDTO mapping) {
-		infoService.save(mapping);
+	public ResponseEntity<PortalMappingInfo> saveMapping(@RequestBody MappingDTO mapping) {
 		System.out.println(String.format("saveMapping - >  city id : %s", mapping.getCityId()));
-		return new ResponseEntity<String>("SAVE", HttpStatus.OK);
+		return new ResponseEntity<PortalMappingInfo>(infoService.save(mapping), HttpStatus.OK);
 	}
 
 }

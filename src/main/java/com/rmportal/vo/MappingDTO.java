@@ -1,9 +1,7 @@
 package com.rmportal.vo;
 
-import java.io.Serializable;
-
-public class MappingDTO implements Serializable {
-	private static final long serialVersionUID = -2734442269674890219L;
+public class MappingDTO {
+	
 	private long cityId;
 	private long addressId;
 	private long roomTypeId;
