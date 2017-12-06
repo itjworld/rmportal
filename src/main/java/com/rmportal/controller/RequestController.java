@@ -90,5 +90,11 @@ public class RequestController {
 		System.out.println(String.format("saveMapping - >  city id : %s", mapping.getCityId()));
 		return new ResponseEntity<PortalMappingInfo>(infoService.save(mapping), HttpStatus.OK);
 	}
-
+	
+	
+	@RequestMapping(value = "/address/save", method = RequestMethod.POST)
+	public ResponseEntity<AddressInfo> saveAddress(@RequestBody ContactInformationVO details) {
+		System.out.println(String.format("saveMapping - >  city id : %s", details.getName()));
+		return new ResponseEntity<AddressInfo>(addressService.save(details), HttpStatus.OK);
+	}
 }
