@@ -4,6 +4,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,13 +30,15 @@ public class InfoServiceImpl implements InfoService {
 
 	@Autowired
 	private InfoRepository infoRepository;
-	
+
 	@Autowired
 	private AddressRepository addressRepository;
-	
+
 	@Autowired
-	private PortalMappingRepository  portalMappingRepository;
-	
+	private PortalMappingRepository portalMappingRepository;
+
+	@Autowired
+	private EntityManager entityManager;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -69,13 +74,14 @@ public class InfoServiceImpl implements InfoService {
 		informationVO.setRent(info.getRent());
 		informationVO.setRoomType(info.getRoomType().getValue());
 		informationVO.setOccupied(info.getOccupied());
-		if(null!=info.getGender()){
+		if (null != info.getGender()) {
 			informationVO.setGender(info.getGender().getName());
 		}
 		if (null != info.getAddress()) {
 			informationVO.setStreet1(info.getAddress().getStreet1());
 			informationVO.setStreet2(info.getAddress().getStreet2());
 			informationVO.setContent(info.getAddress().getContent());
+			informationVO.setLocation(info.getAddress().getLocation().getName());
 		}
 		return informationVO;
 	}
@@ -90,23 +96,24 @@ public class InfoServiceImpl implements InfoService {
 	public ContactInformationVO getContactInformation(long id) {
 		return convert(portalMappingRepository.getOne(id));
 	}
+
 	private ContactInformationVO convert(PortalMappingInfo detail) {
-		ContactInformationVO contactInformationVO=new ContactInformationVO();
-		if(null!=detail){
+		ContactInformationVO contactInformationVO = new ContactInformationVO();
+		if (null != detail) {
 			contactInformationVO.setId(detail.getId());
-			if(null!=detail.getAddress()){
+			if (null != detail.getAddress()) {
 				contactInformationVO.setMobile(detail.getAddress().getContact());
 				contactInformationVO.setStreet1(detail.getAddress().getStreet1());
 				contactInformationVO.setStreet2(detail.getAddress().getStreet2());
 				contactInformationVO.setLocation(detail.getAddress().getLocation().getName());
 				contactInformationVO.setName(detail.getAddress().getName());
 			}
-			
+
 		}
 
 		return contactInformationVO;
 	}
-	
+
 	@Override
 	@Transactional(readOnly = false)
 	public PortalMappingInfo save(MappingDTO mapping) {
@@ -122,6 +129,19 @@ public class InfoServiceImpl implements InfoService {
 		mappingRef.setRent(mapping.getRent());
 		portalMappingRepository.save(mappingRef);
 		return mappingRef;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public boolean execute(String query) {
+		try {
+			final Query sql = entityManager.createNativeQuery(query);
+			sql.executeUpdate();
+		} catch (Exception ex) {
+			System.out.println("exception generated : " + ex);
+			return false;
+		}
+		return true;
 	}
 
 }

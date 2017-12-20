@@ -2,6 +2,7 @@ package com.rmportal.controller;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import com.rmportal.model.AddressInfo;
 import com.rmportal.model.Enquiry;
 import com.rmportal.model.PortalInfo;
 import com.rmportal.model.PortalMappingInfo;
+import com.rmportal.model.RoomBookDetails;
 import com.rmportal.model.User;
 import com.rmportal.service.AddressService;
 import com.rmportal.service.EnquiryService;
@@ -114,5 +116,20 @@ public class RequestController {
 			user.setPassword(null);
 			return new ResponseEntity<User>(user, HttpStatus.OK);
 		}
+	}
+	
+	@RequestMapping(value = "/execute", method = RequestMethod.POST)
+	public ResponseEntity<Boolean> execute(@RequestParam(required = false) String query) {
+		System.out.println(String.format("execute - >  query : %s", query));
+		if(StringUtils.isAnyBlank(query))
+			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		boolean result = infoService.execute(query);
+		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/room/update", method = RequestMethod.POST)
+	public ResponseEntity<Boolean> updateRoomInfo(@RequestBody RoomBookDetails roomBookDetails) {
+		System.out.println(String.format("updateRoomInfo - >  mobile : %s", roomBookDetails.getAddressId()));
+		return new ResponseEntity<Boolean>(addressService.updateRoomInfo(roomBookDetails), HttpStatus.OK);
 	}
 }

@@ -70,13 +70,13 @@ public class InfoServiceDaoImpl implements InfoServiceDao {
 			hql.append("I.roomType.id in (:roomType)");
 			paramaters.put("roomType", Arrays.asList(rooms));
 		}
-		if(paramaters.isEmpty()){
-			hql.append(" WHERE ");
-			hql.append("RT.value<>I.occupied");
-		}else{
-			hql.append(" AND ");
-			hql.append("RT.value<>I.occupied");
-		}
+//		if(paramaters.isEmpty()){
+//			hql.append(" WHERE ");
+//			hql.append("RT.value<>I.occupied");
+//		}else{
+//			hql.append(" AND ");
+//			hql.append("RT.value<>I.occupied");
+//		}
 		final Query query= entityManager.createQuery(hql.toString());
 		paramaters.forEach((key,value)->{
 			System.out.println(key);
