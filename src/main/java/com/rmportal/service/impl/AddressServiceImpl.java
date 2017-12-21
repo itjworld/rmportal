@@ -55,6 +55,7 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
+	@Transactional
 	public boolean updateRoomInfo(RoomBookDetails roomBookDetails) {
 		try {
 			PortalMappingInfo mapping = portalMappingRepository.getMapping(roomBookDetails.getAddressId(),

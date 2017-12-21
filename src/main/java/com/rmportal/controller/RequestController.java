@@ -110,26 +110,31 @@ public class RequestController {
 	public ResponseEntity<User> validate(@RequestBody User user) {
 		System.out.println(String.format("validate - >  user : %s", user.getUsername()));
 		user = userService.validate(user);
-		if(user == null)
+		if (user == null)
 			return new ResponseEntity<User>(user, HttpStatus.NOT_FOUND);
-		else{
+		else {
 			user.setPassword(null);
 			return new ResponseEntity<User>(user, HttpStatus.OK);
 		}
 	}
-	
+
 	@RequestMapping(value = "/execute", method = RequestMethod.POST)
-	public ResponseEntity<Boolean> execute(@RequestParam(required = false) String query) {
+	public ResponseEntity<Boolean> execute(@RequestBody String query) {
 		System.out.println(String.format("execute - >  query : %s", query));
-		if(StringUtils.isAnyBlank(query))
+		if (StringUtils.isAnyBlank(query))
 			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
-		boolean result = infoService.execute(query);
-		return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+		return new ResponseEntity<Boolean>(infoService.execute(query), HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/room/update", method = RequestMethod.POST)
 	public ResponseEntity<Boolean> updateRoomInfo(@RequestBody RoomBookDetails roomBookDetails) {
 		System.out.println(String.format("updateRoomInfo - >  mobile : %s", roomBookDetails.getAddressId()));
 		return new ResponseEntity<Boolean>(addressService.updateRoomInfo(roomBookDetails), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/registration", method = RequestMethod.POST)
+	public ResponseEntity<Boolean> registration(@RequestBody User user) {
+		System.out.println(String.format("registration - > " + user.getfName()));
+		return new ResponseEntity<Boolean>(userService.register(user), HttpStatus.OK);
 	}
 }

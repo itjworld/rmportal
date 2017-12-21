@@ -16,7 +16,17 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User validate(User user) {
 		return userRepository.validate(user.getUsername(), user.getPassword());
-		
+
+	}
+
+	@Override
+	public boolean register(User user) {
+		try {
+			userRepository.save(user);
+		} catch (Exception ex) {
+			return false;
+		}
+		return true;
 	}
 
 }

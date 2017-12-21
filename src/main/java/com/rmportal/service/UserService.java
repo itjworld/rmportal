@@ -5,4 +5,6 @@ import com.rmportal.model.User;
 public interface UserService {
 
 	User validate(User user);
+
+	boolean register(User user);
 }
