@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "RM_ROOM_BOOKED")
 public class RoomBookDetails implements Serializable{
@@ -24,25 +26,25 @@ public class RoomBookDetails implements Serializable{
 	@Column(name = "ID")
 	private long id;
 	
-	@JoinColumn(name="FNAME")
+	@Column(name="FNAME")
 	private String fName;
 	
-	@JoinColumn(name="LNAME")
+	@Column(name="LNAME")
 	private String lName;
 	
-	@JoinColumn(name="EMAIL")
+	@Column(name="EMAIL")
 	private String email;
 	
-	@JoinColumn(name="MOBILE")
+	@Column(name="MOBILE")
 	private String mobile;
 	
-	@JoinColumn(name="RELATIVE_MOBILE")
+	@Column(name="RELATIVE_MOBILE")
 	private String relativeMobile;
 	
-	@JoinColumn(name="RELATIVE_RELATION")
+	@Column(name="RELATIVE_RELATION")
 	private String relation;
 	
-	@JoinColumn(name="ADDRESS")
+	@Column(name="ADDRESS")
 	private String address;
 	
 	@Column(name="RENT",nullable=false)
@@ -54,7 +56,8 @@ public class RoomBookDetails implements Serializable{
 	@Column(name="Description")
 	private String desc;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@JsonIgnore
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="MAPPING_ID")
 	private PortalMappingInfo mapping;
 	

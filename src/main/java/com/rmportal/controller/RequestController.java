@@ -137,4 +137,10 @@ public class RequestController {
 		System.out.println(String.format("registration - > " + user.getfName()));
 		return new ResponseEntity<Boolean>(userService.register(user), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/records", method = RequestMethod.GET)
+	public ResponseEntity<List<RoomBookDetails>> getRecords() {
+		System.out.println(String.format("getRecords"));
+		return new ResponseEntity<List<RoomBookDetails>>(infoService.getRecords(), HttpStatus.OK);
+	}
 }

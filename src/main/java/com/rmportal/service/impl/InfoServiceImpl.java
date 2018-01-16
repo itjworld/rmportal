@@ -14,9 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.rmportal.dao.InfoServiceDao;
 import com.rmportal.model.PortalInfo;
 import com.rmportal.model.PortalMappingInfo;
+import com.rmportal.model.RoomBookDetails;
 import com.rmportal.repositories.AddressRepository;
 import com.rmportal.repositories.InfoRepository;
 import com.rmportal.repositories.PortalMappingRepository;
+import com.rmportal.repositories.RoomBookDetailRepository;
 import com.rmportal.service.InfoService;
 import com.rmportal.vo.ContactInformationVO;
 import com.rmportal.vo.MappingDTO;
@@ -36,6 +38,9 @@ public class InfoServiceImpl implements InfoService {
 
 	@Autowired
 	private PortalMappingRepository portalMappingRepository;
+	
+	@Autowired
+	private RoomBookDetailRepository roomBookDetailRepository;
 
 	@Autowired
 	private EntityManager entityManager;
@@ -142,6 +147,11 @@ public class InfoServiceImpl implements InfoService {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public List<RoomBookDetails> getRecords() {
+		return roomBookDetailRepository.findAll();
 	}
 
 }

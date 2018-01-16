@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.rmportal.model.PortalInfo;
 import com.rmportal.model.PortalMappingInfo;
+import com.rmportal.model.RoomBookDetails;
 import com.rmportal.vo.ContactInformationVO;
 import com.rmportal.vo.MappingDTO;
 import com.rmportal.vo.PortalInformationVO;
@@ -23,5 +24,7 @@ public interface InfoService {
 	PortalMappingInfo save(MappingDTO mapping);
 
 	boolean execute(String query);
+
+	List<RoomBookDetails> getRecords();
 
 }
