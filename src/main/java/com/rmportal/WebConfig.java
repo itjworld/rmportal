@@ -26,6 +26,6 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ServletContext
 
 	@Override
 	public void onStartup(ServletContext arg0) throws ServletException {
-		System.err.println("------------------------------------");
+		System.out.println("------------------------------------");
 	}
 }

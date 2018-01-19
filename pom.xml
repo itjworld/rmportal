@@ -22,6 +22,7 @@
 		<poi.version>3.15</poi.version>
 		<pdf.version>5.5.10</pdf.version>
 		<csv.version>2.4.0</csv.version>
+		<mail.version>1.5.9.RELEASE</mail.version>
 	</properties>
 
 	<dependencies>
@@ -66,7 +67,11 @@
 			<artifactId>poi-ooxml</artifactId>
 			<version>${poi.version}</version>
 		</dependency>
-
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-mail</artifactId>
+		    <version>${mail.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>net.sf.supercsv</groupId>
 			<artifactId>super-csv</artifactId>
@@ -77,6 +82,11 @@
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itextpdf</artifactId>
 			<version>${pdf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 	<build>
