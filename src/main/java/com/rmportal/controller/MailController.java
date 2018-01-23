@@ -26,4 +26,12 @@ public class MailController {
 				mailService.triggerEmail(mail.getMessage(), mail.getTo(), mail.getCc(), mail.getSubject()),
 				HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/sendMailAsPdf", method = RequestMethod.POST)
+	public ResponseEntity<String> sendMailWithPDF(@RequestBody MailDetails mail) {
+		System.out.println(String.format("sendMailWithPDF - >  to : %s :: cc : %s :: subject : %s :: message : %s",
+				mail.getTo(), mail.getCc(), mail.getSubject(), mail.getMessage()));
+		return new ResponseEntity<String>(
+				mailService.sendEmail(mail.getTo(), mail.getSubject(), mail.getCc(), mail.getMessage()), HttpStatus.OK);
+	}
 }

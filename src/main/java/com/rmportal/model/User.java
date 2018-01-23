@@ -1,12 +1,16 @@
 package com.rmportal.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -33,6 +37,21 @@ public class User implements Serializable {
 	private String fName;
 	@Column(name = "LNAME")
 	private String lName;
+
+	@ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+	private Set<Role> roles;
+
+	protected User() {
+		roles = new HashSet<Role>();
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
 
 	public String getUsername() {
 		return username;

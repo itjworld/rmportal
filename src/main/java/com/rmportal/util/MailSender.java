@@ -1,9 +1,12 @@
 package com.rmportal.util;
 
+import java.io.ByteArrayOutputStream;
+
+import javax.activation.DataSource;
 import javax.mail.internet.MimeMessage;
+import javax.mail.util.ByteArrayDataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,44 +14,66 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.rmportal.service.InfoService;
+import com.rmportal.view.PdfView;
+
 @Component
 public class MailSender implements MailService {
 
 	@Autowired
-	JavaMailSender mailSender;
+	private JavaMailSender mailSender;
+
+	@Autowired
+	private PdfView pdfView;
+
+	@Autowired
+	private InfoService infoService;
 
 	@Override
-	public void sendEmail(String recepients, String subject, String cc, String message) {
+	public String sendEmail(String recepients, String subject, String cc, String message) {
 
-		MimeMessagePreparator preparator = getContentWtihAttachementMessagePreparator(recepients);
+		MimeMessagePreparator preparator = getContentWithAttachementMessagePreparator(recepients, subject, cc, message);
 
 		try {
 			mailSender.send(preparator);
 			System.out.println("Message With Attachement has been sent.............................");
-			preparator = getContentAsInlineResourceMessagePreparator(recepients);
-			mailSender.send(preparator);
-			System.out.println("Message With Inline Resource has been sent.........................");
+			// preparator =
+			// getContentAsInlineResourceMessagePreparator(recepients);
+			// mailSender.send(preparator);
+			// System.out.println("Message With Inline Resource has been
+			// sent.........................");
+			return "{\"message\": \"OK\"}";
 		} catch (MailException ex) {
 			System.err.println(ex.getMessage());
+			return "{\"message\": \"ERROR\"}";
 		}
 	}
 
-	private MimeMessagePreparator getContentWtihAttachementMessagePreparator(final String recepients) {
+	private MimeMessagePreparator getContentWithAttachementMessagePreparator(final String recepients, String subject,
+			String cc, String message) {
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
-
-				helper.setSubject("Your order on Demoapp with attachement");
-				helper.setFrom("customerserivces@yourshop.com");
+				helper.setSubject(subject);
+				helper.setFrom("alert@gmail.com");
 				helper.setTo(recepients);
-				String content = "Hi, Please find attachement for all records.";
-
-				helper.setText(content);
-
-				// Add a resource as an attachment
-				helper.addAttachment("cutie.png", new ClassPathResource("linux-icon.png"));
+				helper.setText(message);
+				Document document = new Document(PageSize.A4.rotate(), 36, 36, 54, 36);
+				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+				PdfWriter.getInstance(document, outputStream);
+				document.open();
+				pdfView.getPDFDocument(document, infoService.getRecords());
+				document.close();
+				byte[] bytes = outputStream.toByteArray();
+				// construct the pdf body part
+				DataSource dataSource = new ByteArrayDataSource(bytes, "application/pdf");
+				helper.addAttachment("records.pdf", dataSource);
+				outputStream.close();
 			}
 		};
 		return preparator;
