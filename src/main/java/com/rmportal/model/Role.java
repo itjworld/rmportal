@@ -2,14 +2,11 @@ package com.rmportal.model;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity(name = "RM_ROLE")
@@ -28,9 +25,7 @@ public class Role implements java.io.Serializable {
 	@Column(name = "DESCRIPTION")
 	private String desc;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "userId", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "roleId", referencedColumnName = "id"))
-	
+	@ManyToMany(mappedBy = "roles")
 	private Set<User> users;
 
 	public void setId(int id) {
