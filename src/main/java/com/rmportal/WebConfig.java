@@ -14,14 +14,14 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ServletContext
 	
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-//		registry.addMapping("/api/**")
+registry.addMapping("/**")
 //			.allowedOrigins("*")
-//			.allowedHeaders("Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method",
-//                    "Access-Control-Request-Headers")
-//            .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials")
-//			.allowedMethods("PUT", "DELETE","GET","POST")
+		.allowedHeaders("Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method",
+                   "Access-Control-Request-Headers","x-www-form-rm-call")
+          .exposedHeaders("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials","access-control-expose-headers")
+			.allowedMethods("PUT", "DELETE","GET","POST","OPTIONS");
 //			.allowCredentials(false).maxAge(3600);
-		registry.addMapping("/**");
+		//registry.addMapping("/**");
 	}
 
 	@Override

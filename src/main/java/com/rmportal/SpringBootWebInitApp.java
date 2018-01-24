@@ -6,7 +6,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Import;
 
-@Import({JpaConfiguration.class,ViewResolverConfig.class})
+@Import({JpaConfiguration.class,ViewResolverConfig.class,SecurityConfig.class})
 @SpringBootApplication(scanBasePackages = { "com.rmportal" }) // same
 																// as
 																// @Configuration
