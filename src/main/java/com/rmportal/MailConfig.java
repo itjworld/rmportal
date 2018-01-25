@@ -38,11 +38,10 @@ public class MailConfig {
 		mailSender.setPassword(password);
 
 		Properties javaMailProperties = new Properties();
-		javaMailProperties.put("mail.smtp.starttls.enable", starttls);
+//		javaMailProperties.put("mail.smtp.starttls.enable", starttls);
 		javaMailProperties.put("mail.smtp.auth", auth);
 		javaMailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 		javaMailProperties.put("mail.smtp.socketFactory.port", port);
-
 		mailSender.setJavaMailProperties(javaMailProperties);
 		return mailSender;
 	}

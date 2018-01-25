@@ -3,9 +3,11 @@ package com.rmportal.util;
 import java.io.ByteArrayOutputStream;
 
 import javax.activation.DataSource;
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -61,7 +63,9 @@ public class MailSender implements MailService {
 				MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 				helper.setSubject(subject);
 				helper.setFrom("alert@gmail.com");
-				helper.setTo(recepients);
+				setTo(recepients, helper);
+				if(StringUtils.isNotEmpty(cc))
+					setCc(recepients, cc, helper);
 				helper.setText(message);
 				Document document = new Document(PageSize.A4.rotate(), 36, 36, 54, 36);
 				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -74,6 +78,24 @@ public class MailSender implements MailService {
 				DataSource dataSource = new ByteArrayDataSource(bytes, "application/pdf");
 				helper.addAttachment("records.pdf", dataSource);
 				outputStream.close();
+			}
+
+			private void setCc(final String recepients, String cc, MimeMessageHelper helper) throws MessagingException {
+				if (cc.contains(","))
+					helper.setCc(cc.split(","));
+				else if (recepients.contains(";"))
+					helper.setCc(cc.split(";"));
+				else
+					helper.setCc(cc);
+			}
+
+			private void setTo(final String recepients, MimeMessageHelper helper) throws MessagingException {
+				if (recepients.contains(","))
+					helper.setTo(recepients.split(","));
+				else if (recepients.contains(";"))
+					helper.setTo(recepients.split(";"));
+				else
+					helper.setTo(recepients);
 			}
 		};
 		return preparator;

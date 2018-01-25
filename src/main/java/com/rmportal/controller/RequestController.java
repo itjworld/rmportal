@@ -148,5 +148,10 @@ public class RequestController {
 		return new ResponseEntity<RecordVO>(infoService.getRecords(page,limit,sort,order,searchParam), HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/updaterecords", method = RequestMethod.POST)
+	public void updateRecords(@RequestBody String record) {
+		System.out.println(String.format("updateRecords - > " + record));
+//		return new ResponseEntity<Boolean>(userService.register(user), HttpStatus.OK);
+	}
 	
 }
