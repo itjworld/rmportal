@@ -8,6 +8,7 @@ import com.rmportal.model.RoomBookDetails;
 import com.rmportal.vo.ContactInformationVO;
 import com.rmportal.vo.MappingDTO;
 import com.rmportal.vo.PortalInformationVO;
+import com.rmportal.vo.RecordVO;
 
 public interface InfoService {
 
@@ -24,7 +25,7 @@ public interface InfoService {
 	PortalMappingInfo save(MappingDTO mapping);
 
 	boolean execute(String query);
-
 	List<RoomBookDetails> getRecords();
+	RecordVO getRecords(int page,int limit,String sort,String order,String searchParam);
 
 }

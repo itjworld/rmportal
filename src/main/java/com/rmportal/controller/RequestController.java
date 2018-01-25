@@ -27,6 +27,7 @@ import com.rmportal.vo.ContactInformationVO;
 import com.rmportal.vo.EnquiryVO;
 import com.rmportal.vo.MappingDTO;
 import com.rmportal.vo.PortalInformationVO;
+import com.rmportal.vo.RecordVO;
 
 @RestController
 @RequestMapping(value = "/api/v1")
@@ -139,9 +140,12 @@ public class RequestController {
 	}
 	
 	@RequestMapping(value = "/records", method = RequestMethod.GET)
-	public ResponseEntity<List<RoomBookDetails>> getRecords() {
+	public ResponseEntity<RecordVO> getRecords(@RequestBody @RequestParam(name="_page",required = false) int page,
+			@RequestParam(name="_limit",required = false) int limit,
+			@RequestParam(name="_sort",required = false) String sort,
+			@RequestParam(name="_order",required = false) String order,@RequestParam(name="_searchParam",required = false) String searchParam) {
 		System.out.println(String.format("getRecords"));
-		return new ResponseEntity<List<RoomBookDetails>>(infoService.getRecords(), HttpStatus.OK);
+		return new ResponseEntity<RecordVO>(infoService.getRecords(page,limit,sort,order,searchParam), HttpStatus.OK);
 	}
 	
 	
