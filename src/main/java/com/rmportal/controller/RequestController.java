@@ -17,7 +17,7 @@ import com.rmportal.model.AddressInfo;
 import com.rmportal.model.Enquiry;
 import com.rmportal.model.PortalInfo;
 import com.rmportal.model.PortalMappingInfo;
-import com.rmportal.model.RoomBookDetails;
+import com.rmportal.model.GuestDetail;
 import com.rmportal.model.User;
 import com.rmportal.service.AddressService;
 import com.rmportal.service.EnquiryService;
@@ -128,7 +128,7 @@ public class RequestController {
 	}
 
 	@RequestMapping(value = "/room/update", method = RequestMethod.POST)
-	public ResponseEntity<Boolean> updateRoomInfo(@RequestBody RoomBookDetails roomBookDetails) {
+	public ResponseEntity<Boolean> updateRoomInfo(@RequestBody GuestDetail roomBookDetails) {
 		System.out.println(String.format("updateRoomInfo - >  mobile : %s", roomBookDetails.getAddressId()));
 		return new ResponseEntity<Boolean>(addressService.updateRoomInfo(roomBookDetails), HttpStatus.OK);
 	}
@@ -148,10 +148,18 @@ public class RequestController {
 		return new ResponseEntity<RecordVO>(infoService.getRecords(page,limit,sort,order,searchParam), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/updaterecords", method = RequestMethod.POST)
-	public void updateRecords(@RequestBody String record) {
-		System.out.println(String.format("updateRecords - > " + record));
-//		return new ResponseEntity<Boolean>(userService.register(user), HttpStatus.OK);
+	@RequestMapping(value = "/guest/update", method = RequestMethod.POST)
+	public ResponseEntity<Boolean> updateRecords(@RequestBody GuestDetail record) {
+		System.out.println(String.format("updateRecords - > %s %s %s %s %s %s", record.getfName(), record.getAddress(), record.getRent(), record.getAddressId(), record.getEmail(), record.getRoomNo()));
+		boolean status = infoService.updateRecords(record);
+		return new ResponseEntity<Boolean>(status, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/guest/delete", method = RequestMethod.POST)
+	public ResponseEntity<Boolean> deleteRecords(@RequestBody GuestDetail record) {
+		System.out.println(String.format("deleteRecords - > %s %s %s %s %s %s", record.getId(), record.getAddress(), record.getRent(), record.getAddressId(), record.getEmail(), record.getRoomNo()));
+		boolean status = infoService.deleteRecords(record.getId());
+		return new ResponseEntity<Boolean>(status, HttpStatus.OK);
 	}
 	
 }

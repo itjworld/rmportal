@@ -1,6 +1,7 @@
 package com.rmportal.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +17,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+/**
+ * @author Admin
+ *
+ */
 @Entity
 @Table(name = "RM_USER", uniqueConstraints = @UniqueConstraint(columnNames = { "email" }))
 public class User implements Serializable {
@@ -43,6 +51,14 @@ public class User implements Serializable {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
 	private Set<Role> roles;
+	
+	@Column(name = "UPDATED_DATETIME")
+	@UpdateTimestamp
+	private Date updateDateTime;
+	
+	@Column(name = "CREATED_DATETIME")
+	@CreationTimestamp
+	private Date createDateTime;
 
 	protected User() {
 		roles = new HashSet<Role>();
@@ -111,4 +127,21 @@ public class User implements Serializable {
 	public void setlName(String lName) {
 		this.lName = lName;
 	}
+
+	public Date getUpdateDateTime() {
+		return updateDateTime;
+	}
+
+	public void setUpdateDateTime(Date updateDateTime) {
+		this.updateDateTime = updateDateTime;
+	}
+
+	public Date getCreateDateTime() {
+		return createDateTime;
+	}
+
+	public void setCreateDateTime(Date createDateTime) {
+		this.createDateTime = createDateTime;
+	}
+
 }

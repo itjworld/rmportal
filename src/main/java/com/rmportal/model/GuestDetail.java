@@ -1,6 +1,7 @@
 package com.rmportal.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,11 +14,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "RM_ROOM_BOOKED")
-public class RoomBookDetails implements Serializable{
+public class GuestDetail implements Serializable{
 	
 	private static final long serialVersionUID = -4512115118990500916L;
 
@@ -47,17 +51,17 @@ public class RoomBookDetails implements Serializable{
 	@Column(name="ADDRESS")
 	private String address;
 	
-	@Column(name="RENT",nullable=false)
+	@Transient
 	private int rent=0;
 	
-	@Column(name="SECURITY",nullable=false)
+	@Transient
 	private int security=0;
 	
 	@Column(name="Description")
 	private String desc;
 	
 	@JsonIgnore
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="MAPPING_ID")
 	private PortalMappingInfo mapping;
 	
@@ -66,6 +70,17 @@ public class RoomBookDetails implements Serializable{
 	
 	@Transient
 	private Long addressId;
+	
+	@Column(name="ACTIVE")
+	boolean active = true;
+	
+	@Column(name = "UPDATED_DATETIME")
+	@UpdateTimestamp
+	private Date updateDateTime;
+	
+	@Column(name = "CREATED_DATETIME")
+	@CreationTimestamp
+	private Date createDateTime;
 
 	public long getId() {
 		return id;
@@ -132,6 +147,8 @@ public class RoomBookDetails implements Serializable{
 	}
 
 	public int getRent() {
+		if(mapping != null)
+			rent = mapping.getRent();
 		return rent;
 	}
 
@@ -140,6 +157,8 @@ public class RoomBookDetails implements Serializable{
 	}
 
 	public int getSecurity() {
+		if(mapping != null)
+			security = mapping.getDeposit();
 		return security;
 	}
 
@@ -164,6 +183,8 @@ public class RoomBookDetails implements Serializable{
 	}
 
 	public Integer getRoomNo() {
+		if(mapping != null)
+			roomNo = mapping.getRoomNumber();
 		return roomNo;
 	}
 
@@ -172,6 +193,8 @@ public class RoomBookDetails implements Serializable{
 	}
 
 	public Long getAddressId() {
+		if(mapping != null)
+			addressId = mapping.getAddress().getId();
 		return addressId;
 	}
 
@@ -179,4 +202,28 @@ public class RoomBookDetails implements Serializable{
 		this.addressId = addressId;
 	}
 
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public Date getUpdateDateTime() {
+		return updateDateTime;
+	}
+
+	public void setUpdateDateTime(Date updateDateTime) {
+		this.updateDateTime = updateDateTime;
+	}
+
+	public Date getCreateDateTime() {
+		return createDateTime;
+	}
+
+	public void setCreateDateTime(Date createDateTime) {
+		this.createDateTime = createDateTime;
+	}
+	
 }

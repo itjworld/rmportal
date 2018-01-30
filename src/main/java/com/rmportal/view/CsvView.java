@@ -10,7 +10,7 @@ import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
-import com.rmportal.model.RoomBookDetails;
+import com.rmportal.model.GuestDetail;
 
 public class CsvView extends AbstractCsvView{
 
@@ -20,13 +20,13 @@ public class CsvView extends AbstractCsvView{
 		response.setHeader("Content-Disposition", "attachment; filename=\"my-csv-file.csv\"");
 
 		@SuppressWarnings("unchecked")
-		List<RoomBookDetails> roomBookDetails = (List<RoomBookDetails>) model.get("roomDetails");
+		List<GuestDetail> roomBookDetails = (List<GuestDetail>) model.get("roomDetails");
         String[] header = {"Id","fName","Mobile","Email","Rent","Security",};
         ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(),CsvPreference.STANDARD_PREFERENCE);
 
         csvWriter.writeHeader(header);
 
-        for(RoomBookDetails detail : roomBookDetails){
+        for(GuestDetail detail : roomBookDetails){
             csvWriter.write(detail, header);
         }
         csvWriter.close();

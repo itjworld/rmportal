@@ -2,16 +2,16 @@ package com.rmportal.vo;
 
 import java.util.List;
 
-import com.rmportal.model.RoomBookDetails;
+import com.rmportal.model.GuestDetail;
 
 public class RecordVO {
-	private List<RoomBookDetails> data;
+	private List<GuestDetail> data;
 	private long total;
 	
-	public List<RoomBookDetails> getData() {
+	public List<GuestDetail> getData() {
 		return data;
 	}
-	public void setData(List<RoomBookDetails> data) {
+	public void setData(List<GuestDetail> data) {
 		this.data = data;
 	}
 	public long getTotal() {

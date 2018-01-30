@@ -14,7 +14,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.servlet.view.document.AbstractXlsView;
 
-import com.rmportal.model.RoomBookDetails;
+import com.rmportal.model.GuestDetail;
 
 public class ExcelView extends AbstractXlsView{
 
@@ -23,7 +23,7 @@ public class ExcelView extends AbstractXlsView{
 			HttpServletResponse response) throws Exception {
 		response.setHeader("Content-Disposition", "attachment; filename=\"my-xls-file.xls\"");
 		@SuppressWarnings("unchecked")
-		List<RoomBookDetails> roomBookDetails = (List<RoomBookDetails>) model.get("roomDetails");
+		List<GuestDetail> roomBookDetails = (List<GuestDetail>) model.get("roomDetails");
 		Sheet sheet = workbook.createSheet("Room Book Details");
         sheet.setDefaultColumnWidth(30);
 
@@ -53,7 +53,7 @@ public class ExcelView extends AbstractXlsView{
         
         int rowCount = 1;
 
-        for(RoomBookDetails detail : roomBookDetails){
+        for(GuestDetail detail : roomBookDetails){
             Row userRow =  sheet.createRow(rowCount++);
             userRow.createCell(0).setCellValue(detail.getId());
             userRow.createCell(1).setCellValue(detail.getfName());

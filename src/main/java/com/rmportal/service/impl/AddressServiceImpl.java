@@ -2,17 +2,17 @@ package com.rmportal.service.impl;
 
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rmportal.model.AddressInfo;
+import com.rmportal.model.GuestDetail;
+import com.rmportal.model.GuestPayment;
 import com.rmportal.model.PortalInfo;
 import com.rmportal.model.PortalMappingInfo;
-import com.rmportal.model.RoomBookDetails;
 import com.rmportal.repositories.AddressRepository;
+import com.rmportal.repositories.GuestPaymentRepository;
 import com.rmportal.repositories.InfoRepository;
 import com.rmportal.repositories.PortalMappingRepository;
 import com.rmportal.repositories.RoomBookDetailRepository;
@@ -33,6 +33,9 @@ public class AddressServiceImpl implements AddressService {
 
 	@Autowired
 	private RoomBookDetailRepository roomBookDetailRepository;
+	
+	@Autowired
+	private GuestPaymentRepository guestPaymentRepository;
 
 	@Override
 	public List<AddressInfo> getAddressByCityId(Long cityId) {
@@ -56,19 +59,24 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	@Transactional
-	public boolean updateRoomInfo(RoomBookDetails roomBookDetails) {
+	public boolean updateRoomInfo(GuestDetail guestDetail) {
 		try {
-			PortalMappingInfo mapping = portalMappingRepository.getMapping(roomBookDetails.getAddressId(),
-					roomBookDetails.getRoomNo());
+			PortalMappingInfo mapping = portalMappingRepository.getMapping(guestDetail.getAddressId(),
+					guestDetail.getRoomNo());
 			if (mapping != null) {
-				roomBookDetails.setMapping(mapping);
+				guestDetail.setMapping(mapping);
 				mapping.setOccupied(mapping.getOccupied() + 1);
-				roomBookDetailRepository.save(roomBookDetails);
-				// portalMappingRepository.save(mapping);
+				roomBookDetailRepository.save(guestDetail);
+				GuestPayment guestPayment = new GuestPayment();
+				guestPayment.setSecurity(guestDetail.getSecurity());
+				guestPayment.setRent(guestDetail.getRent());
+				guestPayment.setGuestDetail(guestDetail);
+				guestPaymentRepository.save(guestPayment);
 			} else
 				return false;
 			return true;
 		} catch (Exception ex) {
+			System.err.print(ex);
 			return false;
 		}
 	}

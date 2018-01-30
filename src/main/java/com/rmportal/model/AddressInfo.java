@@ -1,6 +1,7 @@
 package com.rmportal.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * @author Ashish Jaiswal
@@ -50,6 +54,14 @@ public class AddressInfo implements Serializable{
 	
 	@Column(name = "EMAIL",nullable=true)
 	private String email;
+	
+	@Column(name = "UPDATED_DATETIME")
+	@UpdateTimestamp
+	private Date updateDateTime;
+	
+	@Column(name = "CREATED_DATETIME")
+	@CreationTimestamp
+	private Date createDateTime;
 
 	public long getId() {
 		return id;
@@ -115,6 +127,22 @@ public class AddressInfo implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Date getUpdateDateTime() {
+		return updateDateTime;
+	}
+
+	public void setUpdateDateTime(Date updateDateTime) {
+		this.updateDateTime = updateDateTime;
+	}
+
+	public Date getCreateDateTime() {
+		return createDateTime;
+	}
+
+	public void setCreateDateTime(Date createDateTime) {
+		this.createDateTime = createDateTime;
 	}
 	
 }

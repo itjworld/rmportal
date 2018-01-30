@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.rmportal.dao.InfoServiceDao;
 import com.rmportal.model.PortalInfo;
 import com.rmportal.model.PortalMappingInfo;
-import com.rmportal.model.RoomBookDetails;
+import com.rmportal.model.GuestDetail;
 import com.rmportal.repositories.AddressRepository;
 import com.rmportal.repositories.InfoRepository;
 import com.rmportal.repositories.PortalMappingRepository;
@@ -159,11 +159,11 @@ public class InfoServiceImpl implements InfoService {
 	public RecordVO getRecords(int page,int limit,String sort,String order,String searchParam) {
 		RecordVO recordVO= new RecordVO();
 		PageRequest pageRequest=null;
-		Page<RoomBookDetails> records=null;
+		Page<GuestDetail> records=null;
 		if(searchParam!=null && searchParam.trim().length()>0) {
 			recordVO.setTotal(roomBookDetailRepository.count(searchParam,searchParam,searchParam));
 		}else {
-			recordVO.setTotal(roomBookDetailRepository.count());
+			recordVO.setTotal(roomBookDetailRepository.countByStatus(true));
 		}
 		 
 		
@@ -177,15 +177,32 @@ public class InfoServiceImpl implements InfoService {
 		if(searchParam!=null && searchParam.trim().length()>0) {
 			records=roomBookDetailRepository.findAll(searchParam,searchParam,searchParam,pageRequest);
 		}else {
-			records=roomBookDetailRepository.findAll(pageRequest);
+			records=roomBookDetailRepository.findAllByStatus(pageRequest, true);
 		}
 		recordVO.setData(records.getContent());
 		return recordVO ;
 	}
 
 	@Override
-	public List<RoomBookDetails> getRecords() {
+	public List<GuestDetail> getRecords() {
 		return roomBookDetailRepository.findAll();
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public boolean updateRecords(GuestDetail record) {
+		record.setMapping(portalMappingRepository.getMapping(record.getAddressId(), record.getRoomNo()));
+		roomBookDetailRepository.save(record);
+		return true;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public boolean deleteRecords(long id) {
+		GuestDetail record = roomBookDetailRepository.findOne(id);
+		record.setActive(false);
+		roomBookDetailRepository.save(record);
+		return true;
 	}
 	
 	

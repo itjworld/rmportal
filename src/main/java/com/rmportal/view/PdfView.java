@@ -20,7 +20,7 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.rmportal.model.RoomBookDetails;
+import com.rmportal.model.GuestDetail;
 
 @Component
 public class PdfView extends AbstractPdfView {
@@ -31,12 +31,12 @@ public class PdfView extends AbstractPdfView {
 		response.setHeader("Content-Disposition", "attachment; filename=\"my-pdf-file.pdf\"");
 
 		@SuppressWarnings("unchecked")
-		List<RoomBookDetails> roomBookDetails = (List<RoomBookDetails>) model.get("roomDetails");
+		List<GuestDetail> roomBookDetails = (List<GuestDetail>) model.get("roomDetails");
 		getPDFDocument(document, roomBookDetails);
 
 	}
 
-	public void getPDFDocument(Document document, List<RoomBookDetails> roomBookDetails) throws DocumentException {
+	public void getPDFDocument(Document document, List<GuestDetail> roomBookDetails) throws DocumentException {
 		document.add(new Paragraph("Room Book Details " + LocalDate.now()));
 
 		PdfPTable table = new PdfPTable(6);
@@ -71,7 +71,7 @@ public class PdfView extends AbstractPdfView {
 		cell.setPhrase(new Phrase("Security", font));
 		table.addCell(cell);
 
-		for (RoomBookDetails detail : roomBookDetails) {
+		for (GuestDetail detail : roomBookDetails) {
 			table.addCell(String.valueOf(detail.getId()));
 			table.addCell(detail.getfName());
 			table.addCell(detail.getMobile());

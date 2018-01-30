@@ -1,6 +1,7 @@
 package com.rmportal.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 @Entity
@@ -32,6 +35,10 @@ public class Enquiry implements Serializable {
 
 	@Column(name = "active")
 	private boolean active=true;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATED_DATETIME", updatable = false)
+    private Date createdDate = new Date();
 
 	public Long getId() {
 		return id;
@@ -71,6 +78,14 @@ public class Enquiry implements Serializable {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 
 	@Override

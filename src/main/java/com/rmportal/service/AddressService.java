@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.rmportal.model.AddressInfo;
 import com.rmportal.model.PortalMappingInfo;
-import com.rmportal.model.RoomBookDetails;
+import com.rmportal.model.GuestDetail;
 import com.rmportal.vo.ContactInformationVO;
 
 public interface AddressService {
@@ -13,7 +13,7 @@ public interface AddressService {
 
 	AddressInfo save(ContactInformationVO details);
 
-	boolean updateRoomInfo(RoomBookDetails roomBookDetails);
+	boolean updateRoomInfo(GuestDetail roomBookDetails);
 
 	
 }
