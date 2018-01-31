@@ -19,17 +19,23 @@ public interface InfoService {
 	PortalInfo create(PortalInfo portalInfo);
 
 	Integer insert(String query);
-	
+
 	ContactInformationVO getContactInformation(long id);
 
 	PortalMappingInfo save(MappingDTO mapping);
 
 	boolean execute(String query);
+
 	List<GuestDetail> getRecords();
-	RecordVO getRecords(int page,int limit,String sort,String order,String searchParam);
+
+	RecordVO<?> getRecords(int page, int limit, String sort, String order, String searchParam);
 
 	boolean updateRecords(GuestDetail record);
 
 	boolean deleteRecords(long id);
+
+	RecordVO<?> getMyRecords(int page, int limit, String sort, String order, String searchParam);
+
+	RecordVO<?> getMyRecords(String username);
 
 }

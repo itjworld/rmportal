@@ -2,6 +2,7 @@ package com.rmportal.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -64,6 +66,9 @@ public class GuestDetail implements Serializable{
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="MAPPING_ID")
 	private PortalMappingInfo mapping;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "guestDetail")
+	private List<GuestPayment> paymentList;
 	
 	@Transient
 	private Integer roomNo;
@@ -222,6 +227,14 @@ public class GuestDetail implements Serializable{
 
 	public void setCreateDateTime(Date createDateTime) {
 		this.createDateTime = createDateTime;
+	}
+
+	public List<GuestPayment> getPaymentList() {
+		return paymentList;
+	}
+
+	public void setPaymentList(List<GuestPayment> paymentList) {
+		this.paymentList = paymentList;
 	}
 	
 }

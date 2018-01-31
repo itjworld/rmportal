@@ -14,11 +14,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.rmportal.dao.InfoServiceDao;
+import com.rmportal.model.GuestDetail;
+import com.rmportal.model.GuestPayment;
 import com.rmportal.model.PortalInfo;
 import com.rmportal.model.PortalMappingInfo;
-import com.rmportal.model.GuestDetail;
 import com.rmportal.repositories.AddressRepository;
 import com.rmportal.repositories.InfoRepository;
 import com.rmportal.repositories.PortalMappingRepository;
@@ -43,10 +45,9 @@ public class InfoServiceImpl implements InfoService {
 
 	@Autowired
 	private PortalMappingRepository portalMappingRepository;
-	
+
 	@Autowired
 	private RoomBookDetailRepository roomBookDetailRepository;
-	
 
 	@Autowired
 	private EntityManager entityManager;
@@ -156,31 +157,37 @@ public class InfoServiceImpl implements InfoService {
 	}
 
 	@Override
-	public RecordVO getRecords(int page,int limit,String sort,String order,String searchParam) {
-		RecordVO recordVO= new RecordVO();
-		PageRequest pageRequest=null;
-		Page<GuestDetail> records=null;
-		if(searchParam!=null && searchParam.trim().length()>0) {
-			recordVO.setTotal(roomBookDetailRepository.count(searchParam,searchParam,searchParam));
-		}else {
+	public RecordVO getRecords(int page, int limit, String sort, String order, String searchParam) {
+		RecordVO recordVO = new RecordVO();
+		PageRequest pageRequest = null;
+		Page<GuestDetail> records = null;
+		if (searchParam != null && searchParam.trim().length() > 0) {
+			searchParam = "%" + searchParam + "%";
+			recordVO.setTotal(roomBookDetailRepository.count(searchParam, searchParam, searchParam));
+		} else {
 			recordVO.setTotal(roomBookDetailRepository.countByStatus(true));
 		}
-		 
-		
-		if(sort!=null && sort.trim().length()>0) {
-			Sort sorting = new Sort(new Sort.Order("ASC".equalsIgnoreCase(order)?Direction.ASC:Direction.DESC, sort));
-			pageRequest = new PageRequest((page-1),limit,sorting);
-		}else {
-			pageRequest = new PageRequest((page-1),limit);
+
+		if (sort != null && sort.trim().length() > 0) {
+			Sort sorting = null;
+			if ("roomNo".equalsIgnoreCase(sort))
+				sorting = new Sort(new Sort.Order("ASC".equalsIgnoreCase(order) ? Direction.ASC : Direction.DESC,
+						"mapping.roomNumber"));
+			else
+				sorting = new Sort(
+						new Sort.Order("ASC".equalsIgnoreCase(order) ? Direction.ASC : Direction.DESC, sort));
+			pageRequest = new PageRequest((page - 1), limit, sorting);
+		} else {
+			pageRequest = new PageRequest((page - 1), limit);
 		}
-		
-		if(searchParam!=null && searchParam.trim().length()>0) {
-			records=roomBookDetailRepository.findAll(searchParam,searchParam,searchParam,pageRequest);
-		}else {
-			records=roomBookDetailRepository.findAllByStatus(pageRequest, true);
+
+		if (searchParam != null && searchParam.trim().length() > 0) {
+			records = roomBookDetailRepository.findAll(searchParam, searchParam, searchParam, pageRequest);
+		} else {
+			records = roomBookDetailRepository.findAllByStatus(pageRequest, true);
 		}
 		recordVO.setData(records.getContent());
-		return recordVO ;
+		return recordVO;
 	}
 
 	@Override
@@ -204,6 +211,50 @@ public class InfoServiceImpl implements InfoService {
 		roomBookDetailRepository.save(record);
 		return true;
 	}
-	
-	
+
+	@Override
+	public RecordVO getMyRecords(int page, int limit, String sort, String order, String searchParam) {
+		RecordVO recordVO = new RecordVO();
+		PageRequest pageRequest = null;
+		Page<GuestDetail> records = null;
+		if (searchParam != null && searchParam.trim().length() > 0) {
+			recordVO.setTotal(roomBookDetailRepository.count(searchParam, searchParam, searchParam));
+		} else {
+			recordVO.setTotal(roomBookDetailRepository.countByStatus(true));
+		}
+
+		if (sort != null && sort.trim().length() > 0) {
+			Sort sorting = null;
+			if ("roomNo".equalsIgnoreCase(sort))
+				sorting = new Sort(new Sort.Order("ASC".equalsIgnoreCase(order) ? Direction.ASC : Direction.DESC,
+						"mapping.roomNumber"));
+			else
+				sorting = new Sort(
+						new Sort.Order("ASC".equalsIgnoreCase(order) ? Direction.ASC : Direction.DESC, sort));
+			pageRequest = new PageRequest((page - 1), limit, sorting);
+		} else {
+			pageRequest = new PageRequest((page - 1), limit);
+		}
+
+		if (searchParam != null && searchParam.trim().length() > 0) {
+			records = roomBookDetailRepository.findAll(searchParam, searchParam, searchParam, pageRequest);
+		} else {
+			records = roomBookDetailRepository.findAllByStatus(pageRequest, true);
+		}
+		recordVO.setData(records.getContent());
+		return recordVO;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public RecordVO<?> getMyRecords(String username) {
+		RecordVO<GuestPayment> recordVO = new RecordVO<GuestPayment>();
+		List<GuestDetail> guestDetailList = roomBookDetailRepository.findByEmail(username);
+		if (!CollectionUtils.isEmpty(guestDetailList)) {
+			recordVO.setData(guestDetailList.get(0).getPaymentList());
+			recordVO.setTotal(guestDetailList.get(0).getPaymentList().size());
+		}
+		return recordVO;
+	}
+
 }

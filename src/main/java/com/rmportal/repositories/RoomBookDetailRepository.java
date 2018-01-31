@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.rmportal.model.GuestDetail;
+import java.lang.String;
+import java.util.List;
 
 @Repository
 public interface RoomBookDetailRepository extends JpaRepository<GuestDetail, Long> {
@@ -24,5 +26,7 @@ public interface RoomBookDetailRepository extends JpaRepository<GuestDetail, Lon
 	
 	@Query("SELECT COUNT(DISTINCT B.id) FROM GuestDetail B WHERE B.active=:status")
 	long countByStatus(@Param("status") boolean status);
+	
+	List<GuestDetail> findByEmail(String email);
 	
 }
