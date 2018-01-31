@@ -54,7 +54,7 @@ public class GuestDetail implements Serializable{
 	@Transient
 	private int rent=0;
 	
-	@Transient
+	@Column(name="DEPOSITE")
 	private int security=0;
 	
 	@Column(name="Description")
@@ -157,8 +157,6 @@ public class GuestDetail implements Serializable{
 	}
 
 	public int getSecurity() {
-		if(mapping != null)
-			security = mapping.getDeposit();
 		return security;
 	}
 

@@ -68,7 +68,6 @@ public class AddressServiceImpl implements AddressService {
 				mapping.setOccupied(mapping.getOccupied() + 1);
 				roomBookDetailRepository.save(guestDetail);
 				GuestPayment guestPayment = new GuestPayment();
-				guestPayment.setSecurity(guestDetail.getSecurity());
 				guestPayment.setRent(guestDetail.getRent());
 				guestPayment.setGuestDetail(guestDetail);
 				guestPaymentRepository.save(guestPayment);

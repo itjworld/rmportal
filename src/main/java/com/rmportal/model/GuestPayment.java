@@ -34,9 +34,6 @@ public class GuestPayment implements Serializable {
 	@Column(name = "RENT", nullable = false)
 	private int rent = 0;
 
-	@Column(name = "SECURITY", nullable = false)
-	private int security = 0;
-
 	@Column(name = "REMARKS")
 	private String remarks;
 
@@ -79,12 +76,12 @@ public class GuestPayment implements Serializable {
 		this.rent = rent;
 	}
 
-	public int getSecurity() {
-		return security;
+	public ElectricityDetail getElectricityDetail() {
+		return electricityDetail;
 	}
 
-	public void setSecurity(int security) {
-		this.security = security;
+	public void setElectricityDetail(ElectricityDetail electricityDetail) {
+		this.electricityDetail = electricityDetail;
 	}
 
 	public String getRemarks() {
