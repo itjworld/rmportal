@@ -27,6 +27,6 @@ public interface RoomBookDetailRepository extends JpaRepository<GuestDetail, Lon
 	@Query("SELECT COUNT(DISTINCT B.id) FROM GuestDetail B WHERE B.active=:status")
 	long countByStatus(@Param("status") boolean status);
 	
-	List<GuestDetail> findByEmail(String email);
+	GuestDetail findByEmail(String email);
 	
 }

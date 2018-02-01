@@ -43,7 +43,7 @@ public class GuestPayment implements Serializable {
 	private ElectricityDetail electricityDetail;
 	
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "GUEST_DETAIL_ID")
 	private GuestDetail guestDetail;
 

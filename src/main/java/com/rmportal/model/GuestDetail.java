@@ -23,66 +23,66 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "RM_ROOM_BOOKED")
-public class GuestDetail implements Serializable{
-	
+public class GuestDetail implements Serializable {
+
 	private static final long serialVersionUID = -4512115118990500916L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private long id;
-	
-	@Column(name="FNAME")
+
+	@Column(name = "FNAME")
 	private String fName;
-	
-	@Column(name="LNAME")
+
+	@Column(name = "LNAME")
 	private String lName;
-	
-	@Column(name="EMAIL")
+
+	@Column(name = "EMAIL", unique = true)
 	private String email;
-	
-	@Column(name="MOBILE")
+
+	@Column(name = "MOBILE")
 	private String mobile;
-	
-	@Column(name="RELATIVE_MOBILE")
+
+	@Column(name = "RELATIVE_MOBILE")
 	private String relativeMobile;
-	
-	@Column(name="RELATIVE_RELATION")
+
+	@Column(name = "RELATIVE_RELATION")
 	private String relation;
-	
-	@Column(name="ADDRESS")
+
+	@Column(name = "ADDRESS")
 	private String address;
-	
+
 	@Transient
-	private int rent=0;
-	
-	@Column(name="DEPOSITE")
-	private int security=0;
-	
-	@Column(name="Description")
+	private int rent = 0;
+
+	@Column(name = "DEPOSITE")
+	private int security = 0;
+
+	@Column(name = "Description")
 	private String desc;
-	
+
 	@JsonIgnore
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="MAPPING_ID")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "MAPPING_ID")
 	private PortalMappingInfo mapping;
-	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "guestDetail")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "guestDetail")
 	private List<GuestPayment> paymentList;
-	
+
 	@Transient
 	private Integer roomNo;
-	
+
 	@Transient
 	private Long addressId;
-	
-	@Column(name="ACTIVE")
+
+	@Column(name = "ACTIVE")
 	boolean active = true;
-	
+
 	@Column(name = "UPDATED_DATETIME")
 	@UpdateTimestamp
 	private Date updateDateTime;
-	
+
 	@Column(name = "CREATED_DATETIME")
 	@CreationTimestamp
 	private Date createDateTime;
@@ -152,7 +152,7 @@ public class GuestDetail implements Serializable{
 	}
 
 	public int getRent() {
-		if(mapping != null)
+		if (mapping != null)
 			rent = mapping.getRent();
 		return rent;
 	}
@@ -186,7 +186,7 @@ public class GuestDetail implements Serializable{
 	}
 
 	public Integer getRoomNo() {
-		if(mapping != null)
+		if (mapping != null)
 			roomNo = mapping.getRoomNumber();
 		return roomNo;
 	}
@@ -196,7 +196,7 @@ public class GuestDetail implements Serializable{
 	}
 
 	public Long getAddressId() {
-		if(mapping != null)
+		if (mapping != null)
 			addressId = mapping.getAddress().getId();
 		return addressId;
 	}
@@ -236,5 +236,5 @@ public class GuestDetail implements Serializable{
 	public void setPaymentList(List<GuestPayment> paymentList) {
 		this.paymentList = paymentList;
 	}
-	
+
 }

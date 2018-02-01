@@ -22,6 +22,7 @@ import com.rmportal.model.GuestPayment;
 import com.rmportal.model.PortalInfo;
 import com.rmportal.model.PortalMappingInfo;
 import com.rmportal.repositories.AddressRepository;
+import com.rmportal.repositories.GuestPaymentRepository;
 import com.rmportal.repositories.InfoRepository;
 import com.rmportal.repositories.PortalMappingRepository;
 import com.rmportal.repositories.RoomBookDetailRepository;
@@ -48,6 +49,9 @@ public class InfoServiceImpl implements InfoService {
 
 	@Autowired
 	private RoomBookDetailRepository roomBookDetailRepository;
+	
+	@Autowired
+	private GuestPaymentRepository guestPaymentRepository;
 
 	@Autowired
 	private EntityManager entityManager;
@@ -157,8 +161,8 @@ public class InfoServiceImpl implements InfoService {
 	}
 
 	@Override
-	public RecordVO getRecords(int page, int limit, String sort, String order, String searchParam) {
-		RecordVO recordVO = new RecordVO();
+	public RecordVO<?> getRecords(int page, int limit, String sort, String order, String searchParam) {
+		RecordVO<GuestDetail> recordVO = new RecordVO<GuestDetail>();
 		PageRequest pageRequest = null;
 		Page<GuestDetail> records = null;
 		if (searchParam != null && searchParam.trim().length() > 0) {
@@ -245,14 +249,25 @@ public class InfoServiceImpl implements InfoService {
 		return recordVO;
 	}
 
-	@Override
-	@Transactional(readOnly = true)
-	public RecordVO<?> getMyRecords(String username) {
+//	@Override
+//	@Transactional(readOnly = true)
+//	public RecordVO<?> getMyRecords(String username) {
+//		RecordVO<GuestPayment> recordVO = new RecordVO<GuestPayment>();
+//		GuestDetail guestDetail = roomBookDetailRepository.findByEmail(username);
+//		if (guestDetail != null) {
+//			recordVO.setData(guestDetail.getPaymentList());
+//			recordVO.setTotal(guestDetail.getPaymentList().size());
+//		}
+//		return recordVO;
+//	}
+	
+	public RecordVO<?> getMyRecords(String email) {
 		RecordVO<GuestPayment> recordVO = new RecordVO<GuestPayment>();
-		List<GuestDetail> guestDetailList = roomBookDetailRepository.findByEmail(username);
-		if (!CollectionUtils.isEmpty(guestDetailList)) {
-			recordVO.setData(guestDetailList.get(0).getPaymentList());
-			recordVO.setTotal(guestDetailList.get(0).getPaymentList().size());
+//		GuestDetail guestDetail = roomBookDetailRepository.findByEmail(email);
+		if (email != null) {
+			List<GuestPayment> list = guestPaymentRepository.findByEmail(email);
+			recordVO.setData(list);
+			recordVO.setTotal(list.size());
 		}
 		return recordVO;
 	}

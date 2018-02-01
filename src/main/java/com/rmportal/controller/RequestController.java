@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -142,12 +143,12 @@ public class RequestController {
 	}
 	
 	@RequestMapping(value = "/records", method = RequestMethod.GET)
-	public ResponseEntity<RecordVO> getRecords(@RequestBody @RequestParam(name="_page",required = false) int page,
+	public ResponseEntity<RecordVO<?>> getRecords(@RequestBody @RequestParam(name="_page",required = false) int page,
 			@RequestParam(name="_limit",required = false) int limit,
 			@RequestParam(name="_sort",required = false) String sort,
 			@RequestParam(name="_order",required = false) String order,@RequestParam(name="_searchParam",required = false) String searchParam) {
 		System.out.println(String.format("getRecords"));
-		return new ResponseEntity<RecordVO>(infoService.getRecords(page,limit,sort,order,searchParam), HttpStatus.OK);
+		return new ResponseEntity<RecordVO<?>>(infoService.getRecords(page,limit,sort,order,searchParam), HttpStatus.OK);
 	}
 	
 //	@RequestMapping(value = "/myrecords", method = RequestMethod.GET)
@@ -162,11 +163,11 @@ public class RequestController {
 //		return new ResponseEntity<RecordVO>(infoService.getMyRecords(page,limit,sort,order,searchParam), HttpStatus.OK);
 //	}
 	
-	@RequestMapping(value = "/myrecords/{username}", method = RequestMethod.GET,  produces = "application/json")
-	public ResponseEntity<RecordVO> getMyRecords(@PathVariable String username) {
+	@RequestMapping(value = "/myrecords/{username}", method = RequestMethod.GET)
+	public ResponseEntity<RecordVO<?>> getMyRecords(@PathVariable String username) {
 		System.out.println(String.format("getMyRecords with username : " + username));
-		RecordVO RecordVO = infoService.getMyRecords("akk.anilkundu@gmail.com");
-		return new ResponseEntity<RecordVO>(RecordVO, HttpStatus.OK);
+		RecordVO<?> RecordVO = infoService.getMyRecords("akk.anilkundu@gmail.com");
+		return new ResponseEntity<RecordVO<?>>(RecordVO, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/guest/update", method = RequestMethod.POST)
