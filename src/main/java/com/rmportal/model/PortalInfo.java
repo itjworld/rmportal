@@ -11,8 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name = "RM_PORTAL_INFO", uniqueConstraints = @UniqueConstraint(columnNames = { "CODE", "TYPE" }))
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PortalInfo implements Serializable {
 
 	private static final long serialVersionUID = -2591027128796926656L;

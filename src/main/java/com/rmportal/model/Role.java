@@ -9,7 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity(name = "RM_ROLE")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Role implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1301683850190647398L;

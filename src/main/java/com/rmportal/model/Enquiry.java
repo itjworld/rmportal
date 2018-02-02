@@ -13,8 +13,12 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name = "RM_ENQUIRY", uniqueConstraints = @UniqueConstraint(columnNames = { "name", "mobile" }))
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Enquiry implements Serializable {
 
 	private static final long serialVersionUID = -3036056210844042963L;

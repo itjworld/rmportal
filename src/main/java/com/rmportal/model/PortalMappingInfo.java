@@ -12,8 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 @Entity
 @Table(name = "RM_PORTAL_MAPPING_INFO")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PortalMappingInfo implements Serializable{
 	
 	/**

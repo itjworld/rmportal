@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+	<diskStore path="java.io.tmpdir" />
+
+	<defaultCache maxElementsInMemory="100000" eternal="false"
+		timeToIdleSeconds="172800" timeToLiveSeconds="172800"
+		maxElementsOnDisk="10000000" memoryStoreEvictionPolicy="LRU">
+	</defaultCache>
+
+
+	<cache name="com.rmportal.model.User" maxElementsInMemory="100000"
+		eternal="false" timeToIdleSeconds="172800" timeToLiveSeconds="172800"
+		maxElementsOnDisk="10000000" memoryStoreEvictionPolicy="LRU">
+		<persistence strategy="localTempSwap" />
+	</cache>
+	<cache name="com.rmportal.model.GuestDetail" maxElementsInMemory="100000"
+		eternal="false" timeToIdleSeconds="172800" timeToLiveSeconds="172800"
+		maxElementsOnDisk="10000000" memoryStoreEvictionPolicy="LRU">
+		<persistence strategy="localTempSwap" />
+	</cache>
+
+	<cache name="org.hibernate.cache.internal.StandardQueryCache"
+		maxEntriesLocalHeap="100" eternal="false" timeToLiveSeconds="14400">
+		<persistence strategy="localTempSwap" />
+	</cache>
+	<cache name="org.hibernate.cache.UpdateTimestampsCache"
+		maxEntriesLocalHeap="10000" eternal="false">
+		<persistence strategy="localTempSwap" />
+	</cache>
+	<cache name="findAllSettings" maxEntriesLocalHeap="100" eternal="false"
+		timeToLiveSeconds="14400">
+		<persistence strategy="localTempSwap" />
+	</cache>
+</ehcache>
