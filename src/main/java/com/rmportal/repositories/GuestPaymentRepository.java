@@ -16,4 +16,9 @@ public interface GuestPaymentRepository extends JpaRepository<GuestPayment, Long
 	
 	@Query("SELECT g from GuestPayment g WHERE g.guestDetail.email = :email")
 	List<GuestPayment> findByEmail(@Param("email") String email);
+	
+	@Query("SELECT g from GuestPayment g WHERE g.guestDetail.id = :id")
+	List<GuestPayment> findByGuestDetailId(@Param("id") long id);
+	
+	
 }

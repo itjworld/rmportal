@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.rmportal.model.GuestDetail;
 import java.lang.String;
-import java.util.List;
 
 @Repository
 public interface RoomBookDetailRepository extends JpaRepository<GuestDetail, Long> {

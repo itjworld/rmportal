@@ -38,5 +38,8 @@ public interface InfoService {
 	RecordVO getMyRecords(int page, int limit, String sort, String order, String searchParam);
 
 	RecordVO getMyRecords(String username);
+	
+	RecordVO getRentDetail(long id);
+	boolean updateRentDetails(GuestPayment guestPayment);
 
 }
