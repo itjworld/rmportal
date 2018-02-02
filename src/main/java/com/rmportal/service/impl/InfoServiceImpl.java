@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.rmportal.dao.InfoServiceDao;
 import com.rmportal.model.GuestDetail;
+import com.rmportal.model.GuestPayment;
 import com.rmportal.model.PortalInfo;
 import com.rmportal.model.PortalMappingInfo;
 import com.rmportal.repositories.AddressRepository;
@@ -267,6 +268,23 @@ public class InfoServiceImpl implements InfoService {
 			recordVO.setTotal(recordVO.getData().size());
 		}
 		return recordVO;
+	}
+
+	@Override
+	public RecordVO getRentDetail(long id) {
+		RecordVO recordVO = new RecordVO();
+		recordVO.setData(guestPaymentRepository.findByGuestDetailId(id));
+		return recordVO;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public boolean updateRentDetails(final GuestPayment guestPayment) {
+		final GuestPayment g=guestPaymentRepository.findOne(guestPayment.getId());
+		g.setElecBillPaid(guestPayment.getElecBillPaid());
+		g.setRent(guestPayment.getRent());
+		guestPaymentRepository.save(g);
+		return true;
 	}
 
 }

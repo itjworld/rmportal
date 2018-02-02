@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rmportal.model.AddressInfo;
 import com.rmportal.model.Enquiry;
 import com.rmportal.model.GuestDetail;
-import com.rmportal.model.GuestPayment;
 import com.rmportal.model.PortalInfo;
 import com.rmportal.model.PortalMappingInfo;
 import com.rmportal.model.User;
@@ -179,6 +178,18 @@ public class RequestController {
 		System.out.println(String.format("deleteRecords - > %s %s %s %s %s %s", record.getId(), record.getAddress(), record.getRent(), record.getAddressId(), record.getEmail(), record.getRoomNo()));
 		boolean status = infoService.deleteRecords(record.getId());
 		return new ResponseEntity<Boolean>(status, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/rent-detail", method = RequestMethod.GET)
+	public ResponseEntity<RecordVO> getRentDetails(@RequestParam(name="id",required = true) long id) {
+		System.out.println(String.format("rent-detail with username : " + id));
+		return new ResponseEntity<RecordVO>(infoService.getRentDetail(id), HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/rent-detail/update", method = RequestMethod.POST)
+	public ResponseEntity<Boolean> getRentDetails(@RequestBody com.rmportal.model.GuestPayment guestPayment) {
+		System.out.println(String.format("rent-detail with username : " + guestPayment.getElectricBill()));
+		return new ResponseEntity<Boolean>(infoService.updateRentDetails(guestPayment), HttpStatus.OK);
 	}
 	
 }
