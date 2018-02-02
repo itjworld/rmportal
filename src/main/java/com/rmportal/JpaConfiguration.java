@@ -107,6 +107,9 @@ public class JpaConfiguration {
 
 		// Enable second level cache (default value is true)
 		properties.put("hibernate.cache.use_second_level_cache", true);
+		properties.put("hibernate.cache.use_query_cache", true);
+		properties.put("hibernate.generate_statistics", true);
+		properties.put("hibernate.cache.use_structured_entries", true);
 
 		// Specify cache region factory class
 		properties.put("hibernate.cache.region.factory_class", "org.hibernate.cache.jcache.JCacheRegionFactory");
