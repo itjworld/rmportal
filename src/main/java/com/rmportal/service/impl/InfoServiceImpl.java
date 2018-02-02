@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,11 +15,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import com.rmportal.dao.InfoServiceDao;
 import com.rmportal.model.GuestDetail;
-import com.rmportal.model.GuestPayment;
 import com.rmportal.model.PortalInfo;
 import com.rmportal.model.PortalMappingInfo;
 import com.rmportal.repositories.AddressRepository;
@@ -49,7 +48,7 @@ public class InfoServiceImpl implements InfoService {
 
 	@Autowired
 	private RoomBookDetailRepository roomBookDetailRepository;
-	
+
 	@Autowired
 	private GuestPaymentRepository guestPaymentRepository;
 
@@ -161,8 +160,8 @@ public class InfoServiceImpl implements InfoService {
 	}
 
 	@Override
-	public RecordVO<?> getRecords(int page, int limit, String sort, String order, String searchParam) {
-		RecordVO<GuestDetail> recordVO = new RecordVO<GuestDetail>();
+	public RecordVO getRecords(int page, int limit, String sort, String order, String searchParam) {
+		RecordVO recordVO = new RecordVO();
 		PageRequest pageRequest = null;
 		Page<GuestDetail> records = null;
 		if (searchParam != null && searchParam.trim().length() > 0) {
@@ -249,25 +248,23 @@ public class InfoServiceImpl implements InfoService {
 		return recordVO;
 	}
 
-//	@Override
-//	@Transactional(readOnly = true)
-//	public RecordVO<?> getMyRecords(String username) {
-//		RecordVO<GuestPayment> recordVO = new RecordVO<GuestPayment>();
-//		GuestDetail guestDetail = roomBookDetailRepository.findByEmail(username);
-//		if (guestDetail != null) {
-//			recordVO.setData(guestDetail.getPaymentList());
-//			recordVO.setTotal(guestDetail.getPaymentList().size());
-//		}
-//		return recordVO;
-//	}
-	
-	public RecordVO<?> getMyRecords(String email) {
-		RecordVO<GuestPayment> recordVO = new RecordVO<GuestPayment>();
-//		GuestDetail guestDetail = roomBookDetailRepository.findByEmail(email);
-		if (email != null) {
-			List<GuestPayment> list = guestPaymentRepository.findByEmail(email);
-			recordVO.setData(list);
-			recordVO.setTotal(list.size());
+	// @Override
+	// @Transactional(readOnly = true)
+	// public RecordVO<?> getMyRecords(String username) {
+	// RecordVO<GuestPayment> recordVO = new RecordVO<GuestPayment>();
+	// GuestDetail guestDetail = roomBookDetailRepository.findByEmail(username);
+	// if (guestDetail != null) {
+	// recordVO.setData(guestDetail.getPaymentList());
+	// recordVO.setTotal(guestDetail.getPaymentList().size());
+	// }
+	// return recordVO;
+	// }
+	@Override
+	public RecordVO getMyRecords(String email) {
+		RecordVO recordVO = new RecordVO();
+		if (StringUtils.isNotEmpty(email)) {
+			recordVO.setData(guestPaymentRepository.findByEmail(email));
+			recordVO.setTotal(recordVO.getData().size());
 		}
 		return recordVO;
 	}

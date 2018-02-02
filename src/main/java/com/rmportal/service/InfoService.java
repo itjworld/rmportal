@@ -5,6 +5,7 @@ import java.util.List;
 import com.rmportal.model.PortalInfo;
 import com.rmportal.model.PortalMappingInfo;
 import com.rmportal.model.GuestDetail;
+import com.rmportal.model.GuestPayment;
 import com.rmportal.vo.ContactInformationVO;
 import com.rmportal.vo.MappingDTO;
 import com.rmportal.vo.PortalInformationVO;
@@ -28,14 +29,14 @@ public interface InfoService {
 
 	List<GuestDetail> getRecords();
 
-	RecordVO<?> getRecords(int page, int limit, String sort, String order, String searchParam);
+	RecordVO getRecords(int page, int limit, String sort, String order, String searchParam);
 
 	boolean updateRecords(GuestDetail record);
 
 	boolean deleteRecords(long id);
 
-	RecordVO<?> getMyRecords(int page, int limit, String sort, String order, String searchParam);
+	RecordVO getMyRecords(int page, int limit, String sort, String order, String searchParam);
 
-	RecordVO<?> getMyRecords(String username);
+	RecordVO getMyRecords(String username);
 
 }

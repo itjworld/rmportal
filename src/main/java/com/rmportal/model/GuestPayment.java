@@ -5,7 +5,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -37,18 +37,24 @@ public class GuestPayment implements Serializable {
 	@Column(name = "REMARKS")
 	private String remarks;
 
+	@Transient
+	private int security;
+
+	@Transient
+	private long electricBill;
+
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "ELECTRICITY_DETAIL_ID")
 	private ElectricityDetail electricityDetail;
-	
+
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "GUEST_DETAIL_ID")
 	private GuestDetail guestDetail;
 
 	@Column(name = "ELECTRICITY_PAID")
-	private Integer elecBillPaid;
+	private Integer elecBillPaid = 0;
 
 	@Column(name = "UPDATED_DATETIME")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -59,6 +65,9 @@ public class GuestPayment implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@CreationTimestamp
 	private Date createDateTime;
+	
+	@Transient
+	private String currentMonth;
 
 	public long getId() {
 		return id;
@@ -117,6 +126,7 @@ public class GuestPayment implements Serializable {
 	}
 
 	public Date getCreateDateTime() {
+		setCurrentMonth(createDateTime.toString());
 		return createDateTime;
 	}
 
@@ -124,4 +134,44 @@ public class GuestPayment implements Serializable {
 		this.createDateTime = createDateTime;
 	}
 
+	public int getSecurity() {
+		if (guestDetail != null) {
+			if (electricityDetail != null) {
+				getElectricBill();
+			}
+			return guestDetail.getSecurity();
+		}
+		return security;
+	}
+
+	public void setSecurity(int security) {
+//		if (guestDetail != null)
+//			this.security = guestDetail.getSecurity();
+//		else
+			this.security = security;
+	}
+
+	public long getElectricBill() {
+		if (electricityDetail != null) {
+			long total = (electricityDetail.getCurrentReading() - electricityDetail.getLastReading())
+					* electricityDetail.getUnitRate();
+			int guests = guestDetail.getMapping().getOccupied();
+			if (guests != 0)
+				this.electricBill = total / guests;
+		}
+		return electricBill;
+	}
+
+	public void setElectricBill(long electricBill) {
+		this.electricBill = electricBill;
+	}
+
+	public String getCurrentMonth() {
+		return currentMonth;
+	}
+
+	public void setCurrentMonth(String currentMonth) {
+		this.currentMonth = currentMonth;
+	}
+	
 }

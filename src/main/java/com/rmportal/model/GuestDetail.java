@@ -63,7 +63,7 @@ public class GuestDetail implements Serializable {
 	private String desc;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "MAPPING_ID")
 	private PortalMappingInfo mapping;
 

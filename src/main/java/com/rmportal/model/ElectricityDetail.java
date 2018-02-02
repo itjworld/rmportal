@@ -37,6 +37,9 @@ public class ElectricityDetail implements Serializable{
 	@Column(name = "CURRENT_READING")
 	private Long currentReading;
 	
+	@Column(name = "UNIT_RATE")
+	private int unitRate;
+	
 	@Column(name = "UPDATED_DATETIME")
 	@Temporal(TemporalType.TIMESTAMP)
 	@UpdateTimestamp
@@ -98,6 +101,14 @@ public class ElectricityDetail implements Serializable{
 
 	public void setMapping(PortalMappingInfo mapping) {
 		this.mapping = mapping;
+	}
+
+	public int getUnitRate() {
+		return unitRate;
+	}
+
+	public void setUnitRate(int unitRate) {
+		this.unitRate = unitRate;
 	}
 	
 }

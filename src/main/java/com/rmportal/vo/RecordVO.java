@@ -2,15 +2,15 @@ package com.rmportal.vo;
 
 import java.util.List;
 
-public class RecordVO<T> {
-	private List<T> data;
+public class RecordVO {
+	private List<?> data;
 	private long total;
 
-	public List<T> getData() {
+	public List<?> getData() {
 		return data;
 	}
 
-	public void setData(List<T> data) {
+	public void setData(List<?> data) {
 		this.data = data;
 	}
 
