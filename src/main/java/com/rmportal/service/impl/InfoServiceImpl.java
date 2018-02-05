@@ -280,7 +280,7 @@ public class InfoServiceImpl implements InfoService {
 	@Override
 	@Transactional(readOnly = false)
 	public boolean updateRentDetails(final GuestPayment guestPayment) {
-		final GuestPayment g=guestPaymentRepository.findOne(guestPayment.getId());
+		final GuestPayment g = guestPaymentRepository.findOne(guestPayment.getId());
 		g.setElecBillPaid(guestPayment.getElecBillPaid());
 		g.setRent(guestPayment.getRent());
 		guestPaymentRepository.save(g);

@@ -3,6 +3,7 @@ package com.rmportal.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
+@Cacheable(value = true)
 @Table(name = "RM_ENQUIRY", uniqueConstraints = @UniqueConstraint(columnNames = { "name", "mobile" }))
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Enquiry implements Serializable {

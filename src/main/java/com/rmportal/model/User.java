@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,6 +29,7 @@ import org.hibernate.annotations.UpdateTimestamp;
  */
 @Entity
 @Table(name = "RM_USER", uniqueConstraints = @UniqueConstraint(columnNames = { "email" }))
+@Cacheable(value = true)
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User implements Serializable {
 
@@ -54,11 +56,11 @@ public class User implements Serializable {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
 	private Set<Role> roles;
-	
+
 	@Column(name = "UPDATED_DATETIME")
 	@UpdateTimestamp
 	private Date updateDateTime;
-	
+
 	@Column(name = "CREATED_DATETIME")
 	@CreationTimestamp
 	private Date createDateTime;

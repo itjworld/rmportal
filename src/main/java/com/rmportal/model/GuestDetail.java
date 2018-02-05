@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,6 +25,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Cacheable(value = true)
 @Table(name = "RM_ROOM_BOOKED")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class GuestDetail implements Serializable {
@@ -66,7 +68,7 @@ public class GuestDetail implements Serializable {
 	private String desc;
 
 	@JsonIgnore
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MAPPING_ID")
 	private PortalMappingInfo mapping;
 

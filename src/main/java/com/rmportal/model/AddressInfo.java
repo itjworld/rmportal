@@ -3,6 +3,7 @@ package com.rmportal.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +25,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "RM_ADDRESS_INFO")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable(value = true)
 public class AddressInfo implements Serializable{
 	
 	/**
