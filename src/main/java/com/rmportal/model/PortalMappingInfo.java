@@ -17,8 +17,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Cacheable(value = true)
 @Table(name = "RM_PORTAL_MAPPING_INFO")
+@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PortalMappingInfo implements Serializable{
 	

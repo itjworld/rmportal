@@ -25,8 +25,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Cacheable(value = true)
 @Table(name = "RM_ROOM_BOOKED")
+@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class GuestDetail implements Serializable {
 

@@ -24,7 +24,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Cacheable(value = true)
+@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Table(name = "RM_ELECTRICITY")
 public class ElectricityDetail implements Serializable{

@@ -14,7 +14,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity(name = "RM_ROLE")
-@Cacheable(value = true)
+@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Role implements java.io.Serializable {
 

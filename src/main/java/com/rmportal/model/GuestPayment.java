@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "RM_GUEST_PAYMENT")
-@Cacheable(value = true)
+@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class GuestPayment implements Serializable {
 

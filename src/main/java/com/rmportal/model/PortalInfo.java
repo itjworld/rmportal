@@ -16,8 +16,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Cacheable(value = true)
 @Table(name = "RM_PORTAL_INFO", uniqueConstraints = @UniqueConstraint(columnNames = { "CODE", "TYPE" }))
+@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PortalInfo implements Serializable {
 

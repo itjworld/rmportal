@@ -41,5 +41,7 @@ public interface InfoService {
 	
 	RecordVO getRentDetail(long id);
 	boolean updateRentDetails(GuestPayment guestPayment);
+	
+	PortalInformationVO getDetailsById(long id);
 
 }

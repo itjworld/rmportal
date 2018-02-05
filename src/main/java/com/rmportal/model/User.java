@@ -29,7 +29,7 @@ import org.hibernate.annotations.UpdateTimestamp;
  */
 @Entity
 @Table(name = "RM_USER", uniqueConstraints = @UniqueConstraint(columnNames = { "email" }))
-@Cacheable(value = true)
+@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User implements Serializable {
 
