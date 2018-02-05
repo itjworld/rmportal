@@ -99,4 +99,9 @@ public class InfoServiceDaoImpl implements InfoServiceDao {
 	public List<PortalInfo> getDetails(String type) {
 		return null;
 	}
+
+	@Override
+	public PortalMappingInfo getDetailsById(long id) {
+		return entityManager.find(PortalMappingInfo.class, id);
+	}
 }

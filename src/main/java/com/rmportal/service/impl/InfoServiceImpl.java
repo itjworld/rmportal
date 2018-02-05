@@ -32,6 +32,7 @@ import com.rmportal.vo.MappingDTO;
 import com.rmportal.vo.PortalInformationVO;
 import com.rmportal.vo.RecordVO;
 
+
 @Service
 public class InfoServiceImpl implements InfoService {
 
@@ -99,6 +100,9 @@ public class InfoServiceImpl implements InfoService {
 			informationVO.setContent(info.getAddress().getContent());
 			informationVO.setLocation(info.getAddress().getLocation().getName());
 		}
+		if (null != info.getCondition()) {
+			informationVO.setCondition(info.getCondition().getName());
+		}
 		return informationVO;
 	}
 
@@ -165,12 +169,12 @@ public class InfoServiceImpl implements InfoService {
 		RecordVO recordVO = new RecordVO();
 		PageRequest pageRequest = null;
 		Page<GuestDetail> records = null;
-		if (searchParam != null && searchParam.trim().length() > 0) {
+		/*if (searchParam != null && searchParam.trim().length() > 0) {
 			searchParam = "%" + searchParam + "%";
 			recordVO.setTotal(roomBookDetailRepository.count(searchParam, searchParam, searchParam));
 		} else {
 			recordVO.setTotal(roomBookDetailRepository.countByStatus(true));
-		}
+		}*/
 
 		if (sort != null && sort.trim().length() > 0) {
 			Sort sorting = null;
@@ -190,6 +194,7 @@ public class InfoServiceImpl implements InfoService {
 		} else {
 			records = roomBookDetailRepository.findAllByStatus(pageRequest, true);
 		}
+		recordVO.setTotal(records.getTotalElements());
 		recordVO.setData(records.getContent());
 		return recordVO;
 	}
@@ -285,6 +290,11 @@ public class InfoServiceImpl implements InfoService {
 		g.setRent(guestPayment.getRent());
 		guestPaymentRepository.save(g);
 		return true;
+	}
+
+	@Override
+	public PortalInformationVO getDetailsById(long id) {
+		return convertView(infoServiceDao.getDetailsById(id));
 	}
 
 }

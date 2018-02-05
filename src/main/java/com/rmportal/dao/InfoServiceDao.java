@@ -12,5 +12,6 @@ public interface InfoServiceDao {
 	List<PortalInfo> getDetails(String type);
 	
 	int create(String sql);
+	PortalMappingInfo getDetailsById(long id);
 
 }

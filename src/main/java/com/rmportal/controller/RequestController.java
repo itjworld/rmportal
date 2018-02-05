@@ -54,6 +54,11 @@ public class RequestController {
 		return new ResponseEntity<List<PortalInformationVO>>(
 				infoService.getDetails(localities, price, acId, gender, rooms), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/room-details")
+	public ResponseEntity<PortalInformationVO> getRoomDetails(@RequestBody @RequestParam(required = true) long id){
+		return new ResponseEntity<PortalInformationVO>(infoService.getDetailsById(id), HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/details/{type}")
 	public ResponseEntity<List<PortalInfo>> getAllData(@PathVariable String type) {

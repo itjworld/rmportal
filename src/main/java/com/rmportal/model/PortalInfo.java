@@ -3,6 +3,7 @@ package com.rmportal.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +17,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Table(name = "RM_PORTAL_INFO", uniqueConstraints = @UniqueConstraint(columnNames = { "CODE", "TYPE" }))
+@Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PortalInfo implements Serializable {
 

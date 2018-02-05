@@ -14,6 +14,7 @@ public class PortalInformationVO {
 	private String gender;
 	private int roomType;
 	private int occupied;
+	private String condition;
 	
 	public long getId() {
 		return id;
@@ -74,6 +75,12 @@ public class PortalInformationVO {
 	}
 	public void setOccupied(int occupied) {
 		this.occupied = occupied;
+	}
+	public String getCondition() {
+		return condition;
+	}
+	public void setCondition(String condition) {
+		this.condition = condition;
 	}
 	
 	
