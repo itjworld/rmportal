@@ -118,7 +118,6 @@ public class JpaConfiguration {
 					environment.getRequiredProperty("datasource.rmportal.defaultSchema"));
 		}
 		
-		//System.err.println("ddd="+environment.getRequiredProperty("logging.level.file"));
 		return properties;
 	}
 
