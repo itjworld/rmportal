@@ -15,10 +15,15 @@ public class DownloadController {
 
 	@Autowired
 	private InfoService infoService;
+	
+	
 
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
 	public ModelAndView download(Model model) {
 		// model.addAttribute("roomDetails", infoService.getRecords());
 		return new ModelAndView("excelView", "roomDetails", infoService.getRecords());
 	}
+	
+	
+	
 }

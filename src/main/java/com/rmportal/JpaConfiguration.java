@@ -117,6 +117,7 @@ public class JpaConfiguration {
 			properties.put("hibernate.default_schema",
 					environment.getRequiredProperty("datasource.rmportal.defaultSchema"));
 		}
+		
 		return properties;
 	}
 

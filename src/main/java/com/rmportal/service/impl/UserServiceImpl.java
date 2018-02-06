@@ -1,8 +1,8 @@
 package com.rmportal.service.impl;
 
-import javax.persistence.EntityManagerFactory;
 
-import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,39 +13,14 @@ import com.rmportal.service.UserService;
 @Service
 public class UserServiceImpl implements UserService {
 
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	private UserRepository userRepository;
 	
-	@Autowired
-	private EntityManagerFactory entityManagerFactory;
 
 	@Override
 	public User validate(User user) {
-		SessionFactory sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
-		System.out.println("sessionFactory : " + sessionFactory.getStatistics());
-		System.out.println("Entity fetch count :" + sessionFactory.getStatistics().getEntityFetchCount());
-        System.out.println("Second level cache hit count : "+ sessionFactory.getStatistics().getSecondLevelCacheHitCount());
-        System.out.println("Second level cache put count : " + sessionFactory.getStatistics().getSecondLevelCachePutCount());
-        System.out.println("Second level cache miss count : " + sessionFactory.getStatistics().getSecondLevelCacheMissCount());
-        userRepository.validate(user.getUsername(), user.getPassword());
-        System.out.println("sessionFactory : " + sessionFactory.getStatistics());
-		System.out.println("Entity fetch count :" + sessionFactory.getStatistics().getEntityFetchCount());
-        System.out.println("Second level cache hit count : "+ sessionFactory.getStatistics().getSecondLevelCacheHitCount());
-        System.out.println("Second level cache put count : " + sessionFactory.getStatistics().getSecondLevelCachePutCount());
-        System.out.println("Second level cache miss count : " + sessionFactory.getStatistics().getSecondLevelCacheMissCount());
-        userRepository.validate(user.getUsername(), user.getPassword());
-        System.out.println("sessionFactory : " + sessionFactory.getStatistics());
-		System.out.println("Entity fetch count :" + sessionFactory.getStatistics().getEntityFetchCount());
-        System.out.println("Second level cache hit count : "+ sessionFactory.getStatistics().getSecondLevelCacheHitCount());
-        System.out.println("Second level cache put count : " + sessionFactory.getStatistics().getSecondLevelCachePutCount());
-        System.out.println("Second level cache miss count : " + sessionFactory.getStatistics().getSecondLevelCacheMissCount());
-        userRepository.validate(user.getUsername(), user.getPassword());
-        System.out.println("sessionFactory : " + sessionFactory.getStatistics());
-		System.out.println("Entity fetch count :" + sessionFactory.getStatistics().getEntityFetchCount());
-        System.out.println("Second level cache hit count : "+ sessionFactory.getStatistics().getSecondLevelCacheHitCount());
-        System.out.println("Second level cache put count : " + sessionFactory.getStatistics().getSecondLevelCachePutCount());
-        System.out.println("Second level cache miss count : " + sessionFactory.getStatistics().getSecondLevelCacheMissCount());
-        
 		return userRepository.validate(user.getUsername(), user.getPassword());
 
 	}
@@ -55,6 +30,7 @@ public class UserServiceImpl implements UserService {
 		try {
 			userRepository.save(user);
 		} catch (Exception ex) {
+			LOGGER.error("register",ex);
 			return false;
 		}
 		return true;

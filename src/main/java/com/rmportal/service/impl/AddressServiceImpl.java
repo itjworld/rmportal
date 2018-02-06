@@ -2,6 +2,8 @@ package com.rmportal.service.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,8 @@ import com.rmportal.vo.ContactInformationVO;
 @Service
 public class AddressServiceImpl implements AddressService {
 
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	private AddressRepository addressRepository;
 
@@ -75,7 +79,7 @@ public class AddressServiceImpl implements AddressService {
 				return false;
 			return true;
 		} catch (Exception ex) {
-			System.err.print(ex);
+			LOGGER.error("updateRoomInfo",ex);
 			return false;
 		}
 	}
