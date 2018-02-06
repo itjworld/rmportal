@@ -1,4 +1,4 @@
-package com.rmportal.util;
+package com.rmportal.service;
 
 public interface MailService {
 	String sendEmail(String recepients, String subject, String cc, String message);

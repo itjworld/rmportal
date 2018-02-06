@@ -1,4 +1,4 @@
-package com.rmportal.util;
+package com.rmportal.service.impl;
 
 import java.io.ByteArrayOutputStream;
 
@@ -14,16 +14,17 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.rmportal.service.InfoService;
+import com.rmportal.service.MailService;
 import com.rmportal.view.PdfView;
 
-@Component
-public class MailSender implements MailService {
+@Service
+public class MailServiceImpl implements MailService {
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -127,7 +128,7 @@ public class MailSender implements MailService {
 	public String triggerEmail(String content, String receipients, String cc, String subject) {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setText(content);
-		message.setTo(receipients);
+		message.setTo(receipients.split(","));
 		message.setSubject(subject);
 		message.setFrom("test@gmail.com");
 		try {

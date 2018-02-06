@@ -40,11 +40,11 @@ public class Enquiry implements Serializable {
 	private String mobile;
 
 	@Column(name = "active")
-	private boolean active=true;
-	
+	private boolean active = true;
+
 	@Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "CREATED_DATETIME", updatable = false)
-    private Date createdDate = new Date();
+	@Column(name = "CREATED_DATETIME", updatable = false)
+	private Date createdDate = new Date();
 
 	public Long getId() {
 		return id;
@@ -96,7 +96,8 @@ public class Enquiry implements Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("name : %s :: mobile : %s", name, mobile);
+		return String.format("name : %s :: mobile : %s :: email : %s :: createdDate : %s", name, mobile, email,
+				createdDate);
 	}
 
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.rmportal.util.MailService;
+import com.rmportal.service.MailService;
 import com.rmportal.vo.MailDetails;
 
 @Controller
