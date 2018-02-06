@@ -8,6 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +37,8 @@ import com.rmportal.vo.RecordVO;
 
 @Service
 public class InfoServiceImpl implements InfoService {
+	
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private InfoServiceDao infoServiceDao;
@@ -158,7 +162,7 @@ public class InfoServiceImpl implements InfoService {
 			final Query sql = entityManager.createNativeQuery(query);
 			sql.executeUpdate();
 		} catch (Exception ex) {
-			System.out.println("exception generated : " + ex);
+			LOGGER.error("exception generated : " , ex);
 			return false;
 		}
 		return true;
@@ -169,13 +173,6 @@ public class InfoServiceImpl implements InfoService {
 		RecordVO recordVO = new RecordVO();
 		PageRequest pageRequest = null;
 		Page<GuestDetail> records = null;
-		/*if (searchParam != null && searchParam.trim().length() > 0) {
-			searchParam = "%" + searchParam + "%";
-			recordVO.setTotal(roomBookDetailRepository.count(searchParam, searchParam, searchParam));
-		} else {
-			recordVO.setTotal(roomBookDetailRepository.countByStatus(true));
-		}*/
-
 		if (sort != null && sort.trim().length() > 0) {
 			Sort sorting = null;
 			if ("roomNo".equalsIgnoreCase(sort))
@@ -254,17 +251,6 @@ public class InfoServiceImpl implements InfoService {
 		return recordVO;
 	}
 
-	// @Override
-	// @Transactional(readOnly = true)
-	// public RecordVO<?> getMyRecords(String username) {
-	// RecordVO<GuestPayment> recordVO = new RecordVO<GuestPayment>();
-	// GuestDetail guestDetail = roomBookDetailRepository.findByEmail(username);
-	// if (guestDetail != null) {
-	// recordVO.setData(guestDetail.getPaymentList());
-	// recordVO.setTotal(guestDetail.getPaymentList().size());
-	// }
-	// return recordVO;
-	// }
 	@Override
 	public RecordVO getMyRecords(String email) {
 		RecordVO recordVO = new RecordVO();

@@ -8,6 +8,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -24,6 +26,8 @@ import com.rmportal.view.PdfView;
 
 @Component
 public class MailSender implements MailService {
+	
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -41,7 +45,7 @@ public class MailSender implements MailService {
 
 		try {
 			mailSender.send(preparator);
-			System.out.println("Message With Attachement has been sent.............................");
+			LOGGER.info("Message With Attachement has been sent.............................");
 			// preparator =
 			// getContentAsInlineResourceMessagePreparator(recepients);
 			// mailSender.send(preparator);
@@ -49,7 +53,7 @@ public class MailSender implements MailService {
 			// sent.........................");
 			return "{\"message\": \"OK\"}";
 		} catch (MailException ex) {
-			System.err.println(ex.getMessage());
+			LOGGER.error("sendEmail",ex.getMessage());
 			return "{\"message\": \"ERROR\"}";
 		}
 	}

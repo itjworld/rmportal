@@ -117,6 +117,8 @@ public class JpaConfiguration {
 			properties.put("hibernate.default_schema",
 					environment.getRequiredProperty("datasource.rmportal.defaultSchema"));
 		}
+		
+		//System.err.println("ddd="+environment.getRequiredProperty("logging.level.file"));
 		return properties;
 	}
 

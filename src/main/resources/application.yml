@@ -23,9 +23,9 @@ spring:
   profiles: default
 datasource:
   rmportal:
-    url: jdbc:mysql://aae2919xc24v9s.czufkxkprcji.us-east-2.rds.amazonaws.com:3306/ebdb
+    url: jdbc:mysql://localhost:3306/H5x?useSSL=false
     username: root
-    password: root1234
+    password: root
     driverClassName: com.mysql.jdbc.Driver
     defaultSchema:
     maxPoolSize: 10
@@ -39,7 +39,7 @@ spring:
   profiles: dev
 datasource:
   rmportal:
-    url: jdbc:mysql://localhost:3306/rmportal?useSSL=false
+    url: jdbc:mysql://localhost:3306/H5x?useSSL=false
     username: root
     password: root
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -70,9 +70,11 @@ datasource:
 logging:
   level:
     org.springframework.web: ERROR
-    com.mkyong: DEBUG
+    com.rmportal: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   file: E:/logs/application.log
+  maxFileSize: 50MB
+  
 
