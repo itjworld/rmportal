@@ -20,7 +20,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Entity
 @Table(name = "RM_ENQUIRY", uniqueConstraints = @UniqueConstraint(columnNames = { "name", "mobile" }))
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "Enquiry")
 public class Enquiry implements Serializable {
 
 	private static final long serialVersionUID = -3036056210844042963L;

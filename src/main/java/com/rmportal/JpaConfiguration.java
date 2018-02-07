@@ -102,16 +102,16 @@ public class JpaConfiguration {
 				environment.getRequiredProperty("datasource.rmportal.hibernate.format_sql"));
 
 		// Enable second level cache (default value is true)
-		properties.put("hibernate.cache.use_second_level_cache", true);
-		properties.put("hibernate.cache.use_query_cache", true);
-		properties.put("hibernate.generate_statistics", true);
-		properties.put("hibernate.cache.use_structured_entries", true);
+		properties.put("hibernate.cache.use_second_level_cache", environment.getRequiredProperty("spring.cache.ehcache.hibernate.cache.use_second_level_cache"));
+		properties.put("hibernate.cache.use_query_cache", environment.getRequiredProperty("spring.cache.ehcache.hibernate.cache.use_query_cache"));
+		properties.put("hibernate.generate_statistics", environment.getRequiredProperty("spring.cache.ehcache.hibernate.generate_statistics"));
+		properties.put("hibernate.cache.use_structured_entries", environment.getRequiredProperty("spring.cache.ehcache.hibernate.cache.use_structured_entries"));
 
 		// Specify cache region factory class
-		properties.put("hibernate.cache.region.factory_class", "org.hibernate.cache.jcache.JCacheRegionFactory");
+		properties.put("hibernate.cache.region.factory_class", environment.getRequiredProperty("spring.cache.ehcache.hibernate.cache.region.factory_class"));
 
 		// Specify cache provider
-		properties.put("hibernate.javax.cache.provider", "org.ehcache.jsr107.EhcacheCachingProvider");
+		properties.put("hibernate.javax.cache.provider", environment.getRequiredProperty("spring.cache.ehcache.hibernate.javax.cache.provider"));
 
 		if (StringUtils.isNotEmpty(environment.getRequiredProperty("datasource.rmportal.defaultSchema"))) {
 			properties.put("hibernate.default_schema",

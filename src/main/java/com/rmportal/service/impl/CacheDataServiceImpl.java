@@ -10,6 +10,7 @@ import org.hibernate.stat.Statistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import com.rmportal.service.CacheDataService;
@@ -23,6 +24,7 @@ public class CacheDataServiceImpl implements CacheDataService {
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
 
+//	@CacheEvict(allEntries = true)
 	public void clearstatics() {
 		LOGGER.debug("clearing the cache.....");
 		entityManagerFactory.unwrap(SessionFactory.class).getStatistics().clear();
@@ -37,15 +39,15 @@ public class CacheDataServiceImpl implements CacheDataService {
 		Long missCount = stats.getSecondLevelCacheMissCount();
 		String region = "default";
 		LOGGER.debug("sessionFactory : {}" , stats);
-		LOGGER.debug("Entity fetch count :" , fetchCount);
-		LOGGER.debug("Second level cache hit count : " , hitCount);
-		LOGGER.debug("Second level cache put count : " , putCount);
-		LOGGER.debug("Second level cache miss count : " , missCount);
-
+		LOGGER.debug("Entity fetch count : {}" , fetchCount);
+		LOGGER.debug("Second level cache hit count : {}" , hitCount);
+		LOGGER.debug("Second level cache put count : {}" , putCount);
+		LOGGER.debug("Second level cache miss count : {}" , missCount);
 		List<CacheDetails> cacheDataList = new ArrayList<CacheDetails>();
-		// for (String region : stats.getSecondLevelCacheRegionNames()) {
 		cacheDataList.add(new CacheDetails(region, hitCount, missCount, fetchCount, putCount));
-		// }
+		 for (String reg : stats.getSecondLevelCacheRegionNames()) {
+			 LOGGER.debug("region : {} : {}" , reg, stats.getSecondLevelCacheStatistics(region));
+		 }
 		return cacheDataList;
 	}
 

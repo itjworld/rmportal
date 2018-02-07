@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.rmportal.model.Role;
 import com.rmportal.model.User;
 import com.rmportal.repositories.UserRepository;
 
@@ -26,13 +27,17 @@ public class AuthService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException("Username " + username + " not found");
 		}
-		return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword() ,getGrantedAuthorities());
+		return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword() ,getGrantedAuthorities(user));
 	}
 
-	private Collection<? extends GrantedAuthority> getGrantedAuthorities() {
+	private Collection<? extends GrantedAuthority> getGrantedAuthorities(User user) {
 		Collection<SimpleGrantedAuthority> authorities= new ArrayList<SimpleGrantedAuthority>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_BASIC"));
-		authorities.add(new SimpleGrantedAuthority("ROLE_ADMI"));
+		for(Role role : user.getRoles()){
+			System.out.println("Role : " + role.getName());
+			authorities.add(new SimpleGrantedAuthority(role.getName()));
+		}
+//		authorities.add(new SimpleGrantedAuthority("ROLE_BASIC"));
+//		authorities.add(new SimpleGrantedAuthority("ROLE_ADMI"));
 		return authorities;
 	}
 

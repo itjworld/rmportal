@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "RM_ROOM_BOOKED")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "GuestDetail")
 public class GuestDetail implements Serializable {
 
 	private static final long serialVersionUID = -4512115118990500916L;

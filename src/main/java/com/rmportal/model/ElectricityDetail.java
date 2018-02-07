@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "AddressInfo")
 @Table(name = "RM_ELECTRICITY")
 public class ElectricityDetail implements Serializable{
 	

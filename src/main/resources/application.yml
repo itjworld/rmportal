@@ -23,9 +23,9 @@ spring:
   profiles: default
 datasource:
   rmportal:
-    url: jdbc:mysql://localhost:3306/H5x?useSSL=false
+    url: jdbc:mysql://aae2919xc24v9s.czufkxkprcji.us-east-2.rds.amazonaws.com:3306/ebdb
     username: root
-    password: root
+    password: root1234
     driverClassName: com.mysql.jdbc.Driver
     defaultSchema:
     maxPoolSize: 10
@@ -39,7 +39,7 @@ spring:
   profiles: dev
 datasource:
   rmportal:
-    url: jdbc:mysql://localhost:3306/H5x?useSSL=false
+    url: jdbc:mysql://localhost:3306/rmportal?useSSL=false
     username: root
     password: root
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -75,6 +75,16 @@ logging:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   file: E:/logs/application.log
-  maxFileSize: 50MB
-  
+  maxFileSize: 20MB
+---
+spring:
+  cache:
+    ehcache:
+      hibernate.cache.use_second_level_cache: true
+      hibernate.cache.use_query_cache: true
+      hibernate.generate_statistics: true
+      hibernate.cache.use_structured_entries: true
+      hibernate.javax.cache.provider: org.ehcache.jsr107.EhcacheCachingProvider
+      hibernate.cache.region.factory_class: org.hibernate.cache.jcache.JCacheRegionFactory
+ 
 

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.rmportal.service.CacheDataService;
 import com.rmportal.vo.CacheDetails;
@@ -36,10 +38,17 @@ public class CacheController {
 	private Environment environment;
 
 	@RequestMapping(value = "/clearstatics")
-	public String clearstatics() {
+	public ResponseEntity<Void> clearstatics() {
 		System.out.println("inside method clearstatics()");
 		cacheDataService.clearstatics();
-		return "redirect:/getstatics";
+		return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).header(HttpHeaders.LOCATION, "getstatics").build();
+	}
+	
+	@RequestMapping(value = "/clearstatics2")
+	public RedirectView clearstatics2() {
+		System.out.println("inside method clearstatics2()");
+		cacheDataService.clearstatics();
+		return new RedirectView("getstatics");
 	}
 
 	@RequestMapping(value = "/getstatics")

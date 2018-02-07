@@ -25,7 +25,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "RM_ADDRESS_INFO")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "AddressInfo")
 public class AddressInfo implements Serializable{
 	
 	/**

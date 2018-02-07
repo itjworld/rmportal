@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "RM_GUEST_PAYMENT")
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "GuestPayment")
 public class GuestPayment implements Serializable {
 
 	private static final long serialVersionUID = -4512115118990500916L;
