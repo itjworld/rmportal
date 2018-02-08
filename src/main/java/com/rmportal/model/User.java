@@ -55,6 +55,7 @@ public class User implements Serializable {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "roleId"))
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Set<Role> roles;
 
 	@Column(name = "UPDATED_DATETIME")

@@ -73,6 +73,7 @@ public class GuestDetail implements Serializable {
 	private PortalMappingInfo mapping;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "guestDetail")
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<GuestPayment> paymentList;
 
 	@Transient
