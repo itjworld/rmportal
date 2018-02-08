@@ -87,6 +87,7 @@ public class InfoServiceDaoImpl implements InfoServiceDao {
 		if(paramaters.isEmpty()){
 			query.setMaxResults(20);
 		}
+		query.setHint("org.hibernate.cacheable", true);
 		return query.getResultList();
 	}
 	
@@ -102,6 +103,9 @@ public class InfoServiceDaoImpl implements InfoServiceDao {
 
 	@Override
 	public PortalMappingInfo getDetailsById(long id) {
-		return entityManager.find(PortalMappingInfo.class, id);
+		final Query query= entityManager.createQuery("FROM PortalMappingInfo WHERE id=:id");
+		query.setParameter("id", id);
+		query.setHint("org.hibernate.cacheable", true);
+		return (PortalMappingInfo) query.getSingleResult();
 	}
 }
