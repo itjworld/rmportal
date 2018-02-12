@@ -1,10 +1,13 @@
 package com.rmportal.view;
 
 import java.io.ByteArrayOutputStream;
-import java.time.LocalDate;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,12 +18,10 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.rmportal.model.GuestDetail;
 
 @Component
 public class PdfView extends AbstractPdfView {
@@ -28,17 +29,25 @@ public class PdfView extends AbstractPdfView {
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		response.setHeader("Content-Disposition", "attachment; filename=\"my-pdf-file.pdf\"");
+		String headerName [] =(String[]) model.get("headerName");
+		String fields []  =(String[]) model.get("fields");
+		String fileName  =(String) model.get("fileName");
+		List<?> list = (List<?>) model.get("data");
+		if(null!=fileName) {
+			fileName+="attachment; filename="+fileName+".pdf";
+		}else {
+			fileName="attachment; filename=download.pdf";
+		}
+		response.setHeader("Content-Disposition", fileName);
 
-		@SuppressWarnings("unchecked")
-		List<GuestDetail> roomBookDetails = (List<GuestDetail>) model.get("roomDetails");
-		getPDFDocument(document, roomBookDetails);
+		getPDFDocument(document, list,headerName,fields);
 
 	}
 
-	public void getPDFDocument(Document document, List<GuestDetail> roomBookDetails) throws DocumentException {
-		document.add(new Paragraph("Room Book Details " + LocalDate.now()));
-
+	public void getPDFDocument(Document document, List<?> list,String headerName[],String fields []) throws DocumentException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+		//document.add(new Paragraph("Room Book Details " + LocalDate.now()));
+		Class<?> clss[] = {};
+		Object [] obj= {};
 		PdfPTable table = new PdfPTable(6);
 		table.setWidthPercentage(100.0f);
 		table.setSpacingBefore(10);
@@ -46,41 +55,63 @@ public class PdfView extends AbstractPdfView {
 		// define font for table header row
 		Font font = FontFactory.getFont(FontFactory.TIMES);
 		font.setColor(BaseColor.WHITE);
-
 		// define table header cell
 		PdfPCell cell = new PdfPCell();
 		cell.setBackgroundColor(BaseColor.DARK_GRAY);
 		cell.setPadding(5);
 
 		// write table header
-		cell.setPhrase(new Phrase("Id", font));
-		table.addCell(cell);
-
-		cell.setPhrase(new Phrase("Name", font));
-		table.addCell(cell);
-
-		cell.setPhrase(new Phrase("Mobile", font));
-		table.addCell(cell);
-
-		cell.setPhrase(new Phrase("Email", font));
-		table.addCell(cell);
-
-		cell.setPhrase(new Phrase("Rent", font));
-		table.addCell(cell);
-
-		cell.setPhrase(new Phrase("Security", font));
-		table.addCell(cell);
-
-		for (GuestDetail detail : roomBookDetails) {
-			table.addCell(String.valueOf(detail.getId()));
-			table.addCell(detail.getfName());
-			table.addCell(detail.getMobile());
-			table.addCell(detail.getEmail());
-			table.addCell(String.valueOf(detail.getRent()));
-			table.addCell(String.valueOf(detail.getSecurity()));
+		for (String header : headerName) {
+			cell.setPhrase(new Phrase(header, font));
+			table.addCell(cell);
+		}
+		for (Object detail : list) {
+			for (String property : fields) {
+				String subProperty []=property.split("\\.");
+				final Field  field=detail.getClass().getDeclaredField(subProperty[0]);
+				final Transient t = field.getAnnotation(Transient.class);
+				if(null!=t) {
+					final String methodName="get"+field.getName().substring(0, 1).toUpperCase()+field.getName().substring(1);
+					final Method m = detail.getClass().getMethod(methodName, clss);
+					final Object v=m.invoke(detail,obj);
+					setTableValue(v, table);
+					continue;
+				}
+				if(null!=field) {
+					field.setAccessible(true);
+					final Object value=field.get(detail);
+					if(null!=value) {
+						if(subProperty.length>1) {
+							final Field subField=value.getClass().getDeclaredField(subProperty[1]);
+							subField.setAccessible(true);
+							final Object subValue=subField.get(value);
+							setTableValue(subValue, table);	
+						}else {
+							setTableValue(value, table);
+						}
+						
+					}else {
+						setTableValue(value, table);
+					}
+				}
+			}
+			
 		}
 
 		document.add(table);
+	}
+	
+	private void setTableValue(final Object value,final PdfPTable table) {
+		if(null!=value) {
+			if(value instanceof Number) {
+				table.addCell(String.valueOf(value));
+			}else {
+				table.addCell((String)value);
+			}	
+		}else {
+			table.addCell("");
+		}
+		
 	}
 
 	/*
@@ -94,7 +125,7 @@ public class PdfView extends AbstractPdfView {
 	public void writePdf(Document document) throws Exception {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		PdfWriter.getInstance(document, outputStream);
-		byte[] bytes = outputStream.toByteArray();
+		//byte[] bytes = outputStream.toByteArray();
         //construct the pdf body part
 //        DataSource dataSource = new ByteArrayDataSource(bytes, "application/pdf");
 	}

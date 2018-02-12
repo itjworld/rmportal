@@ -1,8 +1,11 @@
 package com.rmportal.view;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,17 +17,26 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.servlet.view.document.AbstractXlsView;
 
-import com.rmportal.model.GuestDetail;
 
 public class ExcelView extends AbstractXlsView{
 
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		response.setHeader("Content-Disposition", "attachment; filename=\"my-xls-file.xls\"");
-		@SuppressWarnings("unchecked")
-		List<GuestDetail> roomBookDetails = (List<GuestDetail>) model.get("roomDetails");
-		Sheet sheet = workbook.createSheet("Room Book Details");
+		String headerName [] =(String[]) model.get("headerName");
+		String fields []  =(String[]) model.get("fields");
+		String fileName  =(String) model.get("fileName");
+		List<?> list = (List<?>) model.get("data");
+		String sheetName  =(String) model.get("sheetName");
+		Class<?> clss[] = {};
+		Object [] obj= {};
+		if(null!=fileName) {
+			fileName+="attachment; filename="+fileName+".xls";
+		}else {
+			fileName="attachment; filename=download.xls";
+		}
+		response.setHeader("Content-Disposition", fileName);
+		Sheet sheet = workbook.createSheet(sheetName);
         sheet.setDefaultColumnWidth(30);
 
         // create style for header cells
@@ -36,33 +48,62 @@ public class ExcelView extends AbstractXlsView{
         style.setFont(font);
 
 
-        // create header row
         Row header = sheet.createRow(0);
-        header.createCell(0).setCellValue("Id");
-        header.getCell(0).setCellStyle(style);
-        header.createCell(1).setCellValue("Name");
-        header.getCell(1).setCellStyle(style);
-        header.createCell(2).setCellValue("Mobile");
-        header.getCell(2).setCellStyle(style);
-        header.createCell(3).setCellValue("Email");
-        header.getCell(3).setCellStyle(style);
-        header.createCell(4).setCellValue("Rent");
-        header.getCell(4).setCellStyle(style);
-        header.createCell(5).setCellValue("Security");
-        header.getCell(5).setCellStyle(style);
+        for (int i = 0; i < headerName.length; i++) {
+        	header.createCell(i).setCellValue(headerName[i]);
+            header.getCell(i).setCellStyle(style);
+		}
+        
+       
         
         int rowCount = 1;
 
-        for(GuestDetail detail : roomBookDetails){
-            Row userRow =  sheet.createRow(rowCount++);
-            userRow.createCell(0).setCellValue(detail.getId());
-            userRow.createCell(1).setCellValue(detail.getfName());
-            userRow.createCell(2).setCellValue(detail.getMobile());
-            userRow.createCell(3).setCellValue(detail.getEmail());
-            userRow.createCell(4).setCellValue(detail.getRent());
-            userRow.createCell(5).setCellValue(detail.getSecurity());
+        for(Object detail : list){
+            Row row =  sheet.createRow(rowCount++);
+            for (int i = 0; i < fields.length; i++) {
+            	String subProperty []=fields[i].split("\\.");
+            	final Field  field=detail.getClass().getDeclaredField(subProperty[0]);
+            	final Transient t = field.getAnnotation(Transient.class);
+				if(null!=t) {
+					final String methodName="get"+field.getName().substring(0, 1).toUpperCase()+field.getName().substring(1);
+					final Method m = detail.getClass().getMethod(methodName, clss);
+					final Object v=m.invoke(detail,obj);
+					setCellValue(i, v, row);	
+					continue;
+				}
+				if(null!=field) {
+					field.setAccessible(true);
+					final Object value=field.get(detail);
+					if(null!=value) {
+						if(subProperty.length>1) {
+							final Field subField=value.getClass().getDeclaredField(subProperty[1]);
+							subField.setAccessible(true);
+							final Object subValue=subField.get(value);
+							setCellValue(i, subValue, row);		
+						}else {
+							setCellValue(i, value, row);	
+						}
+						
+					}else {
+						setCellValue(i, value, row);	
+					}
+				}
+			}
          }
 
     }
+	
+	private void setCellValue(int i,Object value,Row row) {
+		if(null!=value) {
+			if(value instanceof Number) {
+				final Number _n=(Number)value;
+				row.createCell(i).setCellValue(_n.doubleValue());
+			}else {
+				row.createCell(i).setCellValue((String)value);
+			}
+			row.createCell(i).setCellValue("");
+		}
+		
+	}
 	
 }

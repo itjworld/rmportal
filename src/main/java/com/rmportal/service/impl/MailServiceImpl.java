@@ -72,7 +72,7 @@ public class MailServiceImpl implements MailService {
 				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 				PdfWriter.getInstance(document, outputStream);
 				document.open();
-				pdfView.getPDFDocument(document, infoService.getRecords());
+				//pdfView.getPDFDocument(document, infoService.getRecords());
 				document.close();
 				byte[] bytes = outputStream.toByteArray();
 				// construct the pdf body part

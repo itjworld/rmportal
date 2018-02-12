@@ -131,7 +131,6 @@ public class GuestPayment implements Serializable {
 	}
 
 	public Date getCreateDateTime() {
-		setCurrentMonth(createDateTime.toString());
 		return createDateTime;
 	}
 
@@ -172,6 +171,7 @@ public class GuestPayment implements Serializable {
 	}
 
 	public String getCurrentMonth() {
+		setCurrentMonth(createDateTime.toString());
 		return currentMonth;
 	}
 
