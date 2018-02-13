@@ -30,6 +30,7 @@ import com.rmportal.vo.EnquiryVO;
 import com.rmportal.vo.MappingDTO;
 import com.rmportal.vo.PortalInformationVO;
 import com.rmportal.vo.RecordVO;
+import com.rmportal.vo.ResponseMessage;
 
 @RestController
 @RequestMapping(value = "/api/v1")
@@ -140,9 +141,9 @@ public class RequestController {
 	}
 
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public ResponseEntity<Boolean> registration(@RequestBody User user) {
+	public ResponseEntity<ResponseMessage> registration(@RequestBody User user) {
 		LOGGER.debug("registration - >:{}",user.getfName());
-		return new ResponseEntity<Boolean>(userService.register(user), HttpStatus.OK);
+		return new ResponseEntity<ResponseMessage>(userService.register(user), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/records", method = RequestMethod.GET)
