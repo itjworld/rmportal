@@ -36,7 +36,7 @@ public class ExcelView extends AbstractXlsView{
 			fileName="attachment; filename=download.xls";
 		}
 		response.setHeader("Content-Disposition", fileName);
-		Sheet sheet = workbook.createSheet(sheetName);
+		final Sheet sheet = workbook.createSheet(sheetName);
         sheet.setDefaultColumnWidth(30);
 
         // create style for header cells
@@ -47,8 +47,8 @@ public class ExcelView extends AbstractXlsView{
         font.setBold(true);
         style.setFont(font);
 
-
-        Row header = sheet.createRow(0);
+        int rowCount = 0;
+        final Row header = sheet.createRow(rowCount);
         for (int i = 0; i < headerName.length; i++) {
         	header.createCell(i).setCellValue(headerName[i]);
             header.getCell(i).setCellStyle(style);
@@ -56,10 +56,10 @@ public class ExcelView extends AbstractXlsView{
         
        
         
-        int rowCount = 1;
+        
 
         for(Object detail : list){
-            Row row =  sheet.createRow(rowCount++);
+        	final Row row =  sheet.createRow(++rowCount);
             for (int i = 0; i < fields.length; i++) {
             	String subProperty []=fields[i].split("\\.");
             	final Field  field=detail.getClass().getDeclaredField(subProperty[0]);
@@ -93,7 +93,7 @@ public class ExcelView extends AbstractXlsView{
 
     }
 	
-	private void setCellValue(int i,Object value,Row row) {
+	private void setCellValue(int i,Object value,final Row row) {
 		if(null!=value) {
 			if(value instanceof Number) {
 				final Number _n=(Number)value;
@@ -101,6 +101,7 @@ public class ExcelView extends AbstractXlsView{
 			}else {
 				row.createCell(i).setCellValue((String)value);
 			}
+		}else {
 			row.createCell(i).setCellValue("");
 		}
 		

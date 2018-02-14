@@ -1,6 +1,7 @@
 package com.rmportal.service.impl;
 
 import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
@@ -19,9 +20,9 @@ import org.springframework.stereotype.Service;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.rmportal.service.InfoService;
 import com.rmportal.service.MailService;
 import com.rmportal.view.PdfView;
+import com.rmportal.vo.MailDetails;
 
 @Service
 public class MailServiceImpl implements MailService {
@@ -32,22 +33,14 @@ public class MailServiceImpl implements MailService {
 	@Autowired
 	private PdfView pdfView;
 
-	@Autowired
-	private InfoService infoService;
-
 	@Override
-	public String sendEmail(String recepients, String subject, String cc, String message) {
+	public String sendEmail(MailDetails mail) {
 
-		MimeMessagePreparator preparator = getContentWithAttachementMessagePreparator(recepients, subject, cc, message);
+		MimeMessagePreparator preparator = getContentWithAttachementMessagePreparator(mail.getTo(), mail.getSubject(), mail.getCc(), mail.getMessage());
 
 		try {
 			mailSender.send(preparator);
 			System.out.println("Message With Attachement has been sent.............................");
-			// preparator =
-			// getContentAsInlineResourceMessagePreparator(recepients);
-			// mailSender.send(preparator);
-			// System.out.println("Message With Inline Resource has been
-			// sent.........................");
 			return "{\"message\": \"OK\"}";
 		} catch (MailException ex) {
 			System.err.println(ex.getMessage());
@@ -101,7 +94,45 @@ public class MailServiceImpl implements MailService {
 		};
 		return preparator;
 	}
+	
+	private byte[] getPDFBytes(List<?> data, String[] headerName, String[] fields) throws Exception {
+		byte[] bytes;
+		Document document = new Document(PageSize.A4.rotate(), 36, 36, 54, 36);
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		PdfWriter.getInstance(document, outputStream);
+		document.open();
+		pdfView.getPDFDocument(document, data,headerName,fields);
+		document.close();
+		bytes= outputStream.toByteArray();
+		outputStream.close();
+		return bytes;
+	}
+	private void addAttachment(final String fileName,final byte[] bytes,final String type,final MimeMessageHelper helper) throws MessagingException {
+		DataSource dataSource = new ByteArrayDataSource(bytes, type);
+		helper.addAttachment(fileName, dataSource);
+	}
+	private MimeMessageHelper createMailMessage(final String from,final String to, final String cc,final String bcc, final String subject,final String body,final MimeMessage message) throws MessagingException {
+		MimeMessageHelper helper = new MimeMessageHelper(message, true);
+		helper.setFrom(from);
+		helper.setTo(setInternetAddress(to));
+		if(StringUtils.isNotEmpty(cc)) {
+			helper.setCc(setInternetAddress(cc));
+		}
+		if(StringUtils.isNotEmpty(bcc)) {
+			helper.setBcc(setInternetAddress(bcc));
+		}
+		helper.setText(body);
+		return helper;
+	}
+	
+	private String[] setInternetAddress(final String recepients) {
+		if (recepients.contains(";")) {
+			return recepients.split(";");
+		}
+		return recepients.split(",");
+	}
 
+	@SuppressWarnings("unused")
 	private MimeMessagePreparator getContentAsInlineResourceMessagePreparator(final String recepients) {
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
@@ -125,11 +156,11 @@ public class MailServiceImpl implements MailService {
 		return preparator;
 	}
 
-	public String triggerEmail(String content, String receipients, String cc, String subject) {
+	public String triggerEmail(MailDetails mail) {
 		SimpleMailMessage message = new SimpleMailMessage();
-		message.setText(content);
-		message.setTo(receipients.split(","));
-		message.setSubject(subject);
+		message.setText(mail.getMessage());
+		message.setTo(mail.getTo().split(","));
+		message.setSubject(mail.getSubject());
 		message.setFrom("test@gmail.com");
 		try {
 			mailSender.send(message);
@@ -140,4 +171,26 @@ public class MailServiceImpl implements MailService {
 		}
 	}
 
+	@Override
+	public String sendEmail(MailDetails mail, List<?> data, String[] headerName, String[] fields,final String fileName) {
+		MimeMessage message=null;
+		MimeMessageHelper helper=null;
+		try {
+			message= mailSender.createMimeMessage();
+			helper=createMailMessage("alert@gmail.com", mail.getTo(), mail.getCc(), null, mail.getSubject(), mail.getMessage(), message);
+			addAttachment(fileName, getPDFBytes(data, headerName, fields), "application/pdf", helper);
+			mailSender.send(message);
+			System.out.println("Message With Attachement has been sent.............................");
+			return "{\"message\": \"OK\"}";
+		} catch (Exception ex) {
+			System.err.println(ex.getMessage());
+			return "{\"message\": \"ERROR\"}";
+		}finally {
+			helper=null;
+			message=null;
+		}
+	}
+
+	
+	
 }

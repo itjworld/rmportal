@@ -1,7 +1,13 @@
 package com.rmportal.service;
 
-public interface MailService {
-	String sendEmail(String recepients, String subject, String cc, String message);
+import java.util.List;
 
-	String triggerEmail(String content, String receipients, String cc, String subject);
+import com.rmportal.vo.MailDetails;
+
+public interface MailService {
+	String sendEmail(MailDetails mail);
+
+	String triggerEmail(MailDetails mail);
+	
+	String sendEmail(MailDetails mail,List<?> data,String headerName[],String fields [],final String fileName);
 }

@@ -8,6 +8,9 @@ public class MailDetails implements Serializable {
 	private String cc;
 	private String subject;
 	private String message;
+	private String type;
+	private String reference;
+	
 
 	public String getTo() {
 		return to;
@@ -40,5 +43,23 @@ public class MailDetails implements Serializable {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getReference() {
+		return reference;
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+	
+	
 
 }

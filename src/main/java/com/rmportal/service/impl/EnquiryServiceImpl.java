@@ -9,6 +9,7 @@ import com.rmportal.repositories.EnquiryRepository;
 import com.rmportal.service.EnquiryService;
 import com.rmportal.service.MailService;
 import com.rmportal.vo.EnquiryVO;
+import com.rmportal.vo.MailDetails;
 
 @Service
 public class EnquiryServiceImpl implements EnquiryService {
@@ -31,8 +32,11 @@ public class EnquiryServiceImpl implements EnquiryService {
 			Enquiry exist = enquiryRepository.findByForEmailAndMobile(enquiry.getEmail(), enquiry.getMobile());
 			if (null == exist) {
 				exist = enquiryRepository.save(enquiry);
-				mailService.triggerEmail(String.format("Hi\n\nPlease find below mentioned details for new enquiry:\n%s\n\nThanks", enquiry.toString()),
-						receipients, null, enqSubject);
+				MailDetails mailDetails= new MailDetails();
+				mailDetails.setMessage("Hi\n\nPlease find below mentioned details for new enquiry:\n%s\n\nThanks");
+				mailDetails.setTo(receipients);
+				mailDetails.setSubject(enqSubject);
+				mailService.triggerEmail(mailDetails);
 			}
 			return convert(exist);
 		} catch (Exception ex) {

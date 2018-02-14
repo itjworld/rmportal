@@ -32,8 +32,16 @@ public class DownloadController {
 	}
 
 	@RequestMapping(value = "/mr/download", method = RequestMethod.GET)
-	public ModelAndView myRecords(Model model) {
-		model.addAttribute("data", infoService.getRecords());
+	public ModelAndView myRecords(Model model,@RequestParam(required = true) String username) {
+		String headerName[] = { "Id", "Rent", "Electricity Paid", "Electricity Bill", "Security", "Month" };
+		String headerNameCSV[] = { "Id", "Rent", "ElecBillPaid", "ElectricBill", "Security", "CurrentMonth" };
+		String fields[] = { "id", "rent", "elecBillPaid", "electricBill", "security", "currentMonth" };
+		model.addAttribute("fileName", "myrecord");
+		model.addAttribute("headerName", headerName);
+		model.addAttribute("headerNameCSV", headerNameCSV);
+		model.addAttribute("fields", fields);
+		model.addAttribute("sheetName", "Rent-Electricity Bill Details");
+		model.addAttribute("data", infoService.getMyRecords(username).getData());
 		return new ModelAndView("excelView");
 	}
 
