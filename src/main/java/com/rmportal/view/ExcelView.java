@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -43,9 +43,10 @@ public class ExcelView extends AbstractXlsView{
         CellStyle style = workbook.createCellStyle();
         Font font = workbook.createFont();
         font.setFontName("Arial");
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        //style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         font.setBold(true);
         style.setFont(font);
+        style.setAlignment(HorizontalAlignment.CENTER);
 
         int rowCount = 0;
         final Row header = sheet.createRow(rowCount);

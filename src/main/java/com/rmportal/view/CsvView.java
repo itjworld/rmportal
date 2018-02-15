@@ -16,7 +16,8 @@ public class CsvView extends AbstractCsvView{
 	@Override
 	protected void buildCsvDocument(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		String header [] =(String[]) model.get("headerNameCSV");
+		String header [] =(String[]) model.get("headerName");
+		String fields []  =(String[]) model.get("fields");
 		String fileName  =(String) model.get("fileName");
 		List<?> list = (List<?>) model.get("data");
 		if(null!=fileName) {
@@ -30,7 +31,7 @@ public class CsvView extends AbstractCsvView{
         csvWriter.writeHeader(header);
 
         for(Object detail : list){
-            csvWriter.write(detail, header);
+            csvWriter.write(detail, fields);
         }
         csvWriter.close();
 		
