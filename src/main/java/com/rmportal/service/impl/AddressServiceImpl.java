@@ -1,5 +1,6 @@
 package com.rmportal.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -82,6 +83,20 @@ public class AddressServiceImpl implements AddressService {
 			LOGGER.error("updateRoomInfo",ex);
 			return false;
 		}
+	}
+
+	@Override
+	public List<AddressInfo> getAddressInformation() {
+		final List<AddressInfo> addressInfos= new ArrayList<AddressInfo>();
+		final List<?> list=addressRepository.findAll();
+		list.forEach(x->{
+			Object [] o =(Object [])x;
+			AddressInfo addressInfo= new AddressInfo();
+			addressInfo.setStreet2((String)o[0]);
+			addressInfo.setId((Long)o[1]);
+			addressInfos.add(addressInfo);
+		});
+		return addressInfos;
 	}
 
 }

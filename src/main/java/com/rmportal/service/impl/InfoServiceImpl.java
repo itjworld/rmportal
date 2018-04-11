@@ -169,7 +169,7 @@ public class InfoServiceImpl implements InfoService {
 	}
 
 	@Override
-	public RecordVO getRecords(int page, int limit, String sort, String order, String searchParam) {
+	public RecordVO getRecords(int page, int limit, String sort, String order, String searchParam,Long address) {
 		RecordVO recordVO = new RecordVO();
 		PageRequest pageRequest = null;
 		Page<GuestDetail> records = null;
@@ -187,9 +187,17 @@ public class InfoServiceImpl implements InfoService {
 		}
 
 		if (searchParam != null && searchParam.trim().length() > 0) {
-			records = roomBookDetailRepository.findAll(searchParam, searchParam, searchParam, pageRequest);
+			if(null!=address && address>0) {
+				records = roomBookDetailRepository.findAll(searchParam, searchParam, searchParam, address,pageRequest);
+			}else {
+				records = roomBookDetailRepository.findAll(searchParam, searchParam, searchParam, pageRequest);
+			}
 		} else {
-			records = roomBookDetailRepository.findAllByStatus(pageRequest, true);
+			if(null!=address && address>0) {
+				records = roomBookDetailRepository.findAllByStatus(pageRequest, true,address);
+			}else {
+				records = roomBookDetailRepository.findAllByStatus(pageRequest, true);
+			}
 		}
 		recordVO.setTotal(records.getTotalElements());
 		recordVO.setData(records.getContent());

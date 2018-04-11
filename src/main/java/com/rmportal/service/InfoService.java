@@ -29,7 +29,7 @@ public interface InfoService {
 
 	List<GuestDetail> getRecords();
 
-	RecordVO getRecords(int page, int limit, String sort, String order, String searchParam);
+	RecordVO getRecords(int page, int limit, String sort, String order, String searchParam,Long address);
 
 	boolean updateRecords(GuestDetail record);
 
@@ -43,5 +43,6 @@ public interface InfoService {
 	boolean updateRentDetails(GuestPayment guestPayment);
 	
 	PortalInformationVO getDetailsById(long id);
+	
 
 }

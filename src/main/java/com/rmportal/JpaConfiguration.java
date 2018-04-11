@@ -128,5 +128,4 @@ public class JpaConfiguration {
 		txManager.setEntityManagerFactory(emf);
 		return txManager;
 	}
-
 }

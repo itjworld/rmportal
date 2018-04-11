@@ -1,6 +1,7 @@
 package com.rmportal.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,8 @@ public interface AddressRepository extends JpaRepository<AddressInfo, Long> {
 	
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
 	List<AddressInfo> findByLocation(PortalInfo location);
+	
+	@Query("SELECT DISTINCT A.street2,A.id from AddressInfo A")
+	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
+	List<AddressInfo> findAll();
 }

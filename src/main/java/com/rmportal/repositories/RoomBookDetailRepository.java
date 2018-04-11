@@ -25,9 +25,18 @@ public interface RoomBookDetailRepository extends JpaRepository<GuestDetail, Lon
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
 	Page<GuestDetail> findAll(@Param("fName") String fName, @Param("mobile") String mobile, @Param("email") String email, Pageable pageable);
 	
+	
+	@Query("SELECT B FROM GuestDetail B JOIN B.mapping M WHERE (B.fName LIKE :fName OR B.mobile LIKE :mobile OR B.email LIKE :email) AND M.address.id=:addressId  AND B.active=" + true)
+	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
+	Page<GuestDetail> findAll(@Param("fName") String fName, @Param("mobile") String mobile, @Param("email") String email, @Param("addressId") Long addressId, Pageable pageable);
+	
 	@Query("SELECT B FROM GuestDetail B WHERE B.active=:status")
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
 	Page<GuestDetail> findAllByStatus(Pageable pageable, @Param("status") boolean status);
+	
+	@Query("SELECT B FROM GuestDetail B JOIN B.mapping M WHERE B.active=:status AND M.address.id=:addressId")
+	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
+	Page<GuestDetail> findAllByStatus(Pageable pageable, @Param("status") boolean status,@Param("addressId") Long addressId);
 	
 	@Query("SELECT COUNT(DISTINCT B.id) FROM GuestDetail B WHERE B.active=:status")
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
