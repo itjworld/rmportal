@@ -146,13 +146,13 @@ public class RequestController {
 		return new ResponseEntity<ResponseMessage>(userService.register(user), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/records", method = RequestMethod.GET)
+	@RequestMapping(value = "/records/{address}", method = RequestMethod.GET)
 	public ResponseEntity<RecordVO> getRecords(@RequestBody @RequestParam(name="_page",required = false) int page,
 			@RequestParam(name="_limit",required = false) int limit,
 			@RequestParam(name="_sort",required = false) String sort,
-			@RequestParam(name="_order",required = false) String order,@RequestParam(name="_searchParam",required = false) String searchParam) {
-		LOGGER.debug("getRecords - >:Page:{} :: Limit:{} :: Sort:{} :: Order:{} :: searchParam:{}",page,limit,sort,order,searchParam);
-		return new ResponseEntity<RecordVO>(infoService.getRecords(page,limit,sort,order,searchParam), HttpStatus.OK);
+			@RequestParam(name="_order",required = false) String order,@RequestParam(name="_searchParam",required = false) String searchParam,@PathVariable Long address) {
+		LOGGER.debug("getRecords - >:Page:{} :: Limit:{} :: Sort:{} :: Order:{} :: searchParam:{} :: address:{}",page,limit,sort,order,searchParam,address );
+		return new ResponseEntity<RecordVO>(infoService.getRecords(page,limit,sort,order,searchParam,address), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/myrecords", method = RequestMethod.POST)
@@ -186,5 +186,12 @@ public class RequestController {
 		LOGGER.debug("Get Rent Dteail update - > {}", guestPayment.getElectricBill());
 		return new ResponseEntity<Boolean>(infoService.updateRentDetails(guestPayment), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/address/detail", method = RequestMethod.GET)
+	public ResponseEntity<List<AddressInfo>> getAddressDetails() {
+		return new ResponseEntity<List<AddressInfo>>(addressService.getAddressInformation(), HttpStatus.OK);
+	}
+	
+	
 	
 }
