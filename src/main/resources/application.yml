@@ -23,12 +23,12 @@ spring:
   profiles: default
 datasource:
   rmportal:
-    url: jdbc:mysql://localhost:3306/H5x?useSSL=false
+    url: jdbc:mysql://localhost:3306/rmportal?useSSL=false
     username: root
     password: root
     driverClassName: com.mysql.cj.jdbc.Driver
     defaultSchema:
-    maxPoolSize: 10
+    maxPoolSize: 20
     hibernate:
       hbm2ddl.method: update
       show_sql: true

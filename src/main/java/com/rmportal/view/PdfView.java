@@ -48,7 +48,7 @@ public class PdfView extends AbstractPdfView {
 		//document.add(new Paragraph("Room Book Details " + LocalDate.now()));
 		Class<?> clss[] = {};
 		Object [] obj= {};
-		PdfPTable table = new PdfPTable(6);
+		PdfPTable table = new PdfPTable(fields.length);
 		table.setWidthPercentage(100.0f);
 		table.setSpacingBefore(10);
 

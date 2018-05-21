@@ -12,6 +12,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
@@ -36,6 +38,8 @@ public class CacheController {
 	
 	@Autowired
 	private Environment environment;
+	
+	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	@RequestMapping(value = "/clearstatics")
 	public ResponseEntity<Void> clearstatics() {
@@ -85,6 +89,41 @@ public class CacheController {
         FileCopyUtils.copy(inputStream, response.getOutputStream());
         response.getOutputStream().close();
         response.getOutputStream().flush();
+	}
+	
+	@RequestMapping(value = "/download/bk", method = RequestMethod.GET)
+	public void backup(HttpServletResponse response) {
+		LOGGER.debug("inside method backup");
+		InputStream in = null;
+		try {
+			File file = new File("rmportal_bk.sql");
+			Runtime runtime = Runtime.getRuntime();
+			Process p = runtime.exec("mysqldump -u" + "root" + " -p"
+					+ "root" + " -B rmportal");
+			in = p.getInputStream();
+			String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+			if (mimeType == null) {
+				LOGGER.debug("mimetype is not detectable, will take default");
+				mimeType = "application/octet-stream";
+			}
+			LOGGER.debug("mimetype : {}", mimeType);
+			mimeType = "application/octet-stream";
+			response.setContentType(mimeType);
+			response.setCharacterEncoding("UTF-8");
+			response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + file.getName() + "\""));
+			// response.setContentLength((int)file.length());
+			FileCopyUtils.copy(in, response.getOutputStream());
+			response.getOutputStream().close();
+			response.getOutputStream().flush();
+		} catch (Exception ex) {
+			LOGGER.error("exception generating while taking backup of database : {}", ex);
+		} finally {
+			try {
+				in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

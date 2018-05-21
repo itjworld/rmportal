@@ -121,6 +121,7 @@ public class MailServiceImpl implements MailService {
 		if(StringUtils.isNotEmpty(bcc)) {
 			helper.setBcc(setInternetAddress(bcc));
 		}
+		helper.setSubject(subject);
 		helper.setText(body);
 		return helper;
 	}

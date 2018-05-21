@@ -57,6 +57,15 @@ public class GuestDetail implements Serializable {
 
 	@Column(name = "ADDRESS")
 	private String address;
+	
+	@Column(name = "PROFESSION_ADDRESS")
+	private String paddress;
+	
+	@Column(name = "PROFESSION")
+	private String profession;
+	
+	@Column(name = "CHECK_IN_DATE")
+	private String checkindate;
 
 	@Transient
 	private int rent = 0;
@@ -241,6 +250,30 @@ public class GuestDetail implements Serializable {
 
 	public void setPaymentList(List<GuestPayment> paymentList) {
 		this.paymentList = paymentList;
+	}
+
+	public String getPaddress() {
+		return paddress;
+	}
+
+	public void setPaddress(String paddress) {
+		this.paddress = paddress;
+	}
+
+	public String getProfession() {
+		return profession;
+	}
+
+	public void setProfession(String profession) {
+		this.profession = profession;
+	}
+
+	public String getCheckindate() {
+		return checkindate;
+	}
+
+	public void setCheckindate(String checkindate) {
+		this.checkindate = checkindate;
 	}
 
 }

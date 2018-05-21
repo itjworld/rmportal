@@ -19,8 +19,8 @@ public class DownloadController {
 
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
 	public ModelAndView download(Model model) {
-		String headerName[] = { "Id", "Name", "Mobile", "Email", "Rent", "Security" };
-		String fields[] = { "id", "fName", "mobile", "email", "rent", "security" };
+		String headerName[] = { "Id", "Name", "Mobile", "Email", "Rent", "Security", "Check_In_Date" };
+		String fields[] = { "id", "fName", "mobile", "email", "rent", "security", "checkindate" };
 		model.addAttribute("fileName", "records");
 		model.addAttribute("headerName", headerName);
 		model.addAttribute("fields", fields);

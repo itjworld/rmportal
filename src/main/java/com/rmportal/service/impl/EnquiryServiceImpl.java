@@ -32,8 +32,10 @@ public class EnquiryServiceImpl implements EnquiryService {
 			Enquiry exist = enquiryRepository.findByForEmailAndMobile(enquiry.getEmail(), enquiry.getMobile());
 			if (null == exist) {
 				exist = enquiryRepository.save(enquiry);
-				MailDetails mailDetails= new MailDetails();
-				mailDetails.setMessage("Hi\n\nPlease find below mentioned details for new enquiry:\n%s\n\nThanks");
+				MailDetails mailDetails = new MailDetails();
+				mailDetails.setMessage(
+						"Hi\n\nPlease find below mentioned details for new enquiry:\nName : " + enquiry.getName()
+								+ "\nEmail : " + enquiry.getEmail() + "\nMobile : " + enquiry.getMobile() + "\nThanks");
 				mailDetails.setTo(receipients);
 				mailDetails.setSubject(enqSubject);
 				mailService.triggerEmail(mailDetails);

@@ -1,0 +1,12 @@
+INSERT INTO `rm_portal_info` (`ID`,`CODE`,`NAME`,`STATUS`,`TYPE`,`VALUE`) VALUES (1,'GEN01','Male','1','GENDER',0);
+INSERT INTO `rm_portal_info` (`ID`,`CODE`,`NAME`,`STATUS`,`TYPE`,`VALUE`) VALUES (2,'GEN02','Female','1','GENDER',0);
+INSERT INTO `rm_portal_info` (`ID`,`CODE`,`NAME`,`STATUS`,`TYPE`,`VALUE`) VALUES (3,'LOC01','Delhi','1','LOCATION',0);
+INSERT INTO `rm_portal_info` (`ID`,`CODE`,`NAME`,`STATUS`,`TYPE`,`VALUE`) VALUES (4,'LOC02','Gurgaon','1','LOCATION',0);
+INSERT INTO `rm_portal_info` (`ID`,`CODE`,`NAME`,`STATUS`,`TYPE`,`VALUE`) VALUES (5,'LOC03','Noida','1','LOCATION',0);
+INSERT INTO `rm_portal_info` (`ID`,`CODE`,`NAME`,`STATUS`,`TYPE`,`VALUE`) VALUES (6,'AC01','AC','1','AC',0);
+INSERT INTO `rm_portal_info` (`ID`,`CODE`,`NAME`,`STATUS`,`TYPE`,`VALUE`) VALUES (7,'AC02','Non AC','1','AC',0);
+INSERT INTO `rm_portal_info` (`ID`,`CODE`,`NAME`,`STATUS`,`TYPE`,`VALUE`) VALUES (9,'RM01','Single','1','ROOM',1);
+INSERT INTO `rm_portal_info` (`ID`,`CODE`,`NAME`,`STATUS`,`TYPE`,`VALUE`) VALUES (10,'RM02','Double','1','ROOM',2);
+INSERT INTO `rm_portal_info` (`ID`,`CODE`,`NAME`,`STATUS`,`TYPE`,`VALUE`) VALUES (11,'RM03','Tripple','1','ROOM',3);
+INSERT INTO `rm_portal_info` (`ID`,`CODE`,`NAME`,`STATUS`,`TYPE`,`VALUE`) VALUES (12,'RM04','Four','1','ROOM',4);
+INSERT INTO `rm_portal_info` (`ID`,`CODE`,`NAME`,`STATUS`,`TYPE`,`VALUE`) VALUES (13,'RM05','Five','1','ROOM',5);
