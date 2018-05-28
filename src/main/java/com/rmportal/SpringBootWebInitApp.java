@@ -18,6 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class SpringBootWebInitApp extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
+		
 		SpringApplication.run(SpringBootWebInitApp.class, args);
 	}
 
