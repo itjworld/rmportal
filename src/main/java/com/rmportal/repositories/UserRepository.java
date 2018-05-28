@@ -18,5 +18,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	User validate(@Param("username") String username, @Param("password") String password);
 
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
+	@Query("SELECT u from User u WHERE u.username = :username OR u.email = :email")
+	User findByUsername(@Param("username") String username, @Param("email") String email);
+	
+	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
 	User findByUsername(String username);
 }

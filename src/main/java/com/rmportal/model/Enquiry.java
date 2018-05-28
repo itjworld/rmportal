@@ -39,7 +39,7 @@ public class Enquiry implements Serializable {
 	@Column(name = "mobile")
 	private String mobile;
 
-	@Column(name = "active")
+	@Column(name = "active", columnDefinition="TINYINT(1)")
 	private boolean active = true;
 
 	@Temporal(TemporalType.TIMESTAMP)

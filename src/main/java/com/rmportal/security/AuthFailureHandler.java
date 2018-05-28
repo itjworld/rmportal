@@ -20,12 +20,6 @@ import org.springframework.stereotype.Component;
 
 import com.rmportal.enums.Credential;
 
-
-
-/**
- * @author Ashish Jaiswal
- *
- */
 @Component
 public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler{
 	
@@ -41,7 +35,7 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler{
 		}else if(exception instanceof LockedException) {
 			jo.put("message",Credential.LOCKED.name());
 		}else if(exception instanceof DisabledException) {
-			jo.put("message",Credential.DISABLED.name());
+			jo.put("message","User are not active!");
 		}else if(exception instanceof AccountExpiredException) {
 			jo.put("message",Credential.EXPIRED.name());
 		}else if(exception instanceof CredentialsExpiredException) {

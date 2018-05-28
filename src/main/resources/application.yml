@@ -4,6 +4,10 @@ server:
   contextPath: /rmportal
 ---
 spring:
+  profiles:
+    active: "prod"
+---
+spring:
   profiles: local
 datasource:
   rmportal:
@@ -55,12 +59,12 @@ spring:
   profiles: prod
 datasource:
   rmportal:
-    url: jdbc:mysql://aae2919xc24v9s.czufkxkprcji.us-east-2.rds.amazonaws.com:3306/ebdb
+    url: jdbc:mysql://rmportal.c5acdafqk5l5.us-east-2.rds.amazonaws.com:3306/rmportal?useSSL=false
     username: root
-    password: root1234
-    driverClassName: com.mysql.jdbc.Driver
+    password: rmportalroot
+    driverClassName: com.mysql.cj.jdbc.Driver
     defaultSchema:
-    maxPoolSize: 10
+    maxPoolSize: 20
     hibernate:
       hbm2ddl.method: update
       show_sql: true

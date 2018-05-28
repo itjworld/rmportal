@@ -32,12 +32,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ResponseMessage register(User user) {
 		try {
-			if (userRepository.findByUsername(user.getUsername()) != null)
+			if (userRepository.findByUsername(user.getUsername(), user.getEmail()) != null)
 				return updateResponse("Username already registered", false);
 			GuestDetail guestDetail = roomBookDetailRepository.findByEmail(user.getEmail());
-			if (guestDetail != null) {
-				if (guestDetail.getEmail().equalsIgnoreCase(user.getEmail()))
-					return updateResponse("User already registered with email id", false);
+			if (guestDetail != null && guestDetail.getEmail().equalsIgnoreCase(user.getEmail())) {
+				user.setStatus(true);
 				userRepository.save(user);
 				return updateResponse("User Registered Successfully", true);
 			} else {

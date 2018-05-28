@@ -34,7 +34,7 @@ public class PortalInfo implements Serializable {
 	@Column(name = "TYPE")
 	private String type;
 
-	@Column(name = "STATUS", nullable = false)
+	@Column(name = "STATUS", columnDefinition="TINYINT(1)")
 	private boolean status;
 
 	@Column(name = "NAME", nullable = false)

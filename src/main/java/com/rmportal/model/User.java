@@ -23,10 +23,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-/**
- * @author Admin
- *
- */
 @Entity
 @Table(name = "RM_USER", uniqueConstraints = @UniqueConstraint(columnNames = { "email" }))
 @Cacheable
@@ -46,7 +42,7 @@ public class User implements Serializable {
 	private String password;
 	@Column(name = "EMAIL")
 	private String email;
-	@Column(name = "STATUS")
+	@Column(name = "STATUS", columnDefinition="TINYINT(1)")
 	private boolean status;
 	@Column(name = "FNAME")
 	private String fName;

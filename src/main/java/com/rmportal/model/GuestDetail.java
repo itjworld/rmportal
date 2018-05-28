@@ -91,7 +91,7 @@ public class GuestDetail implements Serializable {
 	@Transient
 	private Long addressId;
 
-	@Column(name = "ACTIVE")
+	@Column(name = "ACTIVE", columnDefinition="TINYINT(1)")
 	boolean active = true;
 
 	@Column(name = "UPDATED_DATETIME")

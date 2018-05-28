@@ -27,7 +27,7 @@ public class AuthService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException("Username " + username + " not found");
 		}
-		return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword() ,getGrantedAuthorities(user));
+		return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),user.isStatus(),true,true,true ,getGrantedAuthorities(user));
 	}
 
 	private Collection<? extends GrantedAuthority> getGrantedAuthorities(User user) {
