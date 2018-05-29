@@ -1,5 +1,7 @@
 package com.rmportal.controller;
 
+import static com.rmportal.util.Utility.getDateAsString;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,6 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -35,10 +38,10 @@ public class CacheController {
 
 	@Autowired
 	private CacheDataService cacheDataService;
-	
+
 	@Autowired
 	private Environment environment;
-	
+
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	@RequestMapping(value = "/clearstatics")
@@ -47,7 +50,7 @@ public class CacheController {
 		cacheDataService.clearstatics();
 		return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).header(HttpHeaders.LOCATION, "getstatics").build();
 	}
-	
+
 	@RequestMapping(value = "/clearstatics2")
 	public RedirectView clearstatics2() {
 		System.out.println("inside method clearstatics2()");
@@ -61,45 +64,43 @@ public class CacheController {
 		System.out.println("inside method getEhCacheStat()");
 		return new ResponseEntity<List<CacheDetails>>(cacheDataService.getEhCacheDetail(), HttpStatus.OK);
 	}
-	
-	
+
 	@RequestMapping(value = "/download/log", method = RequestMethod.GET)
 	public void logger(HttpServletResponse response) throws IOException {
 		File file = new File(environment.getRequiredProperty("logging.file"));
-        if(!file.exists()){
-            String errorMessage = "Sorry. The file you are looking for does not exist";
-            System.out.println(errorMessage);
-            OutputStream outputStream = response.getOutputStream();
-            outputStream.write(errorMessage.getBytes(Charset.forName("UTF-8")));
-            outputStream.close();
-            return;
-        }
-         
-        String mimeType= URLConnection.guessContentTypeFromName(file.getName());
-        if(mimeType==null){
-            System.out.println("mimetype is not detectable, will take default");
-            mimeType = "application/octet-stream";
-        }
-        System.out.println("mimetype : "+mimeType);
-         
-        response.setContentType(mimeType);
-        response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + file.getName() +"\""));
-        response.setContentLength((int)file.length());
-        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-        FileCopyUtils.copy(inputStream, response.getOutputStream());
-        response.getOutputStream().close();
-        response.getOutputStream().flush();
+		if (!file.exists()) {
+			String errorMessage = "Sorry. The file you are looking for does not exist";
+			System.out.println(errorMessage);
+			OutputStream outputStream = response.getOutputStream();
+			outputStream.write(errorMessage.getBytes(Charset.forName("UTF-8")));
+			outputStream.close();
+			return;
+		}
+
+		String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+		if (mimeType == null) {
+			System.out.println("mimetype is not detectable, will take default");
+			mimeType = "application/octet-stream";
+		}
+		System.out.println("mimetype : " + mimeType);
+
+		response.setContentType(mimeType);
+		response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + file.getName() + "\""));
+		response.setContentLength((int) file.length());
+		InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+		FileCopyUtils.copy(inputStream, response.getOutputStream());
+		response.getOutputStream().close();
+		response.getOutputStream().flush();
 	}
-	
+
 	@RequestMapping(value = "/download/bk", method = RequestMethod.GET)
 	public void backup(HttpServletResponse response) {
 		LOGGER.debug("inside method backup");
 		InputStream in = null;
 		try {
-			File file = new File("rmportal_bk.sql");
+			File file = new File("rmportal_bk_" + getDateAsString(new Date(), "ddMMyyyyHHmm") + ".sql");
 			Runtime runtime = Runtime.getRuntime();
-			Process p = runtime.exec("mysqldump -u" + "root" + " -p"
-					+ "root" + " -B rmportal");
+			Process p = runtime.exec("mysqldump -u" + "root" + " -p" + "root" + " -B rmportal");
 			in = p.getInputStream();
 			String mimeType = URLConnection.guessContentTypeFromName(file.getName());
 			if (mimeType == null) {

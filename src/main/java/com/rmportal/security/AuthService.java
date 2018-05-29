@@ -27,17 +27,14 @@ public class AuthService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException("Username " + username + " not found");
 		}
-		return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),user.isStatus(),true,true,true ,getGrantedAuthorities(user));
+		return new UserDetail(user.getUsername(),user.getPassword(),user.isStatus(),true,true,true ,getGrantedAuthorities(user), user.getEmail());
 	}
 
 	private Collection<? extends GrantedAuthority> getGrantedAuthorities(User user) {
 		Collection<SimpleGrantedAuthority> authorities= new ArrayList<SimpleGrantedAuthority>();
 		for(Role role : user.getRoles()){
-			System.out.println("Role : " + role.getName());
 			authorities.add(new SimpleGrantedAuthority(role.getName()));
 		}
-//		authorities.add(new SimpleGrantedAuthority("ROLE_BASIC"));
-//		authorities.add(new SimpleGrantedAuthority("ROLE_ADMI"));
 		return authorities;
 	}
 

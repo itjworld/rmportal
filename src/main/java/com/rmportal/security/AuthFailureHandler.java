@@ -31,11 +31,11 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler{
 		JSONObject jo= new JSONObject();
 		jo.put("status",HttpServletResponse.SC_UNAUTHORIZED);
 		if(exception instanceof BadCredentialsException) {
-			jo.put("message",Credential.BAD.name());
+			jo.put("message",Credential.BAD.val());
 		}else if(exception instanceof LockedException) {
 			jo.put("message",Credential.LOCKED.name());
 		}else if(exception instanceof DisabledException) {
-			jo.put("message","User are not active!");
+			jo.put("message",Credential.INACTIVE.val());
 		}else if(exception instanceof AccountExpiredException) {
 			jo.put("message",Credential.EXPIRED.name());
 		}else if(exception instanceof CredentialsExpiredException) {

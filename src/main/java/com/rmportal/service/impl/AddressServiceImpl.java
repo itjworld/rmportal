@@ -21,6 +21,8 @@ import com.rmportal.repositories.PortalMappingRepository;
 import com.rmportal.repositories.RoomBookDetailRepository;
 import com.rmportal.service.AddressService;
 import com.rmportal.vo.ContactInformationVO;
+import com.rmportal.vo.ResponseMessage;
+import static com.rmportal.util.Utility.*;
 
 @Service
 public class AddressServiceImpl implements AddressService {
@@ -64,11 +66,15 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	@Transactional
-	public boolean updateRoomInfo(GuestDetail guestDetail) {
+	public ResponseMessage updateRoomInfo(GuestDetail guestDetail) {
 		try {
 			PortalMappingInfo mapping = portalMappingRepository.getMapping(guestDetail.getAddressId(),
 					guestDetail.getRoomNo());
 			if (mapping != null) {
+				GuestDetail guest = roomBookDetailRepository.findByEmail(guestDetail.getEmail());
+				if(guest != null){
+					return updateResponse("Email id already configured.", false);
+				}
 				guestDetail.setMapping(mapping);
 				mapping.setOccupied(mapping.getOccupied() + 1);
 				roomBookDetailRepository.save(guestDetail);
@@ -77,11 +83,11 @@ public class AddressServiceImpl implements AddressService {
 				guestPayment.setGuestDetail(guestDetail);
 				guestPaymentRepository.save(guestPayment);
 			} else
-				return false;
-			return true;
+				return updateResponse("Room mapping not found with address", false);
+			return updateResponse("Room Booked Successfully.", true);
 		} catch (Exception ex) {
 			LOGGER.error("updateRoomInfo",ex);
-			return false;
+			return updateResponse("Problem exists while booking room.", false);
 		}
 	}
 

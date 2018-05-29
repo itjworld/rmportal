@@ -15,6 +15,7 @@ public class PortalInformationVO {
 	private int roomType;
 	private int occupied;
 	private String condition;
+	private String roomNo;
 	
 	public long getId() {
 		return id;
@@ -82,8 +83,11 @@ public class PortalInformationVO {
 	public void setCondition(String condition) {
 		this.condition = condition;
 	}
-	
-	
-	
+	public String getRoomNo() {
+		return roomNo;
+	}
+	public void setRoomNo(String roomNo) {
+		this.roomNo = roomNo;
+	}
 	
 }

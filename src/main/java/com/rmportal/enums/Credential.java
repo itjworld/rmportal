@@ -1,14 +1,18 @@
 package com.rmportal.enums;
 
-/**
- * @author Ashish Jaiswal
- *
- */
 public enum Credential {
-	BAD,
-	LOCKED,
-	DISABLED,
-	EXPIRED,
-	CREDENTIAL_EXPIRED
-	
+	BAD("Invalid login/password"), LOCKED, DISABLED, EXPIRED, CREDENTIAL_EXPIRED, INACTIVE("User status is not active");
+	String message;
+
+	Credential(String message) {
+		this.message = message;
+	}
+
+	Credential() {
+
+	}
+
+	public String val() {
+		return message;
+	}
 }

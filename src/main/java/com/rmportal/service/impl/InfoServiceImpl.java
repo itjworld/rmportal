@@ -29,6 +29,7 @@ import com.rmportal.repositories.InfoRepository;
 import com.rmportal.repositories.PortalMappingRepository;
 import com.rmportal.repositories.RoomBookDetailRepository;
 import com.rmportal.service.InfoService;
+import com.rmportal.util.PortalMappingComparator;
 import com.rmportal.vo.ContactInformationVO;
 import com.rmportal.vo.MappingDTO;
 import com.rmportal.vo.PortalInformationVO;
@@ -82,7 +83,7 @@ public class InfoServiceImpl implements InfoService {
 
 	private List<PortalInformationVO> convert(List<PortalMappingInfo> details) {
 		if (!details.isEmpty()) {
-			return details.stream().map(x -> convertView(x)).collect(Collectors.toList());
+			return details.stream().sorted(new PortalMappingComparator()).map(x -> convertView(x)).collect(Collectors.toList());
 		}
 
 		return Collections.emptyList();
@@ -94,6 +95,7 @@ public class InfoServiceImpl implements InfoService {
 		informationVO.setDeposit(info.getDeposit());
 		informationVO.setRent(info.getRent());
 		informationVO.setRoomType(info.getRoomType().getValue());
+		informationVO.setRoomNo(info.getRoomNumber() + ". ");
 		informationVO.setOccupied(info.getOccupied());
 		if (null != info.getGender()) {
 			informationVO.setGender(info.getGender().getName());
@@ -141,6 +143,11 @@ public class InfoServiceImpl implements InfoService {
 	@Override
 	@Transactional(readOnly = false)
 	public PortalMappingInfo save(MappingDTO mapping) {
+		PortalMappingInfo roomMapping = portalMappingRepository.getMapping(mapping.getAddressId(),
+				mapping.getRoomNo());
+		if(roomMapping != null){
+			throw new RuntimeException("Room already mapped with the given address.");
+		}
 		PortalMappingInfo mappingRef = new PortalMappingInfo();
 		mappingRef.setDeposit(mapping.getSecurity());
 		mappingRef.setDesc(mapping.getDesc());

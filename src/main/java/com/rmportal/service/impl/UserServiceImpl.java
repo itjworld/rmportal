@@ -1,12 +1,19 @@
 package com.rmportal.service.impl;
 
+import static com.rmportal.util.Utility.updateResponse;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.rmportal.model.GuestDetail;
+import com.rmportal.model.Role;
 import com.rmportal.model.User;
+import com.rmportal.repositories.RoleRepository;
 import com.rmportal.repositories.RoomBookDetailRepository;
 import com.rmportal.repositories.UserRepository;
 import com.rmportal.service.UserService;
@@ -19,6 +26,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
 
 	@Autowired
 	private RoomBookDetailRepository roomBookDetailRepository;
@@ -37,6 +47,9 @@ public class UserServiceImpl implements UserService {
 			GuestDetail guestDetail = roomBookDetailRepository.findByEmail(user.getEmail());
 			if (guestDetail != null && guestDetail.getEmail().equalsIgnoreCase(user.getEmail())) {
 				user.setStatus(true);
+				Set<Role> roles = new HashSet<>();
+				roles.add(roleRepository.findByName("user"));
+				user.setRoles(roles);
 				userRepository.save(user);
 				return updateResponse("User Registered Successfully", true);
 			} else {
@@ -46,10 +59,6 @@ public class UserServiceImpl implements UserService {
 			LOGGER.error("register", ex);
 			return updateResponse("Problem exists while registration", false);
 		}
-	}
-
-	private ResponseMessage updateResponse(String message, boolean status) {
-		return new ResponseMessage(message, status);
 	}
 
 }

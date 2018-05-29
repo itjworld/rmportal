@@ -139,9 +139,9 @@ public class RequestController {
 	}
 
 	@RequestMapping(value = "/room/update", method = RequestMethod.POST)
-	public ResponseEntity<Boolean> updateRoomInfo(@RequestBody GuestDetail roomBookDetails) {
+	public ResponseEntity<ResponseMessage> updateRoomInfo(@RequestBody GuestDetail roomBookDetails) {
 		LOGGER.debug("updateRoomInfo - >  mobile:{}",roomBookDetails.getAddressId());
-		return new ResponseEntity<Boolean>(addressService.updateRoomInfo(roomBookDetails), HttpStatus.OK);
+		return new ResponseEntity<ResponseMessage>(addressService.updateRoomInfo(roomBookDetails), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
