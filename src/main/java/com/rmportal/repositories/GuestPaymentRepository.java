@@ -17,7 +17,7 @@ import com.rmportal.model.GuestPayment;
 public interface GuestPaymentRepository extends JpaRepository<GuestPayment, Long> {
 	List<GuestPayment> findByGuestDetail(GuestDetail guestdetail);
 	
-	@Query("SELECT g from GuestPayment g WHERE g.guestDetail.email = :email")
+	@Query("SELECT g from GuestPayment g WHERE g.guestDetail.email = :email order by id desc")
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
 	List<GuestPayment> findByEmail(@Param("email") String email);
 	

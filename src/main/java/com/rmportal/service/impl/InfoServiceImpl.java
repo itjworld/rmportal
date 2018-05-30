@@ -180,17 +180,17 @@ public class InfoServiceImpl implements InfoService {
 		RecordVO recordVO = new RecordVO();
 		PageRequest pageRequest = null;
 		Page<GuestDetail> records = null;
+		Sort sorting = null;
 		if (sort != null && sort.trim().length() > 0) {
-			Sort sorting = null;
 			if ("roomNo".equalsIgnoreCase(sort))
 				sorting = new Sort(new Sort.Order("ASC".equalsIgnoreCase(order) ? Direction.ASC : Direction.DESC,
 						"mapping.roomNumber"));
 			else
-				sorting = new Sort(
-						new Sort.Order("ASC".equalsIgnoreCase(order) ? Direction.ASC : Direction.DESC, sort));
+				sorting = new Sort(new Sort.Order("ASC".equalsIgnoreCase(order) ? Direction.ASC : Direction.DESC, sort));
 			pageRequest = new PageRequest((page - 1), limit, sorting);
 		} else {
-			pageRequest = new PageRequest((page - 1), limit);
+			sorting = new Sort(new Sort.Order(Direction.ASC, "mapping.roomNumber"));
+			pageRequest = new PageRequest((page - 1), limit, sorting);
 		}
 
 		if (searchParam != null && searchParam.trim().length() > 0) {

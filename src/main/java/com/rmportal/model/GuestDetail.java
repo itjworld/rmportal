@@ -75,6 +75,9 @@ public class GuestDetail implements Serializable {
 
 	@Column(name = "Description")
 	private String desc;
+	
+	@Column(name = "DOB")
+	private String dob;
 
 	@JsonIgnore
 	@OneToOne
@@ -274,6 +277,14 @@ public class GuestDetail implements Serializable {
 
 	public void setCheckindate(String checkindate) {
 		this.checkindate = checkindate;
+	}
+
+	public String getDob() {
+		return dob;
+	}
+
+	public void setDob(String dob) {
+		this.dob = dob;
 	}
 
 }
