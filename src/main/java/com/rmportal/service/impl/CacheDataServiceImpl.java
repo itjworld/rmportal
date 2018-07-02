@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
 
+import org.hibernate.Cache;
 import org.hibernate.SessionFactory;
 import org.hibernate.stat.Statistics;
 import org.slf4j.Logger;
@@ -27,7 +28,15 @@ public class CacheDataServiceImpl implements CacheDataService {
 //	@CacheEvict(allEntries = true)
 	public void clearstatics() {
 		LOGGER.debug("clearing the cache.....");
-		entityManagerFactory.unwrap(SessionFactory.class).getStatistics().clear();
+		Cache cache = entityManagerFactory.unwrap(SessionFactory.class).getCache();
+        if (null != cache) {
+            System.out.println("Clearing cache...");
+            cache.evictAll();
+            cache.evictAllRegions();
+            System.out.println("Clearing cache...Done!");
+        } else {
+        	System.out.println("No second level cache available for session-factory");
+        }
 	}
 
 	public List<CacheDetails> getEhCacheDetail() {

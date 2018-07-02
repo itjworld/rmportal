@@ -220,6 +220,9 @@ public class InfoServiceImpl implements InfoService {
 	@Transactional(readOnly = false)
 	public boolean updateRecords(GuestDetail record) {
 		record.setMapping(portalMappingRepository.getMapping(record.getAddressId(), record.getRoomNo()));
+		if(!record.isActive()) {
+			record.getMapping().setOccupied(record.getMapping().getOccupied() -1 );
+		}
 		roomBookDetailRepository.save(record);
 		return true;
 	}
