@@ -5,7 +5,7 @@ server:
 ---
 spring:
   profiles:
-    active: "dev"
+    active: "prod"
 ---
 spring:
   profiles: local
@@ -27,9 +27,9 @@ spring:
   profiles: default
 datasource:
   rmportal:
-    url: jdbc:mysql://localhost:3306/rmportal?useSSL=false
+    url: jdbc:mysql://rmportal.cc6fjtymukl3.ap-south-1.rds.amazonaws.com:3306/rmportal?useSSL=false
     username: root
-    password: root
+    password: root1234
     driverClassName: com.mysql.cj.jdbc.Driver
     defaultSchema:
     maxPoolSize: 20
@@ -43,9 +43,9 @@ spring:
   profiles: dev
 datasource:
   rmportal:
-    url: jdbc:mysql://localhost:3306/rmportal?useSSL=false
+    url: jdbc:mysql://rmportal.cc6fjtymukl3.ap-south-1.rds.amazonaws.com:3306/rmportal?useSSL=false
     username: root
-    password: root
+    password: root1234
     driverClassName: com.mysql.cj.jdbc.Driver
     defaultSchema:
     maxPoolSize: 20
