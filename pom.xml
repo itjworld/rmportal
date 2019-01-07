@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -22,7 +23,7 @@
 		<poi.version>3.15</poi.version>
 		<pdf.version>5.5.10</pdf.version>
 		<csv.version>2.4.0</csv.version>
-		<hibernate-core>5.2.10.Final</hibernate-core>
+		<hibernate-core>5.2.11.Final</hibernate-core>
 		<mail.version>1.5.9.RELEASE</mail.version>
 	</properties>
 
@@ -32,10 +33,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 			<exclusions>
-				<exclusion>
+				<!-- exclusion>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-tomcat</artifactId>
-				</exclusion>
+				</exclusion-->
 			</exclusions>
 		</dependency>
 		<!-- Add security support -->
@@ -47,6 +48,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<exclusions>
+            <exclusion>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-entitymanager</artifactId>
+            </exclusion>
+        </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
@@ -106,13 +113,13 @@
 			<artifactId>hibernate-jcache</artifactId>
 			<version>${hibernate-core}</version>
 		</dependency>
-		
+
 		<dependency>
-            <groupId>org.zeroturnaround</groupId>
-            <artifactId>zt-zip</artifactId>
-            <version>1.12</version>
-            <type>jar</type>
-        </dependency>
+			<groupId>org.zeroturnaround</groupId>
+			<artifactId>zt-zip</artifactId>
+			<version>1.12</version>
+			<type>jar</type>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
