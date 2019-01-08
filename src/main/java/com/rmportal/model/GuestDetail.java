@@ -104,6 +104,9 @@ public class GuestDetail implements Serializable {
 	@Column(name = "CREATED_DATETIME")
 	@CreationTimestamp
 	private Date createDateTime;
+	
+	@Transient
+	private int srNo = 0;
 
 	public long getId() {
 		return id;
@@ -287,4 +290,12 @@ public class GuestDetail implements Serializable {
 		this.dob = dob;
 	}
 
+	public int getSrNo() {
+		return srNo;
+	}
+
+	public void setSrNo(int srNo) {
+		this.srNo = srNo;
+	}
+	
 }

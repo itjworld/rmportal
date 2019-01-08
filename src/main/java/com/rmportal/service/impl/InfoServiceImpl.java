@@ -1,6 +1,7 @@
 package com.rmportal.service.impl;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,10 +36,9 @@ import com.rmportal.vo.MappingDTO;
 import com.rmportal.vo.PortalInformationVO;
 import com.rmportal.vo.RecordVO;
 
-
 @Service
 public class InfoServiceImpl implements InfoService {
-	
+
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
@@ -83,7 +83,8 @@ public class InfoServiceImpl implements InfoService {
 
 	private List<PortalInformationVO> convert(List<PortalMappingInfo> details) {
 		if (!details.isEmpty()) {
-			return details.stream().sorted(new PortalMappingComparator()).map(x -> convertView(x)).collect(Collectors.toList());
+			return details.stream().sorted(new PortalMappingComparator()).map(x -> convertView(x))
+					.collect(Collectors.toList());
 		}
 
 		return Collections.emptyList();
@@ -143,9 +144,8 @@ public class InfoServiceImpl implements InfoService {
 	@Override
 	@Transactional(readOnly = false)
 	public PortalMappingInfo save(MappingDTO mapping) {
-		PortalMappingInfo roomMapping = portalMappingRepository.getMapping(mapping.getAddressId(),
-				mapping.getRoomNo());
-		if(roomMapping != null){
+		PortalMappingInfo roomMapping = portalMappingRepository.getMapping(mapping.getAddressId(), mapping.getRoomNo());
+		if (roomMapping != null) {
 			throw new RuntimeException("Room already mapped with the given address.");
 		}
 		PortalMappingInfo mappingRef = new PortalMappingInfo();
@@ -169,14 +169,14 @@ public class InfoServiceImpl implements InfoService {
 			final Query sql = entityManager.createNativeQuery(query);
 			sql.executeUpdate();
 		} catch (Exception ex) {
-			LOGGER.error("exception generated : " , ex);
+			LOGGER.error("exception generated : ", ex);
 			return false;
 		}
 		return true;
 	}
 
 	@Override
-	public RecordVO getRecords(int page, int limit, String sort, String order, String searchParam,Long address) {
+	public RecordVO getRecords(int page, int limit, String sort, String order, String searchParam, Long address) {
 		RecordVO recordVO = new RecordVO();
 		PageRequest pageRequest = null;
 		Page<GuestDetail> records = null;
@@ -186,7 +186,8 @@ public class InfoServiceImpl implements InfoService {
 				sorting = new Sort(new Sort.Order("ASC".equalsIgnoreCase(order) ? Direction.ASC : Direction.DESC,
 						"mapping.roomNumber"));
 			else
-				sorting = new Sort(new Sort.Order("ASC".equalsIgnoreCase(order) ? Direction.ASC : Direction.DESC, sort));
+				sorting = new Sort(
+						new Sort.Order("ASC".equalsIgnoreCase(order) ? Direction.ASC : Direction.DESC, sort));
 			pageRequest = new PageRequest((page - 1), limit, sorting);
 		} else {
 			sorting = new Sort(new Sort.Order(Direction.ASC, "mapping.roomNumber"));
@@ -194,34 +195,76 @@ public class InfoServiceImpl implements InfoService {
 		}
 
 		if (searchParam != null && searchParam.trim().length() > 0) {
-			if(null!=address && address>0) {
-				records = roomBookDetailRepository.findAll(searchParam, searchParam, searchParam, address,pageRequest);
-			}else {
+			if (null != address && address > 0) {
+				records = roomBookDetailRepository.findAll(searchParam, searchParam, searchParam, address, pageRequest);
+			} else {
 				records = roomBookDetailRepository.findAll(searchParam, searchParam, searchParam, pageRequest);
 			}
 		} else {
-			if(null!=address && address>0) {
-				records = roomBookDetailRepository.findAllByStatus(pageRequest, true,address);
-			}else {
+			if (null != address && address > 0) {
+				records = roomBookDetailRepository.findAllByStatus(pageRequest, true, address);
+			} else {
 				records = roomBookDetailRepository.findAllByStatus(pageRequest, true);
 			}
 		}
 		recordVO.setTotal(records.getTotalElements());
-		recordVO.setData(records.getContent());
+		recordVO.setData(sortRecordsAndAppendSrNo(null, records.getContent(), page));
 		return recordVO;
 	}
 
 	@Override
 	public List<GuestDetail> getRecords() {
-		return roomBookDetailRepository.findAll();
+		List<GuestDetail> guestList = roomBookDetailRepository.findByStatus(true);
+		Comparator<GuestDetail> roomComparator = (GuestDetail o1, GuestDetail o2) -> o1.getRoomNo()
+				.compareTo(o2.getRoomNo());
+		return sortRecordsAndAppendSrNo(roomComparator, guestList, 1);
+	}
+
+	private List<GuestDetail> sortRecordsAndAppendSrNo(Comparator<GuestDetail> roomComparator,
+			List<GuestDetail> guestList, int page) {
+		if (roomComparator != null)
+			Collections.sort(guestList, roomComparator);
+		int i = getInitSrNumber(page);
+		for(GuestDetail guestDetail : guestList) {
+			guestDetail.setSrNo(i++);
+		}
+		return guestList;
+	}
+
+	private int getInitSrNumber(int page) {
+		int i = 1;
+		switch (page) {
+		case 2:
+			i = 11;
+			break;
+		case 3:
+			i = 21;
+			break;
+		case 4:
+			i = 31;
+			break;
+		case 5:
+			i = 41;
+			break;
+		case 6:
+			i = 51;
+			break;
+		case 7:
+			i = 61;
+			break;
+		case 8:
+			i = 71;
+			break;
+		}
+		return i;
 	}
 
 	@Override
 	@Transactional(readOnly = false)
 	public boolean updateRecords(GuestDetail record) {
 		record.setMapping(portalMappingRepository.getMapping(record.getAddressId(), record.getRoomNo()));
-		if(!record.isActive()) {
-			record.getMapping().setOccupied(record.getMapping().getOccupied() -1 );
+		if (!record.isActive()) {
+			record.getMapping().setOccupied(record.getMapping().getOccupied() - 1);
 		}
 		roomBookDetailRepository.save(record);
 		return true;

@@ -1,5 +1,9 @@
 package com.rmportal.repositories;
 
+import java.util.List;
+
+import javax.persistence.QueryHint;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,9 +13,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.rmportal.model.GuestDetail;
-import java.lang.String;
-
-import javax.persistence.QueryHint;
 
 @Repository
 public interface RoomBookDetailRepository extends JpaRepository<GuestDetail, Long> {
@@ -45,4 +46,7 @@ public interface RoomBookDetailRepository extends JpaRepository<GuestDetail, Lon
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
 	GuestDetail findByEmail(String email);
 	
+	@Query("SELECT B FROM GuestDetail B WHERE B.active=:status")
+	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
+	List<GuestDetail> findByStatus(@Param("status") boolean status);
 }
