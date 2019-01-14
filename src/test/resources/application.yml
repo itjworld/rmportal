@@ -5,7 +5,7 @@ server:
 ---
 spring:
   profiles:
-    active: "prod"
+    active: "dev"
 ---
 spring:
   profiles: local
@@ -27,9 +27,9 @@ spring:
   profiles: default
 datasource:
   rmportal:
-    url: jdbc:mysql://rmportal.cc6fjtymukl3.ap-south-1.rds.amazonaws.com:3306/rmportal?useSSL=false
+    url: jdbc:mysql://localhost:3306/rmportal?useSSL=false
     username: root
-    password: root1234
+    password: root
     driverClassName: com.mysql.cj.jdbc.Driver
     defaultSchema:
     maxPoolSize: 20
@@ -43,9 +43,9 @@ spring:
   profiles: dev
 datasource:
   rmportal:
-    url: jdbc:mysql://rmportal.cc6fjtymukl3.ap-south-1.rds.amazonaws.com:3306/rmportal?useSSL=false
+    url: jdbc:mysql://localhost:3306/rmportal?useSSL=false
     username: root
-    password: root1234
+    password: root
     driverClassName: com.mysql.cj.jdbc.Driver
     defaultSchema:
     maxPoolSize: 20
@@ -78,7 +78,7 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-  file: E:/logs/application.log
+  file: logs/application.log
   maxFileSize: 20MB
 ---
 spring:

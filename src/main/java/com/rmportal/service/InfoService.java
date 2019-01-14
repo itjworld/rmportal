@@ -2,10 +2,10 @@ package com.rmportal.service;
 
 import java.util.List;
 
-import com.rmportal.model.PortalInfo;
-import com.rmportal.model.PortalMappingInfo;
 import com.rmportal.model.GuestDetail;
 import com.rmportal.model.GuestPayment;
+import com.rmportal.model.PortalInfo;
+import com.rmportal.model.PortalMappingInfo;
 import com.rmportal.vo.ContactInformationVO;
 import com.rmportal.vo.MappingDTO;
 import com.rmportal.vo.PortalInformationVO;
@@ -43,6 +43,8 @@ public interface InfoService {
 	boolean updateRentDetails(GuestPayment guestPayment);
 	
 	PortalInformationVO getDetailsById(long id);
+	
+	public List<GuestDetail> findAllByMonth();
 	
 
 }

@@ -1,47 +1,49 @@
 package com.rmportal;
 
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.List;
 
 import org.junit.Test;
-import org.mockito.MockitoAnnotations;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-@WebAppConfiguration
-@ContextConfiguration(classes = { SpringBootWebInitApp.class})
-@ActiveProfiles("prod")
-@SpringBootTest
+import com.rmportal.model.GuestDetail;
+import com.rmportal.repositories.RoomBookDetailRepository;
+import com.rmportal.service.InfoService;
+import com.rmportal.service.PaymentService;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = SpringBootWebInitApp.class)
+@ActiveProfiles(profiles = { "dev" })
 public class RmportalTest {
 
-
-//	private MockMvc mockMvc;
 	@Autowired
-	private WebApplicationContext wac;
+	private InfoService infoService;
 
-	//@Before
-	public void setup() {
-		MockitoAnnotations.initMocks(this);
-//		mockMvc = MockMvcBuilders.standaloneSetup(dsvJobController).build();
-	}
+	@Autowired
+	private RoomBookDetailRepository roomBookDetailRepository;
+
+	@Autowired
+	private PaymentService paymentService;
 
 	@Test
+	@Transactional
 	public void testGetCompletedJobs() throws ParseException {
-		
-		System.out.println("finish");
-//		String date_s = "03/10/2018";
-//		SimpleDateFormat dt = new SimpleDateFormat("MM/dd/yyyy");
-//		Date startDate = dt.parse(date_s);
-//
-//		System.out.println(startDate);
-//
-//		date_s = "03/22/2018";
-//		Date endDate = dt.parse(date_s);
-
-//		System.out.println(endDate);
-//		System.out.println(dsvReportDetailDao.getBranchVersionStatus(DSV_BRANCH_VERSION_KEY));
+		System.out.println("##################");
+//		infoService.findAllByMonth().forEach(e -> System.out.println(e+ " - " + e.getfName()));
+		LocalDate localDate = LocalDate.now();
+		List<GuestDetail> list = roomBookDetailRepository.findAllByMonth(true, localDate.getMonthValue(),
+				localDate.getYear());
+		list.stream().forEach(e -> {
+			System.out.println("@@@@@@ " + e.getfName());
+			e.getPaymentList().stream().forEach(m -> System.out.println("@@@@@@ " + m.getCurrentMonth()));
+		});
+//		paymentService.insertMonthRecords();
+		System.out.println("#######finish#######");
 	}
 }

@@ -21,9 +21,9 @@ public interface GuestPaymentRepository extends JpaRepository<GuestPayment, Long
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
 	List<GuestPayment> findByEmail(@Param("email") String email);
 	
-	@Query("SELECT g from GuestPayment g WHERE g.guestDetail.id = :id")
+	@Query("SELECT g from GuestPayment g WHERE g.guestDetail.id = :id AND month(g.createDateTime)=:month AND year(g.createDateTime)=:year")
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
-	List<GuestPayment> findByGuestDetailId(@Param("id") long id);
+	List<GuestPayment> findByGuestDetailId(@Param("id") long id, @Param("year") int year, @Param("month") int month);
 	
 	
 }

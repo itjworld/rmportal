@@ -7,7 +7,6 @@ import java.util.List;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -84,7 +83,7 @@ public class GuestDetail implements Serializable {
 	@JoinColumn(name = "MAPPING_ID")
 	private PortalMappingInfo mapping;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "guestDetail")
+	@OneToMany(mappedBy = "guestDetail")
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private List<GuestPayment> paymentList;
 
@@ -173,8 +172,8 @@ public class GuestDetail implements Serializable {
 	}
 
 	public int getRent() {
-		if (mapping != null)
-			rent = mapping.getRent();
+		if (rent == 0 && paymentList != null)
+			rent = paymentList.get(0).getRent();
 		return rent;
 	}
 

@@ -1,5 +1,6 @@
 package com.rmportal.service.impl;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -73,6 +74,13 @@ public class InfoServiceImpl implements InfoService {
 	@Transactional(readOnly = true)
 	public List<PortalInfo> getAllData(String type) {
 		return infoRepository.findByType(type);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<GuestDetail> findAllByMonth() {
+		LocalDate localDate = LocalDate.now();
+		return roomBookDetailRepository.findAllByMonth(true, localDate.getMonthValue(), localDate.getYear());
 	}
 
 	@Override
@@ -176,10 +184,12 @@ public class InfoServiceImpl implements InfoService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public RecordVO getRecords(int page, int limit, String sort, String order, String searchParam, Long address) {
 		RecordVO recordVO = new RecordVO();
 		PageRequest pageRequest = null;
 		Page<GuestDetail> records = null;
+		LocalDate localDate = LocalDate.now();
 		Sort sorting = null;
 		if (sort != null && sort.trim().length() > 0) {
 			if ("roomNo".equalsIgnoreCase(sort))
@@ -202,9 +212,11 @@ public class InfoServiceImpl implements InfoService {
 			}
 		} else {
 			if (null != address && address > 0) {
-				records = roomBookDetailRepository.findAllByStatus(pageRequest, true, address);
+				records = roomBookDetailRepository.findAllByStatus(pageRequest, true, address,
+						localDate.getMonthValue(), localDate.getYear());
 			} else {
-				records = roomBookDetailRepository.findAllByStatus(pageRequest, true);
+				records = roomBookDetailRepository.findAllByStatus(pageRequest, true, localDate.getMonthValue(),
+						localDate.getYear());
 			}
 		}
 		recordVO.setTotal(records.getTotalElements());
@@ -225,7 +237,7 @@ public class InfoServiceImpl implements InfoService {
 		if (roomComparator != null)
 			Collections.sort(guestList, roomComparator);
 		int i = getInitSrNumber(page);
-		for(GuestDetail guestDetail : guestList) {
+		for (GuestDetail guestDetail : guestList) {
 			guestDetail.setSrNo(i++);
 		}
 		return guestList;
@@ -263,6 +275,10 @@ public class InfoServiceImpl implements InfoService {
 	@Transactional(readOnly = false)
 	public boolean updateRecords(GuestDetail record) {
 		record.setMapping(portalMappingRepository.getMapping(record.getAddressId(), record.getRoomNo()));
+		GuestPayment payment = record.getPaymentList().get(0);
+		payment.setGuestDetail(record);
+		payment.setRent(record.getRent());
+		guestPaymentRepository.save(payment);
 		if (!record.isActive()) {
 			record.getMapping().setOccupied(record.getMapping().getOccupied() - 1);
 		}
@@ -325,7 +341,8 @@ public class InfoServiceImpl implements InfoService {
 	@Override
 	public RecordVO getRentDetail(long id) {
 		RecordVO recordVO = new RecordVO();
-		recordVO.setData(guestPaymentRepository.findByGuestDetailId(id));
+		LocalDate date = LocalDate.now();
+		recordVO.setData(guestPaymentRepository.findByGuestDetailId(id, date.getYear(), date.getMonthValue()));
 		return recordVO;
 	}
 
