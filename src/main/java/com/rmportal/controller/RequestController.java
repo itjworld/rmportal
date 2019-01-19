@@ -28,6 +28,7 @@ import com.rmportal.service.InfoService;
 import com.rmportal.service.UserService;
 import com.rmportal.vo.ContactInformationVO;
 import com.rmportal.vo.EnquiryVO;
+import com.rmportal.vo.GuestVM;
 import com.rmportal.vo.MappingDTO;
 import com.rmportal.vo.PortalInformationVO;
 import com.rmportal.vo.RecordVO;
@@ -166,8 +167,8 @@ public class RequestController {
 	}
 	
 	@RequestMapping(value = "/guest/update", method = RequestMethod.POST)
-	public ResponseEntity<Boolean> updateRecords(@RequestBody GuestDetail record) {
-		LOGGER.debug("updateRecords - > fName:{} :: Address:{} :: Rent:{} :: Address Id:{} :: Email:{} :: Room No:{}", record.getfName(), record.getAddress(), record.getRent(), record.getAddressId(), record.getEmail(), record.getRoomNo());
+	public ResponseEntity<Boolean> updateRecords(@RequestBody GuestVM record) {
+		LOGGER.debug("updateRecords - > fName:{} :: Address:{} :: Rent:{} :: Address Id:{} :: Email:{} :: Room No:{}", record.getName(), record.getRent(), record.getEmail(), record.getRoomNo());
 		boolean status = infoService.updateRecords(record);
 		return new ResponseEntity<Boolean>(status, HttpStatus.OK);
 	}

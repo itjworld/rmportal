@@ -18,7 +18,7 @@ datasource:
     defaultSchema:
     maxPoolSize: 10
     hibernate:
-      hbm2ddl.method: create-drop
+      hbm2ddl.method: update
       show_sql: true
       format_sql: true
       dialect: org.hibernate.dialect.H2Dialect
@@ -50,7 +50,7 @@ datasource:
     defaultSchema:
     maxPoolSize: 20
     hibernate:
-      hbm2ddl.method: update
+      hbm2ddl.method: none
       show_sql: true
       format_sql: true
       dialect: org.hibernate.dialect.MySQL5Dialect
@@ -78,7 +78,7 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-  file: E:/logs/application.log
+  file: logs/application.log
   maxFileSize: 20MB
 ---
 spring:

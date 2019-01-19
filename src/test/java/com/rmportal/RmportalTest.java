@@ -1,8 +1,6 @@
 package com.rmportal;
 
 import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,10 +10,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.rmportal.model.GuestDetail;
 import com.rmportal.repositories.RoomBookDetailRepository;
 import com.rmportal.service.InfoService;
 import com.rmportal.service.PaymentService;
+import com.rmportal.vo.GuestVM;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringBootWebInitApp.class)
@@ -32,18 +30,17 @@ public class RmportalTest {
 	private PaymentService paymentService;
 
 	@Test
-	@Transactional
 	public void testGetCompletedJobs() throws ParseException {
 		System.out.println("##################");
-//		infoService.findAllByMonth().forEach(e -> System.out.println(e+ " - " + e.getfName()));
-		LocalDate localDate = LocalDate.now();
-		List<GuestDetail> list = roomBookDetailRepository.findAllByMonth(true, localDate.getMonthValue(),
-				localDate.getYear());
-		list.stream().forEach(e -> {
-			System.out.println("@@@@@@ " + e.getfName());
-			e.getPaymentList().stream().forEach(m -> System.out.println("@@@@@@ " + m.getCurrentMonth()));
-		});
-//		paymentService.insertMonthRecords();
+		
+		GuestVM guest = new GuestVM();
+		guest.setId(7);
+		guest.setName("Janny");
+		guest.setElctricityPaid(444);
+		guest.setRent(4000);
+		guest.setRoomNo(9);
+		infoService.updateRecords(guest);
+		
 		System.out.println("#######finish#######");
 	}
 }

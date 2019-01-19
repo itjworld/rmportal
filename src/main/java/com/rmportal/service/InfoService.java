@@ -27,11 +27,11 @@ public interface InfoService {
 
 	boolean execute(String query);
 
-	List<GuestDetail> getRecords();
+//	List<GuestDetail> getRecords();
 
 	RecordVO getRecords(int page, int limit, String sort, String order, String searchParam,Long address);
 
-	boolean updateRecords(GuestDetail record);
+	<T> boolean updateRecords(T record);
 
 	boolean deleteRecords(long id);
 
@@ -45,6 +45,8 @@ public interface InfoService {
 	PortalInformationVO getDetailsById(long id);
 	
 	public List<GuestDetail> findAllByMonth();
+
+	<T> List<T> getRecords();
 	
 
 }
