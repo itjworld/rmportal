@@ -17,7 +17,7 @@ public class PaymentController {
 	@PostMapping("/insert/records")
 	public ResponseEntity<String> insertRentRecords() {
 		boolean result = paymentService.insertMonthRecords();
-		return new ResponseEntity<String>("", HttpStatus.OK);
+		return new ResponseEntity<String>("Records inserted successfully", HttpStatus.OK);
 
 	}
 

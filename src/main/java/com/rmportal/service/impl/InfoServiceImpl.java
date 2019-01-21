@@ -67,7 +67,7 @@ public class InfoServiceImpl implements InfoService {
 	@Autowired
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
 	@Override
 	@Transactional(readOnly = true)
 	public List<PortalInformationVO> getDetails(Long[] localities, Integer price, Long acId, Long gender,
@@ -224,48 +224,57 @@ public class InfoServiceImpl implements InfoService {
 						localDate.getYear());
 			}
 		}
-		createResponseVM(page, recordVO, records);
+		recordVO.setTotal(records.getTotalElements());
+		recordVO.setData(sortRecordsAndAppendSrNo(null, createResponseVM(records), page));
 		return recordVO;
 	}
 
-	private void createResponseVM(int page, RecordVO recordVO, Page<GuestDetail> records) {
+	private List<GuestVM> createResponseVM(Page<GuestDetail> records) {
 		List<GuestVM> guestDetais = new ArrayList<>();
-		GuestVM guest = null;
-		for(GuestDetail detail : records) {
-			guest = new GuestVM();
-			guest.setId(detail.getId());
-			guest.setName(String.join(" ", detail.getfName(), detail.getlName()));
-			guest.setMobile(detail.getMobile());
-			guest.setEmail(detail.getEmail());
-			guest.setRent(detail.getRent());
-			guest.setSecurity(detail.getSecurity());
-			guest.setRoomNo(detail.getRoomNo());
-			guest.setCheckindate(detail.getCheckindate());
-			guest.setElctricityPaid(detail.getPaymentList().get(0).getElecBillPaid());
-			guestDetais.add(guest);
+		for (GuestDetail detail : records) {
+			populateGuestVM(guestDetais, detail);
 		}
-		recordVO.setTotal(records.getTotalElements());
-		recordVO.setData(sortRecordsAndAppendSrNo(null, guestDetais, page));
+		return guestDetais;
 	}
 
+	private void populateGuestVM(List<GuestVM> guestDetais, GuestDetail detail) {
+		GuestVM guest = new GuestVM();
+		guest.setId(detail.getId());
+		guest.setName(String.join(" ", detail.getfName(), detail.getlName()));
+		guest.setMobile(detail.getMobile());
+		guest.setEmail(detail.getEmail());
+		guest.setRent(detail.getRent());
+		guest.setSecurity(detail.getSecurity());
+		guest.setRoomNo(detail.getRoomNo());
+		guest.setCheckindate(detail.getCheckindate());
+		guest.setElctricityPaid(detail.getPaymentList().get(0).getElecBillPaid());
+		guestDetais.add(guest);
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> getRecords() {
-		List<GuestDetail> guestList = roomBookDetailRepository.findByStatus(true);
-		Comparator<GuestDetail> roomComparator = (GuestDetail o1, GuestDetail o2) -> o1.getRoomNo()
-				.compareTo(o2.getRoomNo());
-		return (List<T>) sortRecordsAndAppendSrNo(roomComparator, guestList, 1);
+		LocalDate localDate = LocalDate.now();
+		List<GuestDetail> guestList = roomBookDetailRepository.findByStatus(true, localDate.getMonthValue(),
+				localDate.getYear());
+		List<GuestVM> guestDetais = new ArrayList<>();
+		for (GuestDetail detail : guestList) {
+			populateGuestVM(guestDetais, detail);
+		}
+		Comparator<GuestVM> roomComparator = (GuestVM o1, GuestVM o2) -> ((Integer) o1.getRoomNo())
+				.compareTo((Integer) o2.getRoomNo());
+		return (List<T>) sortRecordsAndAppendSrNo(roomComparator, guestDetais, 1);
 	}
 
-	private <T> List<T> sortRecordsAndAppendSrNo(Comparator<T> roomComparator,
-			List<T> guestList, int page) {
+	private <T> List<T> sortRecordsAndAppendSrNo(Comparator<T> roomComparator, List<T> guestList, int page) {
 		if (roomComparator != null)
 			Collections.sort(guestList, roomComparator);
 		int i = getInitSrNumber(page);
 		for (T guestDetail : guestList) {
-			if(guestDetail instanceof GuestVM)
-				((GuestVM)guestDetail).setSrNo(i++);
+			if (guestDetail instanceof GuestVM)
+				((GuestVM) guestDetail).setSrNo(i++);
 			else
-				((GuestDetail)guestDetail).setSrNo(i++);
+				((GuestDetail) guestDetail).setSrNo(i++);
 		}
 		return guestList;
 	}
@@ -300,14 +309,12 @@ public class InfoServiceImpl implements InfoService {
 
 	@Transactional(readOnly = false)
 	public <T> boolean updateRecords(T record) {
-		GuestVM guest = (GuestVM)record;
+		GuestVM guest = (GuestVM) record;
 		GuestDetail guestDetail = roomBookDetailRepository.findIdAndByMonth(guest.getId(), 1, 2019);
-//		if (!record.isActive()) {
-//			record.getMapping().setOccupied(record.getMapping().getOccupied() - 1);
-//		}
-		if(guest.getRoomNo() != guestDetail.getRoomNo())
-			guestDetail.setMapping(portalMappingRepository.getMapping(guestDetail.getMapping().getAddress().getId(), guest.getRoomNo()));
-		if(guestDetail.getPaymentList().get(0) != null) {
+		if (guest.getRoomNo() != guestDetail.getRoomNo())
+			guestDetail.setMapping(portalMappingRepository.getMapping(guestDetail.getMapping().getAddress().getId(),
+					guest.getRoomNo()));
+		if (guestDetail.getPaymentList().get(0) != null) {
 			guestDetail.getPaymentList().get(0).setElecBillPaid(guest.getElctricityPaid());
 			guestDetail.getPaymentList().get(0).setRent(guest.getRent());
 		}
@@ -323,6 +330,7 @@ public class InfoServiceImpl implements InfoService {
 	public boolean deleteRecords(long id) {
 		GuestDetail record = roomBookDetailRepository.findOne(id);
 		record.setActive(false);
+		record.getMapping().setOccupied(record.getMapping().getOccupied() - 1);
 		roomBookDetailRepository.save(record);
 		return true;
 	}

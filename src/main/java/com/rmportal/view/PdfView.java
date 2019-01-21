@@ -1,9 +1,11 @@
 package com.rmportal.view;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -14,10 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -45,7 +51,24 @@ public class PdfView extends AbstractPdfView {
 	}
 
 	public void getPDFDocument(Document document, List<?> list,String headerName[],String fields []) throws DocumentException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-		//document.add(new Paragraph("Room Book Details " + LocalDate.now()));
+//		document.add(new Paragraph("Room Book Details " + LocalDate.now()));
+		
+		document.addCreator("WAVES");
+		document.addAuthor("THE WAVES");
+		document.addTitle("WAVES");
+		Image image;
+		try {
+			image = Image.getInstance(HeaderFooterPageEvent.class.getResource("/memorynotfound-logo.jpg"));
+			image.scaleAbsolute(50,50);
+			Paragraph paragraph = new Paragraph(
+			        "THE WAVES",new Font(Font.FontFamily.HELVETICA, 25));
+			document.add(image);
+			document.add(paragraph);
+			document.add(Chunk.SPACETABBING);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		Class<?> clss[] = {};
 		Object [] obj= {};
 		PdfPTable table = new PdfPTable(fields.length);
@@ -59,6 +82,7 @@ public class PdfView extends AbstractPdfView {
 		PdfPCell cell = new PdfPCell();
 		cell.setBackgroundColor(BaseColor.DARK_GRAY);
 		cell.setPadding(5);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 
 		// write table header
 		for (String header : headerName) {

@@ -1,6 +1,8 @@
 package com.rmportal.view;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,9 +10,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.view.AbstractView;
 
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.ExceptionConverter;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 public abstract class AbstractPdfView extends AbstractView {
@@ -43,14 +56,54 @@ public abstract class AbstractPdfView extends AbstractView {
         buildPdfMetadata(model, document, request);
 
         // Build PDF document.
+//        HeaderFooter event = new HeaderFooter();
+//        writer.setBoxSize("headerBox", new Rectangle(36, 54, 559, 788));
+//        writer.setPageEvent(event);
+//        HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+//        writer.setPageEvent(event);
         document.open();
         buildPdfDocument(model, document, writer, request, response);
         document.close();
-
         // Flush to HTTP response.
         writeToResponse(response, baos);
     }
+    static class HeaderFooter extends PdfPageEventHelper {
 
+    	  public void onEndPage(PdfWriter writer, Document document) {
+    	    Rectangle rect = writer.getBoxSize("headerBox");
+    	    // add header text
+    	    ColumnText.showTextAligned(writer.getDirectContent(),
+    	      Element.ALIGN_RIGHT, new Phrase("Hello"),
+    	      rect.getLeft(), rect.getTop(), 0);
+
+    	    // add header image
+//    	    try {
+//    	      Image img = Image.getInstance("c:/mylogo.PNG");
+//    	      img.scaleToFit(100,100);
+//    	      document.add(img);
+//    	    } catch (Exception x) {
+//    	      x.printStackTrace();
+//    	    }
+
+    	  }
+    	  public void onStartPage(PdfWriter writer, Document document) {
+      	    Rectangle rect = writer.getBoxSize("headerBox");
+      	    // add header text
+      	    ColumnText.showTextAligned(writer.getDirectContent(),
+      	      Element.ALIGN_RIGHT, new Phrase("Hello"),
+      	      rect.getLeft(), rect.getTop(), 0);
+
+      	    // add header image
+//      	    try {
+//      	      Image img = Image.getInstance("c:/mylogo.PNG");
+//      	      img.scaleToFit(100,100);
+//      	      document.add(img);
+//      	    } catch (Exception x) {
+//      	      x.printStackTrace();
+//      	    }
+
+      	  }
+    }
     /**
      * Prepare the given PdfWriter. Called before building the PDF document,
      * that is, before the call to {@code Document.open()}.

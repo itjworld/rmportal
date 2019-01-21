@@ -75,7 +75,12 @@ public interface RoomBookDetailRepository extends JpaRepository<GuestDetail, Lon
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
 	GuestDetail findByEmail(String email);
 
-	@Query("SELECT B FROM GuestDetail B WHERE B.active=:status")
+	@Query("SELECT B FROM GuestDetail B JOIN FETCH B.paymentList M WHERE month(M.createDateTime)=:month AND year(M.createDateTime)=:year AND B.active=:status")
+	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
+	List<GuestDetail> findByStatus(@Param("status") boolean status, @Param("month") int month,
+			@Param("year") int year);
+	
+	@Query("SELECT B FROM GuestDetail B where B.active=:status")
 	@QueryHints({ @QueryHint(name = "org.hibernate.cacheable", value = "true") })
 	List<GuestDetail> findByStatus(@Param("status") boolean status);
 }

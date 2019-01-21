@@ -33,13 +33,7 @@ public class RmportalTest {
 	public void testGetCompletedJobs() throws ParseException {
 		System.out.println("##################");
 		
-		GuestVM guest = new GuestVM();
-		guest.setId(7);
-		guest.setName("Janny");
-		guest.setElctricityPaid(444);
-		guest.setRent(4000);
-		guest.setRoomNo(9);
-		infoService.updateRecords(guest);
+		paymentService.insertMonthRecords();
 		
 		System.out.println("#######finish#######");
 	}

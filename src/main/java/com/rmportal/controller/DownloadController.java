@@ -16,11 +16,11 @@ public class DownloadController {
 
 	@Autowired
 	private InfoService infoService;
-
+	
 	@RequestMapping(value = "/download", method = RequestMethod.GET)
 	public ModelAndView download(Model model) {
-		String headerName[] = { "Sr No", "Room No", "Name", "Mobile", "Email", "Rent", "Security", "Check_In_Date" };
-		String fields[] = { "srNo", "roomNo", "fName", "mobile", "email", "rent", "security", "checkindate" };
+		String headerName[] = { "Sr No", "Room No", "Name", "Mobile", "Email", "Rent", "Electricity", "Security", "Check_In_Date" };
+		String fields[] = { "srNo", "roomNo", "name", "mobile", "email", "rent", "elctricityPaid", "security", "checkindate" };
 		model.addAttribute("fileName", "records");
 		model.addAttribute("headerName", headerName);
 		model.addAttribute("fields", fields);
