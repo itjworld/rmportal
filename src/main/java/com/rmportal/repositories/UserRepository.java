@@ -1,5 +1,7 @@
 package com.rmportal.repositories;
 
+import java.util.List;
+
 import javax.persistence.QueryHint;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,4 +25,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	@QueryHints({@QueryHint(name = "org.hibernate.cacheable", value = "true")})
 	User findByUsername(String username);
+	
+	List<User> findUserByStatus(boolean status);
 }

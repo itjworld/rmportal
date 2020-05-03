@@ -100,7 +100,7 @@ public class CacheController {
 		try {
 			File file = new File("rmportal_bk_" + getDateAsString(new Date(), "ddMMyyyyHHmm") + ".sql");
 			Runtime runtime = Runtime.getRuntime();
-			Process p = runtime.exec("mysqldump -u" + "root" + " -p" + "root" + " -B rmportal");
+			Process p = runtime.exec("/usr/local/mysql/bin/mysqldump -u" + "root" + " -p" + "root" + " -B rmportal");
 			in = p.getInputStream();
 			String mimeType = URLConnection.guessContentTypeFromName(file.getName());
 			if (mimeType == null) {

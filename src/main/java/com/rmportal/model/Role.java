@@ -14,9 +14,14 @@ import javax.persistence.ManyToMany;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity(name = "RM_ROLE")
 @Cacheable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "Role")
+/* hibernateLazyInitializer used 
+ * 		to stop recursively error while serialization of user response*/
+//@JsonIgnoreProperties({"hibernateLazyInitializer","handler","users"})
 public class Role implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1301683850190647398L;

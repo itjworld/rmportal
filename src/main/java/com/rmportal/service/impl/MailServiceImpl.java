@@ -184,7 +184,7 @@ public class MailServiceImpl implements MailService {
 			System.out.println("Message With Attachement has been sent.............................");
 			return "{\"message\": \"OK\"}";
 		} catch (Exception ex) {
-			System.err.println(ex.getMessage());
+			System.err.println(ex);
 			return "{\"message\": \"ERROR\"}";
 		}finally {
 			helper=null;

@@ -23,10 +23,12 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.rmportal.vo.UserDTO;
+
 @Entity
 @Table(name = "RM_USER", uniqueConstraints = @UniqueConstraint(columnNames = { "email" }))
 @Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "AddressInfo")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "user")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = -354148231859696610L;
@@ -62,10 +64,10 @@ public class User implements Serializable {
 	@CreationTimestamp
 	private Date createDateTime;
 
-	protected User() {
+	public User() {
 		roles = new HashSet<Role>();
 	}
-
+	
 	public Set<Role> getRoles() {
 		return roles;
 	}

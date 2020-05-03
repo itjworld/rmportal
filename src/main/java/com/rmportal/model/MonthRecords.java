@@ -25,6 +25,9 @@ public class MonthRecords {
 		this.year = year;
 		this.month = month;
 	}
+	
+	public MonthRecords() {
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

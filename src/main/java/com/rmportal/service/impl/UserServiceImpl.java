@@ -3,12 +3,15 @@ package com.rmportal.service.impl;
 import static com.rmportal.util.Utility.updateResponse;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rmportal.model.GuestDetail;
 import com.rmportal.model.Role;
@@ -17,7 +20,9 @@ import com.rmportal.repositories.RoleRepository;
 import com.rmportal.repositories.RoomBookDetailRepository;
 import com.rmportal.repositories.UserRepository;
 import com.rmportal.service.UserService;
+import com.rmportal.vo.RecordVO;
 import com.rmportal.vo.ResponseMessage;
+import com.rmportal.vo.UserDTO;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -60,5 +65,19 @@ public class UserServiceImpl implements UserService {
 			return updateResponse("Problem exists while registration", false);
 		}
 	}
+	
+	public RecordVO<UserDTO> getUsers(){
+		List<UserDTO> userDTOs =  userRepository.findAll().stream().map(UserDTO::of).collect(Collectors.toList());
+		return RecordVO.of(userDTOs, userDTOs.size());
+	}
+
+	@Override
+	@Transactional
+	public boolean updateUser(UserDTO record) {
+		User user = userRepository.findOne(record.getId());
+		user.setStatus(record.isStatus());
+		return false;
+	}
+
 
 }

@@ -53,8 +53,10 @@ public class MailController {
 		case "RR":
 			data=infoService.getRecords();
 			fileName="record.pdf";
-			headerName=Arrays.asList("Sr No", "Room", "Name", "Mobile", "Email", "Rent", "Security", "Check_In_Date");
-			fields=Arrays.asList( "srNo", "roomNo", "fName", "mobile", "email", "mapping.rent", "security", "checkindate");
+//			headerName=Arrays.asList("Sr No", "Room", "Name", "Mobile", "Email", "Rent", "Security", "Check_In_Date");
+//			fields=Arrays.asList( "srNo", "roomNo", "name", "mobile", "email", "mapping.rent", "security", "checkindate");
+			headerName = Arrays.asList("Sr No", "Room No", "Name", "Mobile", "Email", "Rent", "Electricity", "Security", "Check_In_Date");
+			fields = Arrays.asList("srNo", "roomNo", "name", "mobile", "email", "rent", "elctricityPaid", "security", "checkindate");
 			break;
 		case "MR":
 			data=infoService.getMyRecords(mail.getReference()).getData();
