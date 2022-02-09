@@ -23,7 +23,7 @@
 		<poi.version>3.15</poi.version>
 		<pdf.version>5.5.10</pdf.version>
 		<csv.version>2.4.0</csv.version>
-		<hibernate-core>5.2.11.Final</hibernate-core>
+		<hibernate-core>5.4.24.Final</hibernate-core>
 		<mail.version>1.5.9.RELEASE</mail.version>
 	</properties>
 
